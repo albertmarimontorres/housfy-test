@@ -2,7 +2,7 @@ import axios from "axios";
 import { tokenStorage } from "@/utils/tokenStorage";
 
 const http = axios.create({
-    baseURL: import.meta.env.HOUSFY_BASE_URL,
+    baseURL: import.meta.env.VITE_HOUSFY_BASE_URL,
     timeout: 8000,
     withCredentials: false // No usamos cookies
 });
