@@ -20,9 +20,13 @@ export const useAuthStore = defineStore("auth", {
       this.error = null;
 
       try {
-        const { token } = await AuthService.login(payload);
-        tokenStorage.set(token);
-        this.token = token;
+        const response = await AuthService.login(payload);
+        if (response.success && response.bearer) {
+          tokenStorage.set(response.bearer);
+          this.token = response.bearer;
+        } else {
+          this.error = response.message || "Error in login";
+        }
       } catch (err: any) {
         this.error = err?.response?.data?.message ?? "Error in login";
       } finally {
@@ -35,9 +39,13 @@ export const useAuthStore = defineStore("auth", {
       this.error = null;
 
       try {
-        const { token } = await AuthService.register(payload);
-        tokenStorage.set(token);
-        this.token = token;
+        const response = await AuthService.register(payload);
+        if (response.success && response.bearer) {
+          tokenStorage.set(response.bearer);
+          this.token = response.bearer;
+        } else {
+          this.error = response.message || "Error in register";
+        }
       } catch (err: any) {
         this.error = err?.response?.data?.message ?? "Error in register";
       } finally {

@@ -10,5 +10,8 @@ export interface RegisterPayload extends AuthBase {
 export interface AuthCredentials extends AuthBase {}
 
 export interface AuthResponse {
-  token: string;
+  success: boolean;
+  message: string;
+  userId: number;
+  bearer: string;
 }

@@ -71,7 +71,7 @@ export default defineComponent({
       });
 
       if (auth.isAuthenticated) {
-        this.$router.push("/dashboard");
+        this.$router.push("/app/dashboard");
       }
     }
   }

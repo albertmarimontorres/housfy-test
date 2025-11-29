@@ -1,5 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { authGuard } from "./guards";
+
+import PublicLayout from "@/components/layouts/PublicLayout.vue";
+import PrivateLayout from "@/components/layouts/PrivateLayout.vue";
+
 import LoginView from "@/views/LoginView.vue";
 import RegisterView from "@/views/RegisterView.vue";
 
@@ -11,47 +15,45 @@ const MortgagesView = () => import("@/views/MortgagesView.vue");
 const router = createRouter({
   history: createWebHistory(),
   routes: [
+    // PUBLIC ROUTES
     {
-      path: "/login",
-      name: "Login",
-      component: LoginView,
-      meta: { public: true }
+      path: "/",
+      component: PublicLayout,
+      children: [
+        { path: "login", name: "Login", component: LoginView },
+        { path: "register", name: "Register", component: RegisterView },
+        { path: "", redirect: "/login" }
+      ]
     },
+
+    // PRIVATE ROUTES
     {
-      path: "/register",
-      name: "Register",
-      component: RegisterView,
-      meta: { public: true }
+      path: "/app",
+      component: PrivateLayout,
+      beforeEnter: authGuard,
+      children: [
+        { path: "dashboard", name: "Dashboard", component: DashboardView },
+        { path: "real-estate", name: "RealEstate", component: RealEstateView },
+        { path: "rentals", name: "Rentals", component: RentalsView },
+        { path: "mortgages", name: "Mortgages", component: MortgagesView },
+        { path: "", redirect: "/app/dashboard" }
+      ]
     },
-    {
-      path: "/dashboard",
-      name: "Dashboard",
-      component: DashboardView,
-      beforeEnter: authGuard
-    },
-    {
-      path: "/real-estate",
-      name: "RealEstate",
-      component: RealEstateView,
-      beforeEnter: authGuard
-    },
-    {
-      path: "/rentals",
-      name: "Rentals",
-      component: RentalsView,
-      beforeEnter: authGuard
-    },
-    {
-      path: "/mortgages",
-      name: "Mortgages",
-      component: MortgagesView,
-      beforeEnter: authGuard
-    },
-    {
-      path: "/:pathMatch(.*)*",
-      redirect: "/login"
-    }
+
+    { path: "/:pathMatch(.*)*", redirect: "/login" }
   ]
+});
+
+
+// Guard global para evitar que usuarios autenticados accedan a login/register
+import { useAuthStore } from '@/stores/auth.store';
+router.beforeEach((to, from, next) => {
+  const auth = useAuthStore();
+  // Si está autenticado y va a login o register, redirige al dashboard
+  if (auth.isAuthenticated && (to.name === 'Login' || to.name === 'Register')) {
+    return next('/app/dashboard');
+  }
+  next();
 });
 
 export default router;
