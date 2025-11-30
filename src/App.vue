@@ -3,36 +3,37 @@
   <v-snackbar v-model="snackbar.show" :color="snackbar.color" :timeout="snackbar.timeout" top right>
     {{ snackbar.text }}
   </v-snackbar>
+  
+  <!-- Chatbot Widget Global -->
+  <ChatWidget />
 </template>
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { reactive, onMounted, onBeforeUnmount } from 'vue';
+import ChatWidget from "@/components/ui/ChatWidget.vue";
 
-export default defineComponent({
-  name: "App",
-  data() {
-    return {
-      snackbar: {
-        show: false,
-        text: "",
-        color: "",
-        timeout: 3500,
-      },
-    };
-  },
-  created() {
-    window.addEventListener("show-snackbar", this.onShowSnackbar);
-  },
-  beforeUnmount() {
-    window.removeEventListener("show-snackbar", this.onShowSnackbar);
-  },
-  methods: {
-    onShowSnackbar(event: any) {
-      const { text, color = "info", timeout = 3500 } = event.detail || {};
-      this.snackbar.text = text;
-      this.snackbar.color = color;
-      this.snackbar.timeout = timeout;
-      this.snackbar.show = true;
-    },
-  },
+// Estado del snackbar
+const snackbar = reactive({
+  show: false,
+  text: '',
+  color: '',
+  timeout: 3500,
+});
+
+// Función para manejar eventos de snackbar
+const onShowSnackbar = (event: any) => {
+  const { text, color = 'info', timeout = 3500 } = event.detail || {};
+  snackbar.text = text;
+  snackbar.color = color;
+  snackbar.timeout = timeout;
+  snackbar.show = true;
+};
+
+// Lifecycle hooks
+onMounted(() => {
+  window.addEventListener('show-snackbar', onShowSnackbar);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('show-snackbar', onShowSnackbar);
 });
 </script>
