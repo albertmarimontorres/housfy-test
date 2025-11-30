@@ -1,31 +1,35 @@
 <template>
-  <div class="auth-container">
-    <h1>Login</h1>
-
-    <form @submit.prevent="handleLogin">
-      <input
+  <v-card class="pa-8 login-card" elevation="2">
+    <div class="mb-6 text-center">
+      <h2 class="text-h5 font-weight-bold mb-2">Haz login en la plataforma</h2>
+      <div class="text-grey-darken-1 mb-2">Introduce tus credenciales para acceder a tu área privada</div>
+    </div>
+    <v-form @submit.prevent="handleLogin" class="d-flex flex-column gap-6">
+      <v-text-field
         v-model="email"
+        label="Email"
         type="email"
-        placeholder="Email"
         required
+        prepend-inner-icon="mdi-email"
+        autocomplete="username"
       />
-
-      <input
+      <v-text-field
         v-model="password"
+        label="Contraseña"
         type="password"
-        placeholder="Password"
         required
+        prepend-inner-icon="mdi-lock"
+        autocomplete="current-password"
       />
-
-      <button :disabled="loading">
-        {{ loading ? "Loading..." : "Login" }}
-      </button>
-
-      <p v-if="error" class="error">{{ error }}</p>
-    </form>
-
-    <router-link to="/register">Create account</router-link>
-  </div>
+      <v-btn :loading="loading" :disabled="loading || !isFormValid" type="submit" color="primary" block class="mt-2">
+        Entrar
+      </v-btn>
+  <!-- Snackbar handled globally -->
+    </v-form>
+    <div class="mt-6 text-center">
+      <router-link to="/register">¿No tienes cuenta? Regístrate</router-link>
+    </div>
+  </v-card>
 </template>
 
 <script lang="ts">
@@ -48,10 +52,17 @@ export default defineComponent({
     },
     error() {
       return useAuthStore().error;
+    },
+    isFormValid(): boolean {
+      return (
+        this.email.trim().length > 0 &&
+        this.password.trim().length > 0
+      );
     }
   },
 
   methods: {
+    // Email validation removed as per user request
     async handleLogin() {
       const auth = useAuthStore();
       await auth.login({
@@ -60,7 +71,10 @@ export default defineComponent({
       });
 
       if (auth.isAuthenticated) {
+        window.dispatchEvent(new CustomEvent("show-snackbar", { detail: { text: "¡Bienvenido!", color: "success" } }));
         this.$router.push("/app/dashboard");
+      } else if (auth.error) {
+        window.dispatchEvent(new CustomEvent("show-snackbar", { detail: { text: auth.error, color: "error" } }));
       }
     }
   }
@@ -68,7 +82,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.error {
-  color: red;
+.login-card {
+  max-width: 480px;
+  min-height: 520px;
+  margin: 40px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 </style>

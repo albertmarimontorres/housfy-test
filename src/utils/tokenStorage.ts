@@ -2,7 +2,7 @@
 // Si se añade un backend, usar cookie HttpOnly + sameSite=Strict para mayor seguridad.
 // * Nota: no soluciona XSS, pero reduce vectores y centraliza la lógica.
 
-const TOKEN_KEY = "auth_token_v1"; // versionado por si cambias el formato
+const TOKEN_KEY = "auth_token_v1";
 const EXPIRES_KEY = "auth_expires_v1";
 const OBFUSCATION_PREFIX = "hf_"; // Genero ruido para evitar lectura normal
 
