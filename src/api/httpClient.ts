@@ -29,7 +29,10 @@ http.interceptors.response.use(
     // Token expirado → logout automático
     if (error?.response?.status === 401) {
       tokenStorage.clear();
-      window.location.href = "/login";
+      const current = window.location.pathname;
+      if (current !== "/login" && current !== "/register") {
+        window.location.href = "/login";
+      }
     }
     return Promise.reject(error);
   }
