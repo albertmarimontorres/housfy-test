@@ -1,5 +1,154 @@
 <template>
-  <div id="real-state-view">
-    <h1>Real State View</h1>
+  <div class="real-estate-view">
+    <!-- Header -->
+    <div class="d-flex align-center justify-space-between	mb-6 w-100 px-4">
+      <div>
+        <p class="text-body-1 text-grey-darken-1">
+          Gestiona tus propiedades en venta
+        </p>
+      </div>
+
+      <v-btn color="primary" size="large" @click="refreshProperties" :loading="realEstateStore.loading">
+        <v-icon start>mdi-refresh</v-icon>
+        Actualizar
+      </v-btn>
+    </div>
+
+    <!-- Filters Section -->
+    <v-card class="mb-6" elevation="1">
+      <v-card-title>
+        <v-icon start>mdi-filter</v-icon>
+        Filtros
+      </v-card-title>
+      <v-card-text>
+        <v-row>
+          <v-col cols="12" sm="6" md="3">
+            <v-select v-model="filters.status" :items="statusOptions" label="Estado" clearable
+              @update:model-value="applyFilters" />
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <v-text-field v-model="filters.propertyStreet" label="Calle" clearable @update:model-value="applyFilters" />
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <v-text-field v-model.number="filters.minPrice" label="Precio mínimo" type="number" clearable
+              @update:model-value="applyFilters" />
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <v-text-field v-model.number="filters.maxPrice" label="Precio máximo" type="number" clearable
+              @update:model-value="applyFilters" />
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+
+    <!-- Loading Skeletons -->
+    <div v-if="realEstateStore.loading">
+      <v-row>
+        <v-col v-for="n in 6" :key="n" cols="12" sm="6" lg="4">
+          <v-skeleton-loader type="card" height="400" />
+        </v-col>
+      </v-row>
+    </div>
+
+    <!-- Error State -->
+    <v-alert v-else-if="realEstateStore.error" type="error" class="mb-4">
+      {{ realEstateStore.error }}
+    </v-alert>
+
+    <!-- Empty State -->
+    <v-card v-else-if="!realEstateStore.hasProperties" class="text-center py-12" variant="outlined">
+      <v-card-text>
+        <v-icon size="80" color="grey" class="mb-4">
+          mdi-home-search-outline
+        </v-icon>
+        <h3 class="text-h6 mb-2">No hay propiedades disponibles</h3>
+        <p class="text-body-2 text-grey-darken-1">
+          No se encontraron propiedades que coincidan con los filtros aplicados.
+        </p>
+      </v-card-text>
+    </v-card>
+
+    <!-- Properties Grid -->
+    <div v-else>
+      <div class="d-flex align-center justify-space-between mb-4">
+        <span class="text-body-1">
+          <strong>{{ realEstateStore.propertiesCount }}</strong> propiedad{{ realEstateStore.propertiesCount !== 1 ?
+            'es' : '' }} encontrada{{ realEstateStore.propertiesCount !== 1 ? 's' : '' }}
+        </span>
+      </div>
+
+      <v-row>
+        <v-col v-for="property in realEstateStore.properties" :key="property.uuid" cols="12" sm="6" lg="4">
+          <RealEstateCard :property="property" @click="handlePropertyClick" @view-details="handleViewDetails" />
+        </v-col>
+      </v-row>
+    </div>
   </div>
 </template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { useRealEstateStore } from '@/stores/real-estate.store';
+import RealEstateCard from '@/components/domain/RealEstateCard.vue';
+import type { RealEstateProperty, RealEstateFilters } from '@/types/Property';
+
+export default defineComponent({
+  name: 'RealEstateView',
+  components: {
+    RealEstateCard,
+  },
+  data() {
+    return {
+      filters: {
+        status: undefined,
+        propertyStreet: undefined,
+        minPrice: undefined,
+        maxPrice: undefined,
+      } as RealEstateFilters,
+      statusOptions: [
+        { title: 'Publicado', value: 'Publicado' },
+        { title: 'Oferta recibida', value: 'Oferta recibida' },
+        { title: 'Reservado', value: 'Reservado' },
+        { title: 'Con visitas', value: 'Con visitas' },
+      ],
+    };
+  },
+  computed: {
+    realEstateStore() {
+      return useRealEstateStore();
+    },
+  },
+  async mounted() {
+    await this.realEstateStore.fetchProperties();
+  },
+  methods: {
+    async applyFilters() {
+      // Clean empty values
+      const cleanFilters = Object.fromEntries(
+        Object.entries(this.filters).filter(([_, value]) =>
+          value !== null && value !== undefined && value !== ''
+        )
+      );
+
+      await this.realEstateStore.fetchProperties(cleanFilters);
+    },
+    async refreshProperties() {
+      await this.realEstateStore.fetchProperties(this.filters);
+    },
+    handlePropertyClick(property: RealEstateProperty) {
+      console.log('Property clicked:', property);
+      // TODO: Navigate to property detail view
+    },
+    handleViewDetails(property: RealEstateProperty) {
+      console.log('View details for property:', property);
+      // TODO: Open property detail modal or navigate to detail page
+    },
+  },
+});
+</script>
+
+<style scoped>
+.real-estate-view {
+  width: 100%;
+}
+</style>
