@@ -1,4 +1,5 @@
-import { chatApi, type ChatMessage, type ChatResponse } from '@/api/modules/chat.api';
+import { chatApi } from '@/api/modules/chat.api';
+import type { ChatMessage, ChatResponse } from '@/types/AIChat';
 
 export const chatService = {
   /**

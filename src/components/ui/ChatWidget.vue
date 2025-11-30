@@ -141,7 +141,7 @@
 <script lang="ts">
 import { defineComponent, nextTick } from 'vue';
 import { chatService } from '@/services/chat.service';
-import type { ChatMessage } from '@/api/modules/chat.api';
+import type { ChatMessage } from '@/types/AIChat';
 
 export default defineComponent({
   name: 'ChatWidget',

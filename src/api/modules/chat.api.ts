@@ -1,21 +1,5 @@
 import http from '../httpClient';
-
-export interface ChatMessage {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp: Date;
-}
-
-export interface ChatRequest {
-  input: string;
-}
-
-export interface ChatResponse {
-  success: boolean;
-  message: string;
-  output: string;
-}
+import type { ChatResponse } from '../../types/AIChat';
 
 export const chatApi = {
   /**
@@ -26,3 +10,5 @@ export const chatApi = {
     return data;
   },
 };
+
+export default chatApi;
