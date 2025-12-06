@@ -4,12 +4,16 @@
     {{ snackbar.text }}
   </v-snackbar>
   
-  <!-- Chatbot Widget Global -->
-  <ChatWidget />
+  <!-- Chatbot Widget Global - Solo para usuarios autenticados -->
+  <ChatWidget v-if="authStore.isAuthenticated" />
 </template>
 <script setup lang="ts">
 import { reactive, onMounted, onBeforeUnmount } from 'vue';
 import ChatWidget from "@/components/ui/ChatWidget.vue";
+import { useAuthStore } from "@/stores/auth.store";
+
+// Store de autenticación
+const authStore = useAuthStore();
 
 // Estado del snackbar
 const snackbar = reactive({
