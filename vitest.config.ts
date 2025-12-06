@@ -15,11 +15,14 @@ export default defineConfig({
       'src/test/features/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
       'src/test/environment.test.ts'
     ],
-    // Exclude the old test files temporarily
+    // Exclude the old test files and Playwright E2E tests
     exclude: [
       'src/test/chat*.test.ts',
       'src/test/ChatWidget*.test.ts',
-      'src/test/chatbot*.test.ts'
+      'src/test/chatbot*.test.ts',
+      'src/test/**/e2e/**/*.playwright.test.ts', // Exclude Playwright E2E tests
+      'node_modules/**',
+      'dist/**'
     ]
   },
   resolve: {

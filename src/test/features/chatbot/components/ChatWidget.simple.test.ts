@@ -6,7 +6,7 @@ import {
   mockSuccessResponse,
   mockFailureResponse,
   flushPromises
-} from './factories'
+} from '../../../utils/factories'
 
 // Mock del chat service
 vi.mock('@/services/chat.service', () => ({
