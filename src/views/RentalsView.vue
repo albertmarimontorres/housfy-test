@@ -122,18 +122,39 @@ export default defineComponent({
         await this.rentalStore.fetchRentals();
     },
     methods: {
-        async applyFilters() {
-            // Clean empty values
+        // Frontend filtering since API doesn't support filters yet
+        // TODO: When backend filtering is ready, this method would be:
+        // async applyFilters() {
+        //   const cleanFilters = Object.fromEntries(
+        //     Object.entries(this.filters).filter(([_, value]) =>
+        //       value !== null && value !== undefined && value !== ''
+        //     )
+        //   );
+        //   await this.rentalStore.fetchRentals(cleanFilters);
+        // }
+
+        applyFilters() {
+            console.log('RentalsView.applyFilters called with:', this.filters);
+            
+            // Clean empty values from filters
             const cleanFilters = Object.fromEntries(
                 Object.entries(this.filters).filter(([_, value]) =>
                     value !== null && value !== undefined && value !== ''
                 )
             );
 
-            await this.rentalStore.fetchRentals(cleanFilters);
+            console.log('Clean filters:', cleanFilters);
+
+            // Apply filters on frontend since backend API is not ready for filtering
+            this.rentalStore.applyFilters(cleanFilters);
         },
+        
         async refreshRentals() {
-            await this.rentalStore.fetchRentals(this.filters);
+            // Fetch all rentals and apply current filters
+            await this.rentalStore.fetchRentals();
+            if (Object.keys(this.filters).some(key => this.filters[key as keyof RentalFilters] !== undefined)) {
+                this.applyFilters();
+            }
         },
         handleRentalClick(rental: Rental) {
             console.log('Rental clicked:', rental);

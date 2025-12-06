@@ -5,24 +5,50 @@
     :ripple="false"
     @click="$emit('click', property)"
   >
-    <!-- Header with customizable icon and status -->
-    <div
-      class="d-flex align-center justify-center bg-grey-lighten-3 position-relative"
-      style="height: 200px;"
-    >
-      <!-- Customizable icon slot -->
-      <slot name="icon" :property="property" :config="config">
-        <v-icon size="64" color="grey">{{ config.icon }}</v-icon>
+    <!-- Header with property image and status -->
+    <div class="position-relative property-image-container">
+      <!-- Customizable image slot -->
+      <slot name="image" :property="property" :config="config" :image-url="propertyImageUrl">
+        <v-img
+          :src="propertyImageUrl"
+          :alt="`Imagen de ${formatAddress(property.propertyStreet, property.propertyStreetNumber, property.propertyFloor)}`"
+          height="200"
+          cover
+          class="property-image"
+          @error="handleImageError"
+          @load="console.log('Image loaded successfully:', propertyImageUrl)"
+        >
+          <template v-slot:placeholder>
+            <div class="d-flex align-center justify-center fill-height bg-grey-lighten-3">
+              <v-progress-circular
+                indeterminate
+                color="primary"
+                size="32"
+              />
+            </div>
+          </template>
+        </v-img>
       </slot>
       
       <!-- Status chip -->
       <v-chip
         :color="statusConfig.color"
         size="small"
-        class="position-absolute"
-        style="top: 12px; right: 12px;"
+        class="position-absolute chip-with-shadow status-chip"
+        style="top: 12px; right: 12px; z-index: 2;"
       >
         {{ statusConfig.label }}
+      </v-chip>
+      
+      <!-- Property type badge -->
+      <v-chip
+        :color="config.color"
+        size="small"
+        class="position-absolute property-type-badge chip-with-shadow type-chip"
+        style="bottom: 12px; left: 12px; z-index: 2;"
+      >
+        <v-icon start size="small">{{ config.icon }}</v-icon>
+        {{ config.label }}
       </v-chip>
     </div>
 
@@ -88,6 +114,7 @@ import {
   getStatusConfig, 
   getPropertyConfig 
 } from '@/services/property.service';
+import { getPropertyImageByType, getDefaultPropertyImage, getTypedFallbackImage } from '@/utils/imageUtils';
 
 export default defineComponent({
   name: 'PropertyCard',
@@ -102,6 +129,11 @@ export default defineComponent({
     },
   },
   emits: ['click', 'viewDetails'],
+  data() {
+    return {
+      imageError: false,
+    };
+  },
   computed: {
     config(): PropertyTypeConfig {
       return getPropertyConfig(this.propertyType);
@@ -109,11 +141,48 @@ export default defineComponent({
     statusConfig() {
       return getStatusConfig(this.property.status, this.propertyType);
     },
+    propertyImageUrl(): string {
+      if (this.imageError) {
+        return getDefaultPropertyImage({ width: 400, height: 200 });
+      }
+      
+      // Usar imágenes curadas de Unsplash específicas para inmuebles
+      const propertyId = this.property.uuid || 'default';
+      const imageUrl = getPropertyImageByType(this.propertyType, propertyId, { width: 400, height: 200 });
+      
+      console.log(`Generated curated image URL for ${this.propertyType}:`, imageUrl);
+      return imageUrl;
+    },
+  },
+  watch: {
+    propertyImageUrl: {
+      immediate: true,
+      handler(newUrl) {
+        console.log('Property image URL updated:', newUrl);
+      }
+    }
   },
   methods: {
     formatAddress,
     formatDate,
     formatPropertyPrice,
+    handleImageError() {
+      console.log('Image failed to load, trying fallback:', this.propertyImageUrl);
+      
+      // Si ya estamos en modo error, usar SVG específico del tipo
+      if (!this.imageError) {
+        this.imageError = true;
+        
+        // Intentar con fallback específico del tipo antes de usar el genérico
+        setTimeout(() => {
+          const fallbackUrl = this.getTypedFallback();
+          console.log('Using typed fallback:', fallbackUrl);
+        }, 100);
+      }
+    },
+    getTypedFallback() {
+      return getTypedFallbackImage(this.propertyType, { width: 400, height: 200 });
+    },
   },
 });
 </script>
@@ -122,9 +191,119 @@ export default defineComponent({
 .property-card {
   cursor: pointer;
   transition: transform 0.2s ease-in-out;
+  overflow: hidden;
 }
 
 .property-card:hover {
   transform: translateY(-2px);
+}
+
+.property-image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.property-image {
+  transition: transform 0.3s ease-in-out;
+}
+
+.property-card:hover .property-image {
+  transform: scale(1.05);
+}
+
+.property-type-badge {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(4px);
+}
+
+/* Mejorar contraste de los chips sobre la imagen */
+.chip-with-shadow {
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+}
+
+.chip-with-shadow .v-chip__content {
+  font-weight: 700 !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8), 0 0 5px rgba(0, 0, 0, 0.5) !important;
+  color: white !important;
+  letter-spacing: 0.5px;
+}
+
+/* Asegurar que los chips tengan fondo sólido con opacidad */
+.chip-with-shadow.v-chip {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Status chips específicos con colores por estado */
+.status-chip.v-chip {
+  color: white !important;
+}
+
+/* Colores específicos para cada estado */
+.status-chip.v-chip[data-v-chip-color="success"],
+.status-chip.v-chip.text-success,
+.status-chip.v-chip.v-chip--color.bg-success,
+.status-chip.v-chip.v-chip--variant-elevated.bg-success {
+  background-color: rgba(46, 125, 50, 0.95) !important;
+}
+
+.status-chip.v-chip[data-v-chip-color="warning"],
+.status-chip.v-chip.text-warning,
+.status-chip.v-chip.v-chip--color.bg-warning,
+.status-chip.v-chip.v-chip--variant-elevated.bg-warning {
+  background-color: rgba(245, 124, 0, 0.95) !important;
+}
+
+.status-chip.v-chip[data-v-chip-color="error"],
+.status-chip.v-chip.text-error,
+.status-chip.v-chip.v-chip--color.bg-error,
+.status-chip.v-chip.v-chip--variant-elevated.bg-error {
+  background-color: rgba(198, 40, 40, 0.95) !important;
+}
+
+.status-chip.v-chip[data-v-chip-color="info"],
+.status-chip.v-chip.text-info,
+.status-chip.v-chip.v-chip--color.bg-info,
+.status-chip.v-chip.v-chip--variant-elevated.bg-info {
+  background-color: rgba(25, 118, 210, 0.95) !important;
+}
+
+/* Fallback para cualquier chip de status con color */
+.status-chip.v-chip.v-chip--color {
+  color: white !important;
+}
+
+/* Type chips específicos */  
+.type-chip.v-chip {
+  background: rgba(0, 0, 0, 0.8) !important;
+  color: white !important;
+}
+
+/* Asegurar que todos los elementos del chip tengan texto blanco */
+.chip-with-shadow * {
+  color: white !important;
+}
+
+.chip-with-shadow .v-icon {
+  color: white !important;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.7));
+}
+
+/* Efecto overlay sutil en la imagen */
+.property-image-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) 60%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
 }
 </style>

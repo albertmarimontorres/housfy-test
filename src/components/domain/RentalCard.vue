@@ -5,9 +5,21 @@
     @click="$emit('click', rental)"
     @view-details="$emit('viewDetails', rental)"
   >
-    <!-- Customizar icono específico para rentals -->
-    <template #icon="{ config }">
-      <v-icon size="64" color="grey">{{ config.icon }}</v-icon>
+    <!-- Personalizar imagen específica para rentals -->
+    <template #image="{ property, imageUrl }">
+      <v-img
+        :src="imageUrl"
+        :alt="`Apartamento en alquiler - ${property.propertyStreet}`"
+        height="200"
+        cover
+        class="rental-image"
+      >
+        <template v-slot:placeholder>
+          <div class="d-flex align-center justify-center fill-height bg-blue-lighten-4">
+            <v-icon size="48" color="blue-darken-2">mdi-home-variant</v-icon>
+          </div>
+        </template>
+      </v-img>
     </template>
 
     <!-- Slot para detalles adicionales específicos de rentals -->
@@ -40,3 +52,21 @@ export default defineComponent({
   emits: ['click', 'viewDetails'],
 });
 </script>
+
+<style scoped>
+.rental-image {
+  position: relative;
+}
+
+.rental-overlay {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  z-index: 2;
+}
+
+.rental-badge {
+  background-color: rgba(33, 150, 243, 0.9) !important;
+  backdrop-filter: blur(4px);
+}
+</style>

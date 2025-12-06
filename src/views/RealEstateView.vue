@@ -122,18 +122,39 @@ export default defineComponent({
     await this.realEstateStore.fetchProperties();
   },
   methods: {
-    async applyFilters() {
-      // Clean empty values
+    // Frontend filtering since API doesn't support filters yet
+    // TODO: When backend filtering is ready, this method would be:
+    // async applyFilters() {
+    //   const cleanFilters = Object.fromEntries(
+    //     Object.entries(this.filters).filter(([_, value]) =>
+    //       value !== null && value !== undefined && value !== ''
+    //     )
+    //   );
+    //   await this.realEstateStore.fetchProperties(cleanFilters);
+    // }
+    
+    applyFilters() {
+      console.log('RealEstateView.applyFilters called with:', this.filters);
+      
+      // Clean empty values from filters
       const cleanFilters = Object.fromEntries(
         Object.entries(this.filters).filter(([_, value]) =>
           value !== null && value !== undefined && value !== ''
         )
       );
 
-      await this.realEstateStore.fetchProperties(cleanFilters);
+      console.log('Clean filters:', cleanFilters);
+
+      // Apply filters on frontend since backend API is not ready for filtering
+      this.realEstateStore.applyFilters(cleanFilters);
     },
+    
     async refreshProperties() {
-      await this.realEstateStore.fetchProperties(this.filters);
+      // Fetch all properties and apply current filters
+      await this.realEstateStore.fetchProperties();
+      if (Object.keys(this.filters).some(key => this.filters[key as keyof RealEstateFilters] !== undefined)) {
+        this.applyFilters();
+      }
     },
     handlePropertyClick(property: RealEstateProperty) {
       console.log('Property clicked:', property);

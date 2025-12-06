@@ -41,6 +41,8 @@ export type RentalFilters = BasePropertyFilters;
 // Configuración para diferentes tipos de propiedades
 export interface PropertyTypeConfig {
     icon: string;
+    color: string;
+    label: string;
     priceFormat: 'sale' | 'rental';
     statusOptions: Array<{ title: string; value: string; color: string }>;
     emptyStateIcon: string;
@@ -52,6 +54,8 @@ export interface PropertyTypeConfig {
 export const PROPERTY_CONFIGS: Record<string, PropertyTypeConfig> = {
     realEstate: {
         icon: 'mdi-home-outline',
+        color: 'orange',
+        label: 'Venta',
         priceFormat: 'sale',
         statusOptions: [
             { title: 'Publicado', value: 'Publicado', color: 'success' },
@@ -65,6 +69,8 @@ export const PROPERTY_CONFIGS: Record<string, PropertyTypeConfig> = {
     },
     rental: {
         icon: 'mdi-home-variant-outline',
+        color: 'blue',
+        label: 'Alquiler',
         priceFormat: 'rental',
         statusOptions: [
             { title: 'Publicado', value: 'Publicado', color: 'success' },
