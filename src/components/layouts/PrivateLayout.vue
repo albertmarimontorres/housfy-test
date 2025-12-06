@@ -1,6 +1,12 @@
 <template>
   <v-app>
-    <v-navigation-drawer app permanent>
+    <!-- Navigation Drawer - Hidden on mobile -->
+    <v-navigation-drawer 
+      v-model="drawer" 
+      :permanent="!$vuetify.display.mobile"
+      :temporary="$vuetify.display.mobile"
+      app
+    >
       <div class="d-flex flex-row align-center py-6 px-4">
         <v-skeleton-loader v-if="profileLoading" type="avatar" width="56" height="56" />
         <v-avatar v-else color="primary" size="56">
@@ -16,29 +22,38 @@
       </div>
 
       <v-list nav dense>
-        <v-list-item to="/app/dashboard" router exact>
+        <v-list-item to="/app/dashboard" router exact @click="closeMobileDrawer">
           <template #prepend>
             <v-icon>mdi-view-dashboard-outline</v-icon>
           </template>
           <v-list-item-title>Dashboard</v-list-item-title>
         </v-list-item>
-        <v-list-item to="/app/real-estate" router>
+        <v-list-item to="/app/real-estate" router @click="closeMobileDrawer">
           <template #prepend>
             <v-icon>mdi-home-outline</v-icon>
           </template>
           <v-list-item-title>Compraventa</v-list-item-title>
         </v-list-item>
-        <v-list-item to="/app/rentals" router>
+        <v-list-item to="/app/rentals" router @click="closeMobileDrawer">
           <template #prepend>
             <v-icon>mdi-home-variant-outline</v-icon>
           </template>
           <v-list-item-title>Alquileres</v-list-item-title>
         </v-list-item>
-        <v-list-item to="/app/mortgages" router>
+        <v-list-item to="/app/mortgages" router @click="closeMobileDrawer">
           <template #prepend>
             <v-icon>mdi-bank-outline</v-icon>
           </template>
           <v-list-item-title>Hipotecas</v-list-item-title>
+        </v-list-item>
+        
+        <!-- Logout in mobile menu -->
+        <v-divider v-if="$vuetify.display.mobile" class="my-2" />
+        <v-list-item v-if="$vuetify.display.mobile" @click="logout">
+          <template #prepend>
+            <v-icon>mdi-logout</v-icon>
+          </template>
+          <v-list-item-title>Cerrar sesión</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -47,11 +62,27 @@
       <v-app-bar app color="primary" dark>
         <div class="w-100 d-flex align-center justify-space-between px-4">
           <div class="d-flex align-center">
+            <!-- Mobile hamburger menu -->
+            <v-btn 
+              v-if="$vuetify.display.mobile"
+              icon 
+              color="white"
+              @click="drawer = !drawer"
+              class="mr-3"
+            >
+              <v-icon>mdi-menu</v-icon>
+            </v-btn>
+            
             <v-icon class="mr-3" size="28">{{ pageIcon }}</v-icon>
             <v-toolbar-title>{{ pageTitle }}</v-toolbar-title>
           </div>
           
-          <v-tooltip text="Cerrar sesión" location="bottom">
+          <!-- Logout button - only visible on desktop -->
+          <v-tooltip 
+            v-if="!$vuetify.display.mobile"
+            text="Cerrar sesión" 
+            location="bottom"
+          >
             <template #activator="{ props }">
               <v-btn icon color="white" v-bind="props" @click="logout">
                 <v-icon>mdi-logout</v-icon>
@@ -79,6 +110,11 @@ import { useProfileStore } from "@/stores/profile.store";
 
 export default defineComponent({
   name: "PrivateLayout",
+  data() {
+    return {
+      drawer: true, // Controls drawer visibility
+    };
+  },
   computed: {
     profileStore() {
       return useProfileStore();
@@ -138,6 +174,12 @@ export default defineComponent({
       const auth = useAuthStore();
       auth.logout();
       this.$router.push("/login");
+    },
+    closeMobileDrawer() {
+      // Close drawer on mobile after navigation
+      if (this.$vuetify.display.mobile) {
+        this.drawer = false;
+      }
     }
   }
 });
