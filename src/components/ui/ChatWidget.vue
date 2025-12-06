@@ -5,10 +5,12 @@
       v-if="!isOpen"
       @click="toggleChat"
       class="chat-button"
+      data-testid="chat-button"
       color="primary"
       size="large"
       elevation="8"
       fab
+      aria-label="Abrir chat con asistente virtual"
     >
       <v-icon size="28">mdi-robot-outline</v-icon>
       
@@ -40,6 +42,7 @@
         </div>
         <v-btn
           @click="toggleChat"
+          data-testid="close-button"
           icon
           size="small"
           variant="text"
@@ -57,6 +60,7 @@
           :key="message.id"
           class="message-wrapper mb-4"
           :class="message.role === 'user' ? 'user-message' : 'assistant-message'"
+          data-testid="message"
         >
           <div class="d-flex" :class="message.role === 'user' ? 'justify-end' : 'justify-start'">
             <!-- Avatar del asistente -->
@@ -111,6 +115,9 @@
 
       <!-- Input para escribir -->
       <div class="chat-input pa-4">
+        <div id="chat-input-description" class="sr-only">
+          Escribe tu mensaje y presiona Enter o haz clic en enviar
+        </div>
         <v-text-field
           v-model="currentMessage"
           @keydown.enter="sendMessage"
@@ -119,6 +126,9 @@
           density="compact"
           hide-details
           :disabled="isLoading"
+          data-testid="chat-input"
+          aria-label="Escribe tu mensaje al asistente virtual"
+          aria-describedby="chat-input-description"
         >
           <template #append-inner>
             <v-btn
@@ -367,6 +377,19 @@ export default defineComponent({
 
 .chat-input {
   flex-shrink: 0;
+}
+
+/* Accessibility utilities */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
 
 /* Responsive para pantallas pequeñas */

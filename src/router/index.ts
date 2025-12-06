@@ -47,7 +47,7 @@ const router = createRouter({
 
 // Guard global para evitar que usuarios autenticados accedan a login/register
 import { useAuthStore } from '@/stores/auth.store';
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   const auth = useAuthStore();
   // Si está autenticado y va a login o register, redirige al dashboard
   if (auth.isAuthenticated && (to.name === 'Login' || to.name === 'Register')) {

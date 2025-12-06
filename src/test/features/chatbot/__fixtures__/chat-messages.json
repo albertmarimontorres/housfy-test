@@ -1,0 +1,70 @@
+{
+  "welcomeMessage": {
+    "id": "welcome-msg",
+    "role": "assistant",
+    "content": "¡Hola! Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?",
+    "timestamp": "2023-12-01T10:00:00Z"
+  },
+  "userMessages": [
+    {
+      "id": "user-msg-1",
+      "role": "user",
+      "content": "Hola, necesito ayuda",
+      "timestamp": "2023-12-01T10:01:00Z"
+    },
+    {
+      "id": "user-msg-2", 
+      "role": "user",
+      "content": "Quiero información sobre propiedades",
+      "timestamp": "2023-12-01T10:02:00Z"
+    },
+    {
+      "id": "user-msg-3",
+      "role": "user", 
+      "content": "Me interesa comprar",
+      "timestamp": "2023-12-01T10:03:00Z"
+    }
+  ],
+  "assistantMessages": [
+    {
+      "id": "assistant-msg-1",
+      "role": "assistant",
+      "content": "¡Claro! Estoy aquí para ayudarte",
+      "timestamp": "2023-12-01T10:01:30Z"
+    },
+    {
+      "id": "assistant-msg-2",
+      "role": "assistant", 
+      "content": "Puedo ayudarte con información sobre compra y venta de propiedades",
+      "timestamp": "2023-12-01T10:02:30Z"
+    },
+    {
+      "id": "assistant-msg-3",
+      "role": "assistant",
+      "content": "Perfecto. ¿Qué tipo de propiedad buscas?",
+      "timestamp": "2023-12-01T10:03:30Z"
+    }
+  ],
+  "longMessages": [
+    {
+      "id": "long-msg-1",
+      "role": "assistant",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      "timestamp": "2023-12-01T10:04:00Z"
+    }
+  ],
+  "errorMessages": [
+    {
+      "id": "error-msg-1",
+      "role": "assistant",
+      "content": "Lo siento, ha ocurrido un error. Por favor, inténtalo de nuevo.",
+      "timestamp": "2023-12-01T10:05:00Z"
+    },
+    {
+      "id": "error-msg-2",
+      "role": "assistant", 
+      "content": "Lo siento, no puedo procesar tu mensaje en este momento. Por favor, inténtalo más tarde.",
+      "timestamp": "2023-12-01T10:06:00Z"
+    }
+  ]
+}
