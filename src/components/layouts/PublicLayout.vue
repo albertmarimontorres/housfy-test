@@ -135,7 +135,6 @@ export default defineComponent({ name: 'PublicLayout' });
 .mobile-form :deep(h3),
 .mobile-form :deep(p),
 .mobile-form :deep(span) {
-  color: rgba(0, 0, 0, 0.95) !important;
   text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
   font-weight: 600 !important;
 }
@@ -147,7 +146,7 @@ export default defineComponent({ name: 'PublicLayout' });
 }
 
 .mobile-form :deep(.v-field__input) {
-  color: rgba(0, 0, 0, 0.9) !important;
+  color: rgba(0, 0, 0, 0.95) !important;
   font-weight: 500 !important;
 }
 
@@ -157,8 +156,6 @@ export default defineComponent({ name: 'PublicLayout' });
 }
 
 .mobile-form :deep(.v-btn) {
-  background: rgba(var(--v-theme-primary), 0.95) !important;
-  backdrop-filter: blur(5px);
   font-weight: 600 !important;
   text-shadow: none !important;
 }
