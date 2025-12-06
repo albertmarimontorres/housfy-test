@@ -4,7 +4,7 @@
     <div class="position-relative mortgage-header-container">
       <div class="mortgage-header bg-green-lighten-4 pa-6 text-center">
         <v-icon size="64" color="green-darken-2" class="mb-2">mdi-bank</v-icon>
-        <h3 class="text-h6 font-weight-bold mb-1">{{ props.mortgage.bank }}</h3>
+        <h3 class="text-h6 font-weight-bold mb-1">{{ mortgage.bank }}</h3>
         <div class="text-body-2 text-green-darken-1">Hipoteca</div>
       </div>
       
@@ -68,26 +68,32 @@
   </v-card>
 </template>
 
-<script setup lang="ts">
-import { computed } from 'vue';
+<script lang="ts">
+import { defineComponent } from 'vue';
 import type { Mortgage } from '@/types/Mortgage';
 import { mortgageService } from '@/services/mortgage.service';
 
-interface Props {
-  mortgage: Mortgage;
-}
-
-const props = defineProps<Props>();
-
-// Emits
-const emit = defineEmits<{
-  click: [mortgage: Mortgage];
-  viewDetails: [mortgage: Mortgage];
-}>();
-
-// Computed para obtener el color y label del estado
-const statusColor = computed(() => mortgageService.getStatusColor(props.mortgage.status));
-const statusLabel = computed(() => mortgageService.getStatusLabel(props.mortgage.status));
+export default defineComponent({
+  name: 'MortgageCard',
+  props: {
+    mortgage: {
+      type: Object as () => Mortgage,
+      required: true
+    }
+  },
+  emits: ['click', 'viewDetails'],
+  computed: {
+    statusColor(): string {
+      return mortgageService.getStatusColor(this.mortgage.status);
+    },
+    statusLabel(): string {
+      return mortgageService.getStatusLabel(this.mortgage.status);
+    },
+    mortgageService() {
+      return mortgageService;
+    }
+  }
+});
 </script>
 
 <style scoped>

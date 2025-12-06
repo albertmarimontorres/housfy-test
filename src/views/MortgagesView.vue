@@ -127,43 +127,54 @@
   </v-container>
 </template>
 
-<script setup lang="ts">
-import { computed, onMounted } from 'vue';
+<script lang="ts">
+import { defineComponent } from 'vue';
 import { useMortgageStore } from '@/stores/mortgage.store';
 import { MORTGAGE_CONFIG } from '@/types/Mortgage';
 import MortgageCard from '@/components/domain/MortgageCard.vue';
 
-// Store
-const mortgageStore = useMortgageStore();
-
-// Computed properties basados en el store
-const loading = computed(() => mortgageStore.loading);
-const error = computed(() => mortgageStore.error);
-const filteredMortgages = computed(() => mortgageStore.filteredMortgages);
-const isEmpty = computed(() => mortgageStore.isEmpty);
-
-// Acceso directo a filtros del store (sin computed)
-const filters = mortgageStore.filters;
-
-// Configuración del tipo de propiedad
-const config = MORTGAGE_CONFIG;
-
-// Opciones para el select de estado
-const statusOptions = computed(() => 
-  config.statusOptions.map(option => ({
-    title: option.title,
-    value: option.value
-  }))
-);
-
-// Función para refrescar (consistente con otras vistas)
-const refreshMortgages = () => {
-  mortgageStore.fetchMortgages();
-};
-
-// Lifecycle
-onMounted(() => {
-  mortgageStore.fetchMortgages();
+export default defineComponent({
+  name: 'MortgagesView',
+  components: {
+    MortgageCard
+  },
+  computed: {
+    mortgageStore() {
+      return useMortgageStore();
+    },
+    loading(): boolean {
+      return this.mortgageStore.loading;
+    },
+    error(): string | null {
+      return this.mortgageStore.error;
+    },
+    filteredMortgages() {
+      return this.mortgageStore.filteredMortgages;
+    },
+    isEmpty(): boolean {
+      return this.mortgageStore.isEmpty;
+    },
+    filters() {
+      return this.mortgageStore.filters;
+    },
+    config() {
+      return MORTGAGE_CONFIG;
+    },
+    statusOptions() {
+      return this.config.statusOptions.map(option => ({
+        title: option.title,
+        value: option.value
+      }));
+    }
+  },
+  methods: {
+    refreshMortgages() {
+      this.mortgageStore.fetchMortgages();
+    }
+  },
+  mounted() {
+    this.mortgageStore.fetchMortgages();
+  }
 });
 </script>
 
