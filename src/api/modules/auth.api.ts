@@ -1,8 +1,20 @@
 import http from "@/api/httpClient";
-import { type AuthCredentials, type RegisterPayload } from "@/types/Auth";
+import type { AuthCredentials, RegisterPayload, AuthResponse } from "@/types/Auth";
 
-export const loginApi = (data: AuthCredentials) =>
-  http.post("/login", data);
+export const authApi = {
+  /**
+   * Realiza el login del usuario
+   */
+  async login(credentials: AuthCredentials): Promise<AuthResponse> {
+    const { data } = await http.post<AuthResponse>("/login", credentials);
+    return data;
+  },
 
-export const registerApi = (data: RegisterPayload) =>
-  http.post("/register", data);
+  /**
+   * Registra un nuevo usuario
+   */
+  async register(payload: RegisterPayload): Promise<AuthResponse> {
+    const { data } = await http.post<AuthResponse>("/register", payload);
+    return data;
+  },
+};
