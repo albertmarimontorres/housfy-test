@@ -1,4 +1,4 @@
-import http from '../httpClient';
+import http from '@/api/httpClient';
 import type { ProfileResponse } from '@/types/Profile';
 
 export const profileApi = {
