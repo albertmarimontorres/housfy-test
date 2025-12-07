@@ -83,10 +83,7 @@ export const useRentalStore = defineStore('rental', {
     },
 
     // Apply filters on the frontend (since backend filtering is not ready)
-    applyFilters(filters: RentalFilters) {
-      console.log('Applying rental filters:', filters);
-      console.log('Current allRentals count:', this.allRentals.length);
-      
+    applyFilters(filters: RentalFilters) {      
       this.filters = { ...filters };
       
       // Apply filtering logic
@@ -94,32 +91,24 @@ export const useRentalStore = defineStore('rental', {
       
       // Apply frontend filters to the complete dataset
       if (this.filters.status) {
-        console.log('Filtering rentals by status:', this.filters.status);
-        const beforeFilter = filtered.length;
         filtered = filtered.filter(rental => rental.status === this.filters.status);
-        console.log(`Rental status filter: ${beforeFilter} -> ${filtered.length} properties`);
       }
       
       if (this.filters.propertyStreet) {
-        console.log('Filtering rentals by street:', this.filters.propertyStreet);
         filtered = filtered.filter(rental => 
           rental.propertyStreet.toLowerCase().includes(this.filters.propertyStreet!.toLowerCase())
         );
       }
       
       if (this.filters.minPrice !== undefined && this.filters.minPrice !== null) {
-        console.log('Filtering rentals by minPrice:', this.filters.minPrice);
         filtered = filtered.filter(rental => rental.propertyPriceMinUnit >= this.filters.minPrice!);
       }
       
       if (this.filters.maxPrice !== undefined && this.filters.maxPrice !== null) {
-        console.log('Filtering rentals by maxPrice:', this.filters.maxPrice);
         filtered = filtered.filter(rental => rental.propertyPriceMinUnit <= this.filters.maxPrice!);
       }
       
       this.filteredRentals = filtered;
-      
-      console.log('Final filtered rentals count:', filtered.length);
     },
     
     setFilters(filters: RentalFilters) {
@@ -135,10 +124,6 @@ export const useRentalStore = defineStore('rental', {
       this.filteredRentals = [];
       this.error = null;
       this.filters = {};
-    },
-    
-    getRentalByUuid(uuid: string): Rental | undefined {
-      return this.allRentals.find((rental: Rental) => rental.uuid === uuid);
     },
   },
 });

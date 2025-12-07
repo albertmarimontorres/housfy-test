@@ -1,22 +1,31 @@
 import http from "@/api/httpClient";
-import { type RentalsResponse, type RentalFilters } from "@/types/Property";
+import type { RentalsResponse, RentalFilters } from "@/types/Property";
 
-export const getRentalsApi = (filters?: RentalFilters) => {
+/**
+ * Construye la URL con parámetros de filtro
+ */
+const buildFilteredUrl = (baseUrl: string, filters?: RentalFilters): string => {
+  if (!filters) return baseUrl;
+  
   const params = new URLSearchParams();
   
-  if (filters) {
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== '') {
-        params.append(key, value.toString());
-      }
-    });
-  }
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      params.append(key, value.toString());
+    }
+  });
   
   const queryString = params.toString();
-  const url = queryString ? `/rentals?${queryString}` : '/rentals';
-  
-  return http.get<RentalsResponse>(url);
+  return queryString ? `${baseUrl}?${queryString}` : baseUrl;
 };
 
-export const getRentalApi = (uuid: string) =>
-  http.get<{ success: boolean; message: string; property: import("@/types/Property").Rental }>(`/rentals/${uuid}`);
+export const rentalApi = {
+  /**
+   * Obtiene la lista de propiedades de alquiler con filtros opcionales
+   */
+  async getRentals(filters?: RentalFilters): Promise<RentalsResponse> {
+    const url = buildFilteredUrl('/rentals', filters);
+    const { data } = await http.get<RentalsResponse>(url);
+    return data;
+  },
+};

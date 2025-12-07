@@ -1,17 +1,24 @@
 <template>
     <div class="rentals-view">
         <!-- Header -->
-        <div class="d-flex align-center justify-space-between mb-6 w-100 px-4">
-            <div>
-                <p class="text-body-1 text-grey-darken-1">
-                    Gestiona tus propiedades de alquiler
-                </p>
-            </div>
+        <div class="mb-6 w-100 px-4">
+            <div class="d-flex flex-column flex-md-row align-center justify-md-space-between">
+                <div class="d-flex align-center mb-4 mb-md-0">
+                    <v-icon size="80" color="primary" class="me-4 d-none d-sm-flex">mdi-key-variant</v-icon>
+                    <v-icon size="48" color="primary" class="me-3 d-flex d-sm-none">mdi-key-variant</v-icon>
+                    <div>
+                        <h1 class="text-h5 text-md-h4 font-weight-bold mb-2">Alquileres</h1>
+                        <p class="text-body-2 text-md-body-1 text-grey-darken-1">
+                            Gestiona tus propiedades de alquiler
+                        </p>
+                    </div>
+                </div>
 
-            <v-btn color="primary" size="large" @click="refreshRentals" :loading="rentalStore.loading">
-                <v-icon start>mdi-refresh</v-icon>
-                Actualizar
-            </v-btn>
+                <v-btn color="primary" size="large" @click="refreshRentals" :loading="rentalStore.loading" class="align-self-start align-self-md-center">
+                    <v-icon start>mdi-refresh</v-icon>
+                    Actualizar
+                </v-btn>
+            </div>
         </div>
 
         <!-- Filters Section -->
@@ -79,7 +86,7 @@
             </div>
 
             <v-row>
-                <v-col v-for="rental in rentalStore.rentals" :key="rental.uuid" cols="12" sm="6" lg="4">
+                <v-col v-for="rental in rentalStore.rentals" :key="rental.uuid" cols="12" sm="6" lg="4" xl="3">
                     <RentalCard :rental="rental" @click="handleRentalClick" @view-details="handleViewDetails" />
                 </v-col>
             </v-row>
@@ -92,6 +99,7 @@ import { defineComponent } from 'vue';
 import { useRentalStore } from '@/stores/rental.store';
 import RentalCard from '@/components/domain/RentalCard.vue';
 import type { Rental, RentalFilters } from '@/types/Property';
+import { PROPERTY_CONFIGS } from '@/types/Property';
 
 export default defineComponent({
     name: 'RentalsView',
@@ -106,11 +114,7 @@ export default defineComponent({
                 minPrice: undefined,
                 maxPrice: undefined,
             } as RentalFilters,
-            statusOptions: [
-                { title: 'Solicitud recibida', value: 'Solicitud recibida' },
-                { title: 'Contrato firmado', value: 'Contrato firmado' },
-                { title: 'Publicado', value: 'Publicado' },
-            ],
+            statusOptions: PROPERTY_CONFIGS.rental?.statusOptions || [],
         };
     },
     computed: {
@@ -133,17 +137,13 @@ export default defineComponent({
         //   await this.rentalStore.fetchRentals(cleanFilters);
         // }
 
-        applyFilters() {
-            console.log('RentalsView.applyFilters called with:', this.filters);
-            
+        applyFilters() {            
             // Clean empty values from filters
             const cleanFilters = Object.fromEntries(
                 Object.entries(this.filters).filter(([_, value]) =>
                     value !== null && value !== undefined && value !== ''
                 )
             );
-
-            console.log('Clean filters:', cleanFilters);
 
             // Apply filters on frontend since backend API is not ready for filtering
             this.rentalStore.applyFilters(cleanFilters);

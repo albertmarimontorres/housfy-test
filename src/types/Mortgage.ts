@@ -39,6 +39,7 @@ export const MORTGAGE_CONFIG = {
         { title: 'Rechazado', value: 'Rechazado', color: 'error' },
         { title: 'En Proceso', value: 'En Proceso', color: 'info' },
         { title: 'Publicado', value: 'Publicado', color: 'info' },
+        { title: 'Documentación recibida', value: 'Documentacion recibida', color: 'info' },
     ],
     emptyStateIcon: 'mdi-home-search-outline',
     emptyStateTitle: 'No hay hipotecas disponibles',

@@ -76,6 +76,8 @@ export const PROPERTY_CONFIGS: Record<string, PropertyTypeConfig> = {
             { title: 'Publicado', value: 'Publicado', color: 'success' },
             { title: 'Solicitud recibida', value: 'Solicitud recibida', color: 'warning' },
             { title: 'Contrato firmado', value: 'Contrato firmado', color: 'info' },
+            { title: 'Alquilado', value: 'Alquilado', color: 'success' },
+            { title: 'Pendiente Publicar', value: 'Pendiente publicar', color: 'warning' },
         ],
         emptyStateIcon: 'mdi-home-variant-outline',
         emptyStateTitle: 'No hay alquileres disponibles',
