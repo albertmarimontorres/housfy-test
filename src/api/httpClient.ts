@@ -11,6 +11,11 @@ http.interceptors.request.use(
   config => {
     const token = tokenStorage.get();
 
+    // Asegurar que headers existe
+    if (!config.headers) {
+      config.headers = {} as any;
+    }
+
     // Identificador para la prueba
     config.headers["x-housfy-authorization"] = import.meta.env.VITE_HOUSFY_ID;
 
