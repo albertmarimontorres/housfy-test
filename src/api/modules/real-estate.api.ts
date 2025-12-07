@@ -1,22 +1,31 @@
 import http from "@/api/httpClient";
-import { type RealEstateResponse, type RealEstateFilters } from "@/types/Property";
+import type { RealEstateResponse, RealEstateFilters } from "@/types/Property";
 
-export const getRealEstatePropertiesApi = (filters?: RealEstateFilters) => {
+/**
+ * Construye la URL con parámetros de filtro
+ */
+const buildFilteredUrl = (baseUrl: string, filters?: RealEstateFilters): string => {
+  if (!filters) return baseUrl;
+  
   const params = new URLSearchParams();
   
-  if (filters) {
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== '') {
-        params.append(key, value.toString());
-      }
-    });
-  }
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      params.append(key, value.toString());
+    }
+  });
   
   const queryString = params.toString();
-  const url = queryString ? `/real-estate?${queryString}` : '/real-estate';
-  
-  return http.get<RealEstateResponse>(url);
+  return queryString ? `${baseUrl}?${queryString}` : baseUrl;
 };
 
-export const getRealEstatePropertyApi = (uuid: string) =>
-  http.get<{ success: boolean; message: string; property: import("@/types/Property").RealEstateProperty }>(`/real-estate/${uuid}`);
+export const realEstateApi = {
+  /**
+   * Obtiene la lista de propiedades inmobiliarias con filtros opcionales
+   */
+  async getProperties(filters?: RealEstateFilters): Promise<RealEstateResponse> {
+    const url = buildFilteredUrl('/real-estate', filters);
+    const { data } = await http.get<RealEstateResponse>(url);
+    return data;
+  },
+};

@@ -1,17 +1,24 @@
 <template>
   <div class="real-estate-view">
     <!-- Header -->
-    <div class="d-flex align-center justify-space-between	mb-6 w-100 px-4">
-      <div>
-        <p class="text-body-1 text-grey-darken-1">
-          Gestiona tus propiedades en venta
-        </p>
-      </div>
+    <div class="mb-6 w-100 px-4">
+      <div class="d-flex flex-column flex-md-row align-center justify-md-space-between">
+        <div class="d-flex align-center mb-4 mb-md-0">
+          <v-icon size="80" color="primary" class="me-4 d-none d-sm-flex">mdi-home-city</v-icon>
+          <v-icon size="48" color="primary" class="me-3 d-flex d-sm-none">mdi-home-city</v-icon>
+          <div>
+            <h1 class="text-h5 text-md-h4 font-weight-bold mb-2">Compraventa</h1>
+            <p class="text-body-2 text-md-body-1 text-grey-darken-1">
+              Gestiona tus propiedades en venta
+            </p>
+          </div>
+        </div>
 
-      <v-btn color="primary" size="large" @click="refreshProperties" :loading="realEstateStore.loading">
-        <v-icon start>mdi-refresh</v-icon>
-        Actualizar
-      </v-btn>
+        <v-btn color="primary" size="large" @click="refreshProperties" :loading="realEstateStore.loading" class="align-self-start align-self-md-center">
+          <v-icon start>mdi-refresh</v-icon>
+          Actualizar
+        </v-btn>
+      </div>
     </div>
 
     <!-- Filters Section -->
@@ -78,7 +85,7 @@
       </div>
 
       <v-row>
-        <v-col v-for="property in realEstateStore.properties" :key="property.uuid" cols="12" sm="6" lg="4">
+        <v-col v-for="property in realEstateStore.properties" :key="property.uuid" cols="12" sm="6" lg="4" xl="3">
           <RealEstateCard :property="property" @click="handlePropertyClick" @view-details="handleViewDetails" />
         </v-col>
       </v-row>
