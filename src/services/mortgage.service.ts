@@ -5,6 +5,46 @@ import {
   formatDate
 } from './property.service';
 
+/**
+ * Valida que la hipoteca sea un objeto válido
+ */
+const validateMortgage = (mortgage: Mortgage): void => {
+  if (!mortgage || typeof mortgage !== 'object') {
+    throw new Error('La hipoteca debe ser un objeto válido');
+  }
+};
+
+/**
+ * Valida que el estado sea una cadena válida
+ */
+const validateStatus = (status: string): void => {
+  if (typeof status !== 'string') {
+    throw new Error('El estado debe ser una cadena de texto');
+  }
+  
+  if (!status.trim()) {
+    throw new Error('El estado no puede estar vacío');
+  }
+};
+
+/**
+ * Convierte centavos a euros de forma segura
+ */
+const convertCentsToEuros = (amountInCents: number | undefined | null): number | null => {
+  if (typeof amountInCents !== 'number' || amountInCents < 0) {
+    return null;
+  }
+  
+  return amountInCents / 100;
+};
+
+/**
+ * Obtiene la opción de estado de manera segura
+ */
+const getStatusOption = (status: string, statusOptions: any[]) => {
+  return statusOptions.find(option => option?.value === status) || null;
+};
+
 export const mortgageService = {
   /**
    * Obtiene la configuración específica para hipotecas
@@ -17,38 +57,58 @@ export const mortgageService = {
    * Formatea el importe del préstamo
    */
   formatLoanAmount(mortgage: Mortgage): string {
-    if (mortgage.loanAmountMinUnit) {
-      return formatPrice(mortgage.loanAmountMinUnit / 100); // Convertir de centavos a euros
+    // Early return para validaciones
+    validateMortgage(mortgage);
+    
+    const loanAmountInEuros = convertCentsToEuros(mortgage.loanAmountMinUnit);
+    
+    if (loanAmountInEuros === null) {
+      return 'Importe no disponible';
     }
-    return 'Importe no disponible';
+    
+    return formatPrice(loanAmountInEuros);
   },
 
   /**
    * Formatea el valor de la propiedad
    */
   formatPropertyValue(mortgage: Mortgage): string {
-    if (mortgage.propertyValueMinUnit) {
-      return formatPrice(mortgage.propertyValueMinUnit / 100); // Convertir de centavos a euros
+    // Early return para validaciones
+    validateMortgage(mortgage);
+    
+    const propertyValueInEuros = convertCentsToEuros(mortgage.propertyValueMinUnit);
+    
+    if (propertyValueInEuros === null) {
+      return 'Valor no disponible';
     }
-    return 'Valor no disponible';
+    
+    return formatPrice(propertyValueInEuros);
   },
 
   /**
    * Formatea el ratio Loan-to-Value (LTV)
    */
   formatLTV(mortgage: Mortgage): string {
-    if (mortgage.ltv !== undefined && mortgage.ltv !== null) {
-      return `${mortgage.ltv}%`;
+    // Early return para validaciones
+    validateMortgage(mortgage);
+    
+    if (typeof mortgage.ltv !== 'number' || mortgage.ltv < 0 || mortgage.ltv > 100) {
+      return 'LTV no disponible';
     }
-    return 'LTV no disponible';
+    
+    return `${mortgage.ltv}%`;
   },
 
   /**
    * Obtiene el color del estado de una hipoteca
    */
   getStatusColor(status: string): string {
-    const config = this.getConfig();
-    const statusOption = config.statusOptions.find(option => option.value === status);
+    // Early return para validaciones
+    validateStatus(status);
+    
+    const mortgageConfig = this.getConfig();
+    const statusOption = getStatusOption(status, mortgageConfig.statusOptions);
+    
     return statusOption?.color || 'grey';
   },
 
@@ -56,8 +116,12 @@ export const mortgageService = {
    * Obtiene el label del estado de una hipoteca
    */
   getStatusLabel(status: string): string {
-    const config = this.getConfig();
-    const statusOption = config.statusOptions.find(option => option.value === status);
+    // Early return para validaciones
+    validateStatus(status);
+    
+    const mortgageConfig = this.getConfig();
+    const statusOption = getStatusOption(status, mortgageConfig.statusOptions);
+    
     return statusOption?.title || status;
   },
 
@@ -65,34 +129,70 @@ export const mortgageService = {
    * Formatea la información de ubicación de una hipoteca
    */
   formatLocation(mortgage: Mortgage): string {
-    return mortgage.city || 'Ciudad no disponible';
+    // Early return para validaciones
+    validateMortgage(mortgage);
+    
+    if (!mortgage.city?.trim()) {
+      return 'Ciudad no disponible';
+    }
+    
+    return mortgage.city.trim();
   },
 
   /**
-   * Genera una descripción de la hipoteca
+   * Genera una descripción de la hipoteca usando métodos modernos de array
    */
   generateDescription(mortgage: Mortgage): string {
-    const parts = [];
+    // Early return para validaciones
+    validateMortgage(mortgage);
     
-    if (mortgage.bank) {
-      parts.push(mortgage.bank);
-    }
+    const descriptionParts = [
+      mortgage.bank?.trim(),
+      typeof mortgage.ltv === 'number' ? `LTV: ${mortgage.ltv}%` : null
+    ]
+    .filter(Boolean) // Eliminar valores falsy
+    .reduce((accumulator: string[], currentPart) => {
+      if (currentPart && typeof currentPart === 'string') {
+        accumulator.push(currentPart);
+      }
+      return accumulator;
+    }, []);
     
-    if (mortgage.ltv !== undefined) {
-      parts.push(`LTV: ${mortgage.ltv}%`);
-    }
-    
-    return parts.join(' • ') || 'Información no disponible';
+    return descriptionParts.length > 0 
+      ? descriptionParts.join(' • ')
+      : 'Información no disponible';
   },
 
   /**
-   * Formatea las fechas
+   * Formatea las fechas de manera segura
    */
   formatLastStatusChanged(mortgage: Mortgage): string {
-    return formatDate(mortgage.last_status_changed_at);
+    // Early return para validaciones
+    validateMortgage(mortgage);
+    
+    if (!mortgage.last_status_changed_at) {
+      return 'Fecha no disponible';
+    }
+    
+    try {
+      return formatDate(mortgage.last_status_changed_at);
+    } catch (error) {
+      return 'Fecha inválida';
+    }
   },
 
   formatCreatedAt(mortgage: Mortgage): string {
-    return formatDate(mortgage.created_at);
+    // Early return para validaciones
+    validateMortgage(mortgage);
+    
+    if (!mortgage.created_at) {
+      return 'Fecha no disponible';
+    }
+    
+    try {
+      return formatDate(mortgage.created_at);
+    } catch (error) {
+      return 'Fecha inválida';
+    }
   }
 };

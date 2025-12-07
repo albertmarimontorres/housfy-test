@@ -1,5 +1,5 @@
+import http from '@/api/httpClient';
 import type { MortgagesResponse } from '@/types/Mortgage';
-import http from '../httpClient';
 
 export const mortgageApi = {
   /**

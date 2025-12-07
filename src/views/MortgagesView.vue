@@ -3,17 +3,24 @@
     <v-row no-gutters>
       <v-col cols="12">
         <!-- Header -->
-        <div class="d-flex align-center justify-space-between mb-6 w-100 px-4">
-          <div>
-            <p class="text-body-1 text-grey-darken-1">
-              Gestiona tus hipotecas y préstamos
-            </p>
-          </div>
+        <div class="mb-6 w-100 px-4">
+          <div class="d-flex flex-column flex-md-row align-center justify-md-space-between">
+            <div class="d-flex align-center mb-4 mb-md-0">
+              <v-icon size="80" color="primary" class="me-4 d-none d-sm-flex">mdi-bank</v-icon>
+              <v-icon size="48" color="primary" class="me-3 d-flex d-sm-none">mdi-bank</v-icon>
+              <div>
+                <h1 class="text-h5 text-md-h4 font-weight-bold mb-2">Hipotecas</h1>
+                <p class="text-body-2 text-md-body-1 text-grey-darken-1">
+                  Gestiona tus hipotecas y préstamos
+                </p>
+              </div>
+            </div>
 
-          <v-btn color="primary" size="large" @click="refreshMortgages" :loading="loading">
-            <v-icon start>mdi-refresh</v-icon>
-            Actualizar
-          </v-btn>
+            <v-btn color="primary" size="large" @click="refreshMortgages" :loading="loading" class="align-self-start align-self-md-center">
+              <v-icon start>mdi-refresh</v-icon>
+              Actualizar
+            </v-btn>
+          </div>
         </div>
 
         <!-- Filtros -->
