@@ -24,25 +24,25 @@
       <v-list nav dense>
         <v-list-item to="/app/dashboard" router exact @click="closeMobileDrawer">
           <template #prepend>
-            <v-icon>mdi-view-dashboard-outline</v-icon>
+            <v-icon size="28">mdi-view-dashboard</v-icon>
           </template>
           <v-list-item-title>Dashboard</v-list-item-title>
         </v-list-item>
         <v-list-item to="/app/real-estate" router @click="closeMobileDrawer">
           <template #prepend>
-            <v-icon>mdi-home-outline</v-icon>
+            <v-icon size="28">mdi-home-city</v-icon>
           </template>
           <v-list-item-title>Compraventa</v-list-item-title>
         </v-list-item>
         <v-list-item to="/app/rentals" router @click="closeMobileDrawer">
           <template #prepend>
-            <v-icon>mdi-home-variant-outline</v-icon>
+            <v-icon size="28">mdi-key-variant</v-icon>
           </template>
           <v-list-item-title>Alquileres</v-list-item-title>
         </v-list-item>
         <v-list-item to="/app/mortgages" router @click="closeMobileDrawer">
           <template #prepend>
-            <v-icon>mdi-bank-outline</v-icon>
+            <v-icon size="28">mdi-bank</v-icon>
           </template>
           <v-list-item-title>Hipotecas</v-list-item-title>
         </v-list-item>
@@ -74,7 +74,25 @@
             </v-btn>
             
             <v-icon class="mr-3" size="28">{{ pageIcon }}</v-icon>
-            <v-toolbar-title>{{ pageTitle }}</v-toolbar-title>
+            <v-breadcrumbs
+              :items="breadcrumbItems"
+              color="white"
+              divider="/"
+              class="pa-0"
+            >
+              <template #item="{ item }">
+                <v-breadcrumbs-item
+                  :to="item.to"
+                  :disabled="item.disabled"
+                  :class="item.disabled ? 'text-white font-weight-bold' : 'text-white'"
+                >
+                  {{ item.title }}
+                </v-breadcrumbs-item>
+              </template>
+              <template #divider>
+                <v-icon color="white" size="16">mdi-chevron-right</v-icon>
+              </template>
+            </v-breadcrumbs>
           </div>
           
           <!-- Logout button - only visible on desktop -->
@@ -151,19 +169,49 @@ export default defineComponent({
       }
       return 'Área privada';
     },
+    breadcrumbItems() {
+      const route = this.$route;
+      const routeName = typeof route.name === 'string' ? route.name : '';
+      
+      const breadcrumbs = [
+        {
+          title: 'Inicio',
+          to: '/app/dashboard',
+          disabled: false
+        }
+      ];
+
+      const routeMap = {
+        Dashboard: { title: 'Dashboard', to: '/app/dashboard' },
+        RealEstate: { title: 'Compraventa', to: '/app/real-estate' },
+        Rentals: { title: 'Alquileres', to: '/app/rentals' },
+        Mortgages: { title: 'Hipotecas', to: '/app/mortgages' },
+      };
+
+      if (routeName !== 'Dashboard' && routeMap[routeName as keyof typeof routeMap]) {
+        const currentRoute = routeMap[routeName as keyof typeof routeMap];
+        breadcrumbs.push({
+          title: currentRoute.title,
+          to: currentRoute.to,
+          disabled: true // Current page is disabled
+        });
+      }
+
+      return breadcrumbs;
+    },
     pageIcon() {
       const route = this.$route;
       const iconMap = {
-        Dashboard: 'mdi-view-dashboard-outline',
-        RealEstate: 'mdi-home-outline',
-        Rentals: 'mdi-home-variant-outline',
-        Mortgages: 'mdi-bank-outline',
+        Dashboard: 'mdi-view-dashboard',
+        RealEstate: 'mdi-home-city',
+        Rentals: 'mdi-key-variant',
+        Mortgages: 'mdi-bank',
       };
       const routeName = typeof route.name === 'string' ? route.name : '';
       if (routeName === 'Dashboard' || routeName === 'RealEstate' || routeName === 'Rentals' || routeName === 'Mortgages') {
         return iconMap[routeName];
       }
-      return 'mdi-home-outline';
+      return 'mdi-home-city';
     }
   },
   async mounted() {
@@ -184,3 +232,10 @@ export default defineComponent({
   }
 });
 </script>
+
+<style scoped>
+/* Anular la opacidad del breadcrumb deshabilitado */
+:deep(.v-breadcrumbs-item--disabled) {
+  opacity: 1 !important;
+}
+</style>

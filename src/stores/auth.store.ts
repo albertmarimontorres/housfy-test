@@ -28,7 +28,17 @@ export const useAuthStore = defineStore("auth", {
           this.error = response.message || "Error in login";
         }
       } catch (err: any) {
-        this.error = err?.response?.data?.message ?? "Error in login";
+        console.error('Login error:', err);
+        // Mejor manejo de errores
+        if (err?.message) {
+          this.error = err.message;
+        } else if (err?.response?.data?.message) {
+          this.error = err.response.data.message;
+        } else if (err?.response?.message) {
+          this.error = err.response.message;
+        } else {
+          this.error = "Error desconocido durante el login";
+        }
       } finally {
         this.loading = false;
       }
@@ -47,7 +57,17 @@ export const useAuthStore = defineStore("auth", {
           this.error = response.message || "Error in register";
         }
       } catch (err: any) {
-        this.error = err?.response?.data?.message ?? "Error in register";
+        console.error('Register error:', err);
+        // Mejor manejo de errores
+        if (err?.message) {
+          this.error = err.message;
+        } else if (err?.response?.data?.message) {
+          this.error = err.response.data.message;
+        } else if (err?.response?.message) {
+          this.error = err.response.message;
+        } else {
+          this.error = "Error desconocido durante el registro";
+        }
       } finally {
         this.loading = false;
       }
