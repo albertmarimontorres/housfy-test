@@ -5,7 +5,7 @@ import { defineConfig, devices } from '@playwright/test'
  */
 export default defineConfig({
   // Directorio de tests E2E
-  testDir: './src/test/features',
+  testDir: './src/test/e2e',
   
   // Patrón para encontrar tests E2E
   testMatch: '**/e2e/**/*.e2e.test.ts',
@@ -31,7 +31,7 @@ export default defineConfig({
   /* Configuración global para todos los tests */
   use: {
     /* URL base para usar en los tests con page.goto('/') */
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:5173',
     
     /* Capturar trazas en fallos */
     trace: 'on-first-retry',
@@ -74,7 +74,7 @@ export default defineConfig({
   /* Ejecutar servidor de desarrollo antes de empezar tests */
   webServer: {
     command: 'pnpm dev',
-    url: 'http://localhost:3000',
+    url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000, // 2 minutos para que el servidor arranque
   },
