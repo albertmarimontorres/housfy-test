@@ -283,8 +283,27 @@ describe('tokenStorage Tests', () => {
       // Act
       const result = tokenStorage.get();
 
-      // Assert - Token expirado exactamente ahora debería ser null
+      // Assert - Token en el límite exacto aún debería ser válido (Date.now() === expiresAt)
+      expect(result).toBe(testToken);
+    });
+
+    it('debería considerar expirado cuando Date.now() > expiresAt', () => {
+      // Arrange
+      const testToken = 'expired-test-token';
+      const encodedToken = btoa('hf_' + testToken);
+      const pastExpiry = 999999; // 1ms antes que Date.now() (1000000)
+
+      (localStorage.getItem as any)
+        .mockReturnValueOnce(encodedToken)
+        .mockReturnValueOnce(pastExpiry.toString());
+
+      // Act
+      const result = tokenStorage.get();
+
+      // Assert - Token expirado debería ser null y limpiar storage
       expect(result).toBe(null);
+      expect(localStorage.removeItem).toHaveBeenCalledWith('auth_token_v1');
+      expect(localStorage.removeItem).toHaveBeenCalledWith('auth_expires_v1');
     });
 
     it('debería validar constantes internas', () => {

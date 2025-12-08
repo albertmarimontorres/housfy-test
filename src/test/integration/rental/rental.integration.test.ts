@@ -59,6 +59,9 @@ describe('Rental - Integración E2E', () => {
       // Arrange
       const httpError = new Error('Error de conexión');
       mockHttp.get.mockRejectedValue(httpError);
+      
+      // Spy en console.error para verificar que se logee el error
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
       // Act
       await rentalStore.fetchRentals();
@@ -66,6 +69,10 @@ describe('Rental - Integración E2E', () => {
       // Assert
       expect(rentalStore.error).toBe('Error al obtener los alquileres');
       expect(rentalStore.allRentals).toEqual([]);
+      expect(consoleErrorSpy).toHaveBeenCalledWith('Error fetching rentals:', httpError);
+      
+      // Cleanup
+      consoleErrorSpy.mockRestore();
     });
   });
 
@@ -142,6 +149,9 @@ describe('Rental - Integración E2E', () => {
       // Arrange
       const timeoutError = new Error('Network timeout');
       mockHttp.get.mockRejectedValue(timeoutError);
+      
+      // Spy en console.error para verificar que se logee el error
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
       // Act
       await rentalStore.fetchRentals();
@@ -149,6 +159,10 @@ describe('Rental - Integración E2E', () => {
       // Assert
       expect(rentalStore.error).toBe('Error al obtener los alquileres');
       expect(rentalStore.loading).toBe(false);
+      expect(consoleErrorSpy).toHaveBeenCalledWith('Error fetching rentals:', timeoutError);
+      
+      // Cleanup
+      consoleErrorSpy.mockRestore();
     });
   });
 
