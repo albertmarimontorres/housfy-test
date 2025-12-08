@@ -9,9 +9,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import ChatWidget from "@/components/ui/ChatWidget.vue";
+import { defineComponent, defineAsyncComponent } from 'vue';
 import { useAuthStore } from "@/stores/auth.store";
+
+// ✅ Lazy loading del ChatWidget - Solo se carga cuando el usuario está autenticado
+const ChatWidget = defineAsyncComponent({
+  loader: () => import(/* webpackChunkName: "chatbot" */ "@/components/ui/ChatWidget.vue"),
+  // Placeholder mientras carga (chatbot no es crítico)
+  loadingComponent: () => ({
+    template: '<div></div>' // Sin loading visual para el chatbot
+  }),
+  delay: 500, // Delay mayor porque no es crítico
+  timeout: 5000
+});
 
 export default defineComponent({
   name: 'App',

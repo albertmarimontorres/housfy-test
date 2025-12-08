@@ -4,13 +4,15 @@ import { authGuard } from "./guards";
 import PublicLayout from "@/components/layouts/PublicLayout.vue";
 import PrivateLayout from "@/components/layouts/PrivateLayout.vue";
 
-import LoginView from "@/views/LoginView.vue";
-import RegisterView from "@/views/RegisterView.vue";
+// ✅ Lazy loading para vistas públicas (menos críticas)
+const LoginView = () => import(/* webpackChunkName: "auth" */ "@/views/LoginView.vue");
+const RegisterView = () => import(/* webpackChunkName: "auth" */ "@/views/RegisterView.vue");
 
-const DashboardView = () => import("@/views/DashboardView.vue");
-const RealEstateView = () => import("@/views/RealEstateView.vue");
-const RentalsView = () => import("@/views/RentalsView.vue");
-const MortgagesView = () => import("@/views/MortgagesView.vue");
+// ✅ Lazy loading para vistas privadas con chunks específicos por dominio
+const DashboardView = () => import(/* webpackChunkName: "dashboard" */ "@/views/DashboardView.vue");
+const RealEstateView = () => import(/* webpackChunkName: "real-estate" */ "@/views/RealEstateView.vue");
+const RentalsView = () => import(/* webpackChunkName: "rental" */ "@/views/RentalsView.vue");
+const MortgagesView = () => import(/* webpackChunkName: "mortgage" */ "@/views/MortgagesView.vue");
 
 const router = createRouter({
   history: createWebHistory(),
