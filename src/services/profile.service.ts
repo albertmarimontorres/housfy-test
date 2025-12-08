@@ -5,7 +5,7 @@ import type { ProfileResponse } from '@/types/Profile';
  * Valida la respuesta del perfil
  */
 const validateProfileResponse = (response: ProfileResponse): void => {
-  if (!response || typeof response !== 'object') {
+  if (!response || typeof response !== 'object' || Array.isArray(response)) {
     throw new Error('Respuesta del perfil inválida');
   }
   
