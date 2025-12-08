@@ -1,220 +1,436 @@
-# Estructura de Tests# 🧪 Testing Structure - Vue.js Chatbot
+# Estructura de Tests# Estructura de Tests# 🧪 Testing Structure - Vue.js Chatbot
 
 
 
-Este proyecto utiliza una estructura de tests organizada por **tipo de test** en lugar de dominio, lo que facilita la ejecución y mantenimiento de diferentes tipos de pruebas.Este proyecto utiliza [Vitest](https://vitest.dev/) como framework de testing con una estructura organizada por funcionalidades.
+Este proyecto utiliza una estructura de tests organizada por **tipo de test** en lugar de dominio, lo que facilita la ejecución y mantenimiento de diferentes tipos de pruebas.
 
 
 
-## 📁 Estructura de Directorios## 🏗️ Nueva Estructura Organizada
+## 📁 Estructura de DirectoriosEste proyecto utiliza una estructura de tests organizada por **tipo de test** en lugar de dominio, lo que facilita la ejecución y mantenimiento de diferentes tipos de pruebas.Este proyecto utiliza [Vitest](https://vitest.dev/) como framework de testing con una estructura organizada por funcionalidades.
 
 
-
-``````
-
-src/test/src/test/
-
-├── unit/           # Tests unitarios (API, Service, Store)├── 🛠️  setup/               # Configuraciones globales
-
-│   ├── auth/│   ├── vitest.setup.ts      # Setup completo con Vuetify  
-
-│   ├── profile/│   └── vitest.minimal.ts    # Setup mínimo con stubs
-
-│   ├── realState/├── 🔧  utils/               # Utilidades compartidas
-
-│   ├── rental/│   ├── factories.ts         # Factories para datos de test
-
-│   └── mortgage/│   └── test-helpers.ts      # Helpers de testing
-
-├── integration/    # Tests de integración├── 🎯  features/            # Tests organizados por feature
-
-│   ├── auth/│   └── chatbot/             # 🤖 Funcionalidad del Chatbot
-
-│   ├── profile/│       ├── unit/            # Tests unitarios (API, Services)
-
-│   ├── realState/│       ├── components/      # Tests de componentes Vue
-
-│   ├── rental/│       ├── integration/     # Tests de integración
-
-│   └── mortgage/│       ├── e2e/            # Tests end-to-end
-
-├── e2e/           # Tests end-to-end (pendientes)│       └── __fixtures__/    # Datos de prueba estáticos
-
-│   ├── auth/├── __mocks__/              # Mocks globales
-
-│   ├── profile/├── environment.test.ts     # Test básico del entorno
-
-│   ├── realState/└── index.ts               # Configuración central
-
-│   ├── rental/```
-
-│   └── mortgage/
-
-├── validation/    # Tests de validación de datos## 📋 **Migración Completada - Archivos Eliminados**
-
-│   ├── auth/
-
-│   ├── profile/### ✅ Tests migrados exitosamente:
-
-│   ├── realState/- ✅ `ChatWidget.test.ts` → `features/chatbot/components/`
-
-│   ├── rental/- ✅ `ChatWidget.simple.test.ts` → `features/chatbot/components/` 
-
-│   └── mortgage/- ✅ `chat.api.test.ts` → `features/chatbot/unit/`
-
-├── smoke/         # Tests de humo/simples- ✅ `chat.service.test.ts` → `features/chatbot/unit/`
-
-│   ├── auth/- ✅ `chatbot.integration.test.ts` → `features/chatbot/integration/`
-
-│   ├── profile/- ✅ `chatbot.e2e.test.ts` → `features/chatbot/e2e/`
-
-│   ├── realState/- ✅ `factories.ts` → `utils/factories.ts`
-
-│   ├── rental/- ✅ `setup.ts` → `setup/vitest.setup.ts`
-
-│   └── mortgage/- ✅ `setup.minimal.ts` → `setup/vitest.minimal.ts`
-
-├── features/      # Tests específicos por funcionalidad
-
-│   └── chatbot/## 🚀 Scripts de NPM
-
-├── setup/         # Configuración de tests
-
-├── utils/         # Utilidades para tests```bash
-
-├── __mocks__/     # Mocks globales# Ejecutar todos los tests
-
-└── scripts/       # Scripts de ejecuciónnpm test
 
 ```
 
-# Tests específicos del chatbot  
+src/test/
 
-## 🧪 Tipos de Testsnpm test src/test/features/chatbot
+├── unit/           # Tests unitarios (API, Service, Store)## 📁 Estructura de Directorios## 🏗️ Nueva Estructura Organizada
 
+│   ├── auth/
 
+│   ├── profile/
 
-### Unit Tests (`/unit`)# Solo tests unitarios del chatbot
+│   ├── realState/
 
-- **API Tests**: Tests de endpoints y llamadas HTTPnpm test src/test/features/chatbot/unit
+│   ├── rental/``````
+
+│   ├── mortgage/
+
+│   └── chatbot/    # 🤖 Chatbot API y Service testssrc/test/src/test/
+
+├── integration/    # Tests de integración
+
+│   ├── auth/├── unit/           # Tests unitarios (API, Service, Store)├── 🛠️  setup/               # Configuraciones globales
+
+│   ├── profile/
+
+│   ├── realState/│   ├── auth/│   ├── vitest.setup.ts      # Setup completo con Vuetify  
+
+│   ├── rental/
+
+│   ├── mortgage/│   ├── profile/│   └── vitest.minimal.ts    # Setup mínimo con stubs
+
+│   └── chatbot/    # 🤖 Flujo completo chatbot
+
+├── e2e/           # Tests end-to-end (pendientes)│   ├── realState/├── 🔧  utils/               # Utilidades compartidas
+
+│   ├── auth/
+
+│   ├── profile/│   ├── rental/│   ├── factories.ts         # Factories para datos de test
+
+│   ├── realState/
+
+│   ├── rental/│   └── mortgage/│   └── test-helpers.ts      # Helpers de testing
+
+│   ├── mortgage/
+
+│   └── chatbot/├── integration/    # Tests de integración├── 🎯  features/            # Tests organizados por feature
+
+├── validation/    # Tests de validación de datos
+
+│   ├── auth/│   ├── auth/│   └── chatbot/             # 🤖 Funcionalidad del Chatbot
+
+│   ├── profile/
+
+│   ├── realState/│   ├── profile/│       ├── unit/            # Tests unitarios (API, Services)
+
+│   ├── rental/
+
+│   ├── mortgage/│   ├── realState/│       ├── components/      # Tests de componentes Vue
+
+│   └── chatbot/    # 🤖 Validación entrada/salida chatbot
+
+├── smoke/         # Tests de humo/simples│   ├── rental/│       ├── integration/     # Tests de integración
+
+│   ├── auth/
+
+│   ├── profile/│   └── mortgage/│       ├── e2e/            # Tests end-to-end
+
+│   ├── realState/
+
+│   ├── rental/├── e2e/           # Tests end-to-end (pendientes)│       └── __fixtures__/    # Datos de prueba estáticos
+
+│   ├── mortgage/
+
+│   └── chatbot/    # 🤖 Tests básicos de componente ChatWidget│   ├── auth/├── __mocks__/              # Mocks globales
+
+├── setup/         # Configuración de tests
+
+├── utils/         # Utilidades para tests│   ├── profile/├── environment.test.ts     # Test básico del entorno
+
+├── __mocks__/     # Mocks globales
+
+└── scripts/       # Scripts de ejecución│   ├── realState/└── index.ts               # Configuración central
+
+```
+
+│   ├── rental/```
+
+## 🧪 Tipos de Tests
+
+│   └── mortgage/
+
+### Unit Tests (`/unit`)
+
+- **API Tests**: Tests de endpoints y llamadas HTTP├── validation/    # Tests de validación de datos## 📋 **Migración Completada - Archivos Eliminados**
 
 - **Service Tests**: Tests de lógica de negocio
 
-- **Store Tests**: Tests de estados y mutaciones (Pinia)# Solo tests de componentes del chatbot
+- **Store Tests**: Tests de estados y mutaciones (Pinia)│   ├── auth/
 
-- **Utility Tests**: Tests de funciones helpernpm test src/test/features/chatbot/components
+- **Utility Tests**: Tests de funciones helper
+
+│   ├── profile/### ✅ Tests migrados exitosamente:
+
+### Integration Tests (`/integration`)
+
+- Tests que verifican la interacción entre componentes│   ├── realState/- ✅ `ChatWidget.test.ts` → `features/chatbot/components/`
+
+- Flujos completos de datos
+
+- Integración API + Service + Store│   ├── rental/- ✅ `ChatWidget.simple.test.ts` → `features/chatbot/components/` 
 
 
 
-### Integration Tests (`/integration`)# Tests con modo watch
-
-- Tests que verifican la interacción entre componentesnpm test -- --watch
-
-- Flujos completos de datos```
-
-- Integración API + Service + Store
-
-# Ejecutar tests con interfaz web
-
-### Validation Tests (`/validation`)pnpm test:ui
+### Validation Tests (`/validation`)│   └── mortgage/- ✅ `chat.api.test.ts` → `features/chatbot/unit/`
 
 - Validación de schemas y tipos
 
-- Reglas de negocio específicas# Ejecutar tests una sola vez
+- Reglas de negocio específicas├── smoke/         # Tests de humo/simples- ✅ `chat.service.test.ts` → `features/chatbot/unit/`
 
-- Validación de entrada/salida de datospnpm test:run
+- Validación de entrada/salida de datos
 
+│   ├── auth/- ✅ `chatbot.integration.test.ts` → `features/chatbot/integration/`
 
+### Smoke Tests (`/smoke`)
 
-### Smoke Tests (`/smoke`)# Ejecutar tests con coverage
-
-- Tests básicos que verifican funcionalidad corepnpm coverage
+- Tests básicos que verifican funcionalidad core│   ├── profile/- ✅ `chatbot.e2e.test.ts` → `features/chatbot/e2e/`
 
 - Tests rápidos para verificar que no se rompió nada
 
-- Ideal para CI/CD pipelines# Ejecutar solo tests del chatbot
-
-pnpm test chat
-
-### E2E Tests (`/e2e`)
-
-- Tests end-to-end usando Playwright# Ejecutar tests de integración
-
-- Simulación completa de usuariopnpm test integration
-
-- Tests de flujos críticos```
+- Ideal para CI/CD pipelines│   ├── realState/- ✅ `factories.ts` → `utils/factories.ts`
 
 
 
-## 🎯 Cobertura Objetivo## Estructura de Tests del Chatbot
+### E2E Tests (`/e2e`)│   ├── rental/- ✅ `setup.ts` → `setup/vitest.setup.ts`
+
+- Tests end-to-end usando Playwright
+
+- Simulación completa de usuario│   └── mortgage/- ✅ `setup.minimal.ts` → `setup/vitest.minimal.ts`
+
+- Tests de flujos críticos
+
+├── features/      # Tests específicos por funcionalidad
+
+## 🤖 Tests del Chatbot
+
+│   └── chatbot/## 🚀 Scripts de NPM
+
+Los tests del chatbot se han diseñado **minimalistas** enfocados solo en el **flujo principal**:
+
+├── setup/         # Configuración de tests
+
+### Flujo Principal Testeado
+
+1. **Enviar texto** → `chatApi.sendMessage(input)`├── utils/         # Utilidades para tests```bash
+
+2. **Recibir respuesta** → `ChatResponse`
+
+3. **Crear mensajes** → `createUserMessage()` / `createAssistantMessage()`├── __mocks__/     # Mocks globales# Ejecutar todos los tests
+
+4. **Interacción básica** → Abrir/cerrar chat, enviar mensaje
+
+└── scripts/       # Scripts de ejecuciónnpm test
+
+### Tests Eliminados (No Necesarios)
+
+- ❌ Tests de UI avanzados```
+
+- ❌ Tests de persistencia de conversación
+
+- ❌ Tests de casos edge complejos# Tests específicos del chatbot  
+
+- ❌ Tests de rendimiento
+
+- ❌ Tests de múltiples usuarios concurrentes## 🧪 Tipos de Testsnpm test src/test/features/chatbot
 
 
 
-### Mínima General: 80%Los tests están organizados en `/src/test/` por layers:
+### Archivos del Chatbot
 
-### Core Functions: 100%
+- `unit/chatbot/chat.api.test.ts` - Tests de API HTTP
 
-### Tests Unitarios
+- `unit/chatbot/chat.service.test.ts` - Tests de service y validaciones### Unit Tests (`/unit`)# Solo tests unitarios del chatbot
 
-**Funciones Core por Dominio:**- `chat.api.test.ts` - Tests del layer API
+- `integration/chatbot/chatbot.integration.test.ts` - Flujo Service→API→HTTP
 
-- **Auth**: login, logout, token management- `chat.service.test.ts` - Tests del layer de servicios
+- `validation/chatbot/chatbot.validation.test.ts` - Validación de entrada- **API Tests**: Tests de endpoints y llamadas HTTPnpm test src/test/features/chatbot/unit
 
-- **Profile**: getUserProfile, updateProfile- `factories.ts` - Utilidades y factories para testing
+- `smoke/chatbot/chatbot.simple.test.ts` - Tests básicos de componente
+
+- **Service Tests**: Tests de lógica de negocio
+
+## 🎯 Cobertura Objetivo
+
+- **Store Tests**: Tests de estados y mutaciones (Pinia)# Solo tests de componentes del chatbot
+
+### Mínima General: 80%
+
+### Core Functions: 100%- **Utility Tests**: Tests de funciones helpernpm test src/test/features/chatbot/components
+
+
+
+**Funciones Core por Dominio:**
+
+- **Auth**: login, logout, token management
+
+- **Profile**: getUserProfile, updateProfile### Integration Tests (`/integration`)# Tests con modo watch
 
 - **RealState**: getRealEstateProperties, searchProperties
 
-- **Rental**: getRentals, searchRentals### Tests de Componentes
+- **Rental**: getRentals, searchRentals- Tests que verifican la interacción entre componentesnpm test -- --watch
 
-- **Mortgage**: getMortgages, calculateMortgage- `ChatWidget.test.ts` - Tests del componente principal del chat
+- **Mortgage**: getMortgages, calculateMortgage
+
+- **Chatbot**: sendMessage, createUserMessage, createAssistantMessage- Flujos completos de datos```
 
 
 
-## 🚀 Comandos de Ejecución### Tests de Integración
+## 🚀 Comandos de Ejecución- Integración API + Service + Store
 
-- `chatbot.integration.test.ts` - Tests de integración entre layers
 
-### Por Tipo de Test- `chatbot.e2e.test.ts` - Tests end-to-end de casos de uso reales
+
+### Por Tipo de Test# Ejecutar tests con interfaz web
 
 ```bash
 
-# Tests unitarios### Configuración
+# Tests unitarios### Validation Tests (`/validation`)pnpm test:ui
 
-npm test src/test/unit- `setup.ts` - Configuración global de testing
+npm test src/test/unit
 
-- `vitest.d.ts` - Declaraciones de tipos
+- Validación de schemas y tipos
 
 # Tests de integración
 
+npm test src/test/integration- Reglas de negocio específicas# Ejecutar tests una sola vez
+
+
+
+# Tests de validación- Validación de entrada/salida de datospnpm test:run
+
+npm test src/test/validation
+
+
+
+# Tests de humo
+
+npm test src/test/smoke### Smoke Tests (`/smoke`)# Ejecutar tests con coverage
+
+
+
+# Solo chatbot- Tests básicos que verifican funcionalidad corepnpm coverage
+
+npm test src/test/unit/chatbot src/test/integration/chatbot src/test/validation/chatbot src/test/smoke/chatbot
+
+```- Tests rápidos para verificar que no se rompió nada
+
+
+
+### Por Dominio- Ideal para CI/CD pipelines# Ejecutar solo tests del chatbot
+
+```bash
+
+# Auth domain (todos los tipos)pnpm test chat
+
+npm test src/test/unit/auth src/test/integration/auth src/test/validation/auth
+
+### E2E Tests (`/e2e`)
+
+# Chatbot domain
+
+npm test src/test/unit/chatbot src/test/integration/chatbot src/test/validation/chatbot src/test/smoke/chatbot- Tests end-to-end usando Playwright# Ejecutar tests de integración
+
+```
+
+- Simulación completa de usuariopnpm test integration
+
+### Coverage
+
+```bash- Tests de flujos críticos```
+
+# Coverage completo
+
+npm test -- --coverage
+
+
+
+# Coverage por dominio## 🎯 Cobertura Objetivo## Estructura de Tests del Chatbot
+
+npm test src/test/unit/chatbot -- --coverage
+
+```
+
+
+
+## 📊 Estado Actual### Mínima General: 80%Los tests están organizados en `/src/test/` por layers:
+
+
+
+### ✅ Completado### Core Functions: 100%
+
+- **Auth Domain**: 5 archivos de test
+
+- **Profile Domain**: 6 archivos de test### Tests Unitarios
+
+- **RealState Domain**: 6 archivos de test (2000+ líneas)
+
+- **Rental Domain**: 6 archivos de test (1200+ líneas)**Funciones Core por Dominio:**- `chat.api.test.ts` - Tests del layer API
+
+- **Mortgage Domain**: 6 archivos de test (1400+ líneas)
+
+- **Chatbot Domain**: 5 archivos de test (minimalistas - solo flujo principal)- **Auth**: login, logout, token management- `chat.service.test.ts` - Tests del layer de servicios
+
+
+
+### 📝 Total de Tests- **Profile**: getUserProfile, updateProfile- `factories.ts` - Utilidades y factories para testing
+
+- **44 archivos de test** (39 originales + 5 chatbot)
+
+- **6500+ líneas de código de test**- **RealState**: getRealEstateProperties, searchProperties
+
+- **Cobertura objetivo**: 80% mínimo, 100% funciones core
+
+- **Rental**: getRentals, searchRentals### Tests de Componentes
+
+## 🔧 Configuración
+
+- **Mortgage**: getMortgages, calculateMortgage- `ChatWidget.test.ts` - Tests del componente principal del chat
+
+### Vitest Config
+
+```typescript
+
+// vitest.config.ts
+
+export default defineConfig({## 🚀 Comandos de Ejecución### Tests de Integración
+
+  test: {
+
+    coverage: {- `chatbot.integration.test.ts` - Tests de integración entre layers
+
+      reporter: ['text', 'html', 'clover'],
+
+      threshold: {### Por Tipo de Test- `chatbot.e2e.test.ts` - Tests end-to-end de casos de uso reales
+
+        global: {
+
+          branches: 80,```bash
+
+          functions: 80,
+
+          lines: 80,# Tests unitarios### Configuración
+
+          statements: 80
+
+        }npm test src/test/unit- `setup.ts` - Configuración global de testing
+
+      }
+
+    }- `vitest.d.ts` - Declaraciones de tipos
+
+  }
+
+})# Tests de integración
+
+```
+
 npm test src/test/integration## Cobertura de Tests Implementada
 
+### Patterns de Naming
 
+- **Unit**: `[domain].[type].test.ts` (ej: `chat.api.test.ts`)
 
-# Tests de validación### 📡 API Layer (`chat.api.test.ts`)
+- **Integration**: `[domain].integration.test.ts`
+
+- **Validation**: `[domain].validation.test.ts`# Tests de validación### 📡 API Layer (`chat.api.test.ts`)
+
+- **Smoke**: `[domain].simple.test.ts`
 
 npm test src/test/validation- ✅ Requests HTTP correctos al endpoint `/ai-chat`
 
+## 🏗️ Migración Realizada
+
 - ✅ Manejo de respuestas exitosas y fallidas
+
+Los tests fueron migrados desde una estructura basada en dominio (`/features/[domain]/`) a una estructura basada en tipo de test para:
 
 # Tests de humo- ✅ Gestión de errores de red (500, 429, 400, timeout)
 
-npm test src/test/smoke- ✅ Validación de formato de request/response
+1. **Mejor organización**: Ejecutar todos los tests de un tipo específico
 
-```- ✅ Tests de performance con requests concurrentes
+2. **CI/CD optimizado**: Diferentes pipelines para diferentes tiposnpm test src/test/smoke- ✅ Validación de formato de request/response
 
-- ✅ Manejo de mensajes largos y caracteres especiales
+3. **Mantenimiento**: Más fácil mantener tests similares juntos
 
-### Por Dominio
+4. **Performance**: Ejecutar solo los tests necesarios según el cambio```- ✅ Tests de performance con requests concurrentes
 
-```bash### 🔧 Service Layer (`chat.service.test.ts`)  
 
-# Auth domain (todos los tipos)- ✅ Delegación correcta al API layer
 
-npm test src/test/unit/auth src/test/integration/auth src/test/validation/auth- ✅ Creación de mensajes de usuario y asistente
+### ♻️ Chatbot - Limpieza Realizada- ✅ Manejo de mensajes largos y caracteres especiales
 
-- ✅ Generación de IDs únicos para mensajes
 
-# RealState domain- ✅ Formateo de timestamps en español
+
+El chatbot tenía tests excesivamente complejos con múltiples archivos innecesarios. Se realizó una **limpieza completa**:### Por Dominio
+
+
+
+- ❌ Eliminados: ~10 archivos de test con casos edge complejos```bash### 🔧 Service Layer (`chat.service.test.ts`)  
+
+- ✅ Creados: 5 archivos minimalistas enfocados en flujo principal
+
+- 🎯 Resultado: Tests más mantenibles y enfocados en funcionalidad core# Auth domain (todos los tipos)- ✅ Delegación correcta al API layer
+
+
+
+---npm test src/test/unit/auth src/test/integration/auth src/test/validation/auth- ✅ Creación de mensajes de usuario y asistente
+
+
+
+**Última actualización**: Diciembre 2024  - ✅ Generación de IDs únicos para mensajes
+
+**Framework**: Vitest + Vue 3 + Pinia + TypeScript  
+
+**Dominios**: Auth, Profile, RealState, Rental, Mortgage, Chatbot# RealState domain- ✅ Formateo de timestamps en español
 
 npm test src/test/unit/realState src/test/integration/realState src/test/validation/realState- ✅ Validación de unicidad y consistencia de datos
 
