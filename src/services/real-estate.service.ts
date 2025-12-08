@@ -57,7 +57,7 @@ export const getRealEstateProperties = RealEstateService.getProperties;
 export const getRealEstateProperty = RealEstateService.getPropertyById;
 
 export const formatPrice = (price: number): string => {
-  if (typeof price !== 'number' || price < 0) {
+  if (!Number.isFinite(price) || price < 0) {
     throw new Error('El precio debe ser un número positivo');
   }
   
