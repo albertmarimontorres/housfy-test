@@ -4,11 +4,11 @@ import { authGuard } from "./guards";
 import PublicLayout from "@/components/layouts/PublicLayout.vue";
 import PrivateLayout from "@/components/layouts/PrivateLayout.vue";
 
-// ✅ Lazy loading para vistas públicas (menos críticas)
+// Lazy loading para vistas públicas
 const LoginView = () => import(/* webpackChunkName: "auth" */ "@/views/LoginView.vue");
 const RegisterView = () => import(/* webpackChunkName: "auth" */ "@/views/RegisterView.vue");
 
-// ✅ Lazy loading para vistas privadas con chunks específicos por dominio
+// Lazy loading para vistas privadas con chunks específicos por dominio
 const DashboardView = () => import(/* webpackChunkName: "dashboard" */ "@/views/DashboardView.vue");
 const RealEstateView = () => import(/* webpackChunkName: "real-estate" */ "@/views/RealEstateView.vue");
 const RentalsView = () => import(/* webpackChunkName: "rental" */ "@/views/RentalsView.vue");

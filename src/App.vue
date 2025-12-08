@@ -17,7 +17,7 @@ const ChatWidget = defineAsyncComponent({
   loader: () => import(/* webpackChunkName: "chatbot" */ "@/components/ui/ChatWidget.vue"),
   // Placeholder mientras carga (chatbot no es crítico)
   loadingComponent: () => ({
-    template: '<div></div>' // Sin loading visual para el chatbot
+    template: '<div></div>' // Sin indicador visual de carga para el chatbot
   }),
   delay: 500, // Delay mayor porque no es crítico
   timeout: 5000
