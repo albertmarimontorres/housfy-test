@@ -51,7 +51,7 @@
     <!-- Loading Skeletons -->
     <div v-if="realEstateStore.loading">
       <v-row>
-        <v-col v-for="n in 6" :key="n" cols="12" sm="6" lg="4">
+        <v-col v-for="n in 8" :key="n" cols="12" sm="6" lg="4" xl="3">
           <v-skeleton-loader type="card" height="400" />
         </v-col>
       </v-row>
@@ -94,10 +94,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, defineAsyncComponent } from 'vue';
 import { useRealEstateStore } from '@/stores/real-estate.store';
-import RealEstateCard from '@/components/domain/RealEstateCard.vue';
 import type { RealEstateProperty, RealEstateFilters } from '@/types/Property';
+
+// ✅ Lazy loading del componente RealEstateCard (puede ser grande con muchas propiedades)
+const RealEstateCard = defineAsyncComponent({
+  loader: () => import(/* webpackChunkName: "real-estate-components" */ '@/components/domain/RealEstateCard.vue'),
+  // Loading component mientras se carga - Con distribución correcta
+  loadingComponent: {
+    template: `
+      <div style="height: 400px;">
+        <v-skeleton-loader type="card" height="400" />
+      </div>
+    `
+  },
+  delay: 200, // Mostrar loading después de 200ms
+  timeout: 3000 // Timeout después de 3s
+});
 
 export default defineComponent({
   name: 'RealEstateView',

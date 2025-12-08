@@ -135,10 +135,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, defineAsyncComponent } from 'vue';
 import { useMortgageStore } from '@/stores/mortgage.store';
 import { MORTGAGE_CONFIG } from '@/types/Mortgage';
-import MortgageCard from '@/components/domain/MortgageCard.vue';
+
+// ✅ Lazy loading del componente MortgageCard 
+const MortgageCard = defineAsyncComponent({
+  loader: () => import(/* webpackChunkName: "mortgage-components" */ '@/components/domain/MortgageCard.vue'),
+  loadingComponent: {
+    template: `
+      <div style="height: 300px;">
+        <v-skeleton-loader type="card" height="300" />
+      </div>
+    `
+  },
+  delay: 200,
+  timeout: 3000
+});
 
 export default defineComponent({
   name: 'MortgagesView',

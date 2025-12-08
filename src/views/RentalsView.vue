@@ -52,7 +52,7 @@
         <!-- Loading Skeletons -->
         <div v-if="rentalStore.loading">
             <v-row>
-                <v-col v-for="n in 6" :key="n" cols="12" sm="6" lg="4">
+                <v-col v-for="n in 8" :key="n" cols="12" sm="6" lg="4" xl="3">
                     <v-skeleton-loader type="card" height="400" />
                 </v-col>
             </v-row>
@@ -95,11 +95,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, defineAsyncComponent } from 'vue';
 import { useRentalStore } from '@/stores/rental.store';
-import RentalCard from '@/components/domain/RentalCard.vue';
 import type { Rental, RentalFilters } from '@/types/Property';
 import { PROPERTY_CONFIGS } from '@/types/Property';
+
+// ✅ Lazy loading del componente RentalCard para listas grandes
+const RentalCard = defineAsyncComponent({
+  loader: () => import(/* webpackChunkName: "rental-components" */ '@/components/domain/RentalCard.vue'),
+  loadingComponent: {
+    template: `
+      <div style="height: 400px;">
+        <v-skeleton-loader type="card" height="400" />
+      </div>
+    `
+  },
+  delay: 200,
+  timeout: 3000
+});
 
 export default defineComponent({
     name: 'RentalsView',
