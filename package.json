@@ -12,14 +12,7 @@
     "test:run": "vitest run",
     "coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui",
-    "test:e2e:debug": "playwright test --debug",
-    "test:e2e:docker": "./run-e2e-simple.sh",
-    "test:e2e:basic": "node src/test/e2e/auth/auth-basic.test.js",
-    "test:e2e:clean": "./fix-e2e-permissions.sh",
-    "test:e2e:fix": "npm run test:e2e:clean",
-    "test:e2e:no-server": "playwright test --config=playwright.config.no-server.ts",
-    "test:e2e:chromium": "playwright test --project=chromium"
+    "test:e2e:no-server": "playwright test --config=playwright.config.no-server.ts"
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",

@@ -1,23 +1,22 @@
-# Tests E2E con Playwright
+# Tests E2E - Documentación Completa
 
-## Configuración y Ejecución
+Esta carpeta contiene tests end-to-end (E2E) para validar la funcionalidad completa de la aplicación.
 
-### Instalación inicial
-```bash
-# Instalar Playwright browsers
-npx playwright install
+## 🎯 Tipos de Tests
 
-# Verificar instalación
-npx playwright --version
-```
+### 🚀 Tests Básicos (Nuevos - Optimizados)
+Tests rápidos y enfocados en verificación de endpoints y estructura de datos:
 
-### Comandos de ejecución
+- ✅ **mortgage.basic.e2e.test.ts** - Tests básicos para hipotecas
+- ✅ **real-estate.basic.e2e.test.ts** - Tests básicos para propiedades  
+- ✅ **rental.basic.e2e.test.ts** - Tests básicos para alquileres
 
-```bash
-# Ejecutar todos los tests E2E
-pnpm test:e2e
+### 🔐 Tests de Autenticación (Existentes)
+Tests completos para flujos de login y registro:
 
-# Ejecutar con interfaz visual
+- `auth/login.e2e.test.ts` - Tests de login
+- `auth/register.e2e.test.ts` - Tests de registro
+- `auth/login-advanced.e2e.test.ts` - Tests avanzados de login
 pnpm test:e2e:ui
 
 # Ejecutar en modo debug

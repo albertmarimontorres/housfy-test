@@ -9,7 +9,7 @@ import type { Mortgage, MortgagesResponse } from '@/types/Mortgage';
 // Mocks
 vi.mock('@/api/httpClient');
 vi.mock('@/services/property.service', () => ({
-  formatPrice: vi.fn((amount: number) => `€${amount.toLocaleString()}`),
+  formatPrice: vi.fn((amount: number) => `€${amount.toLocaleString('es-ES')}`),
   formatDate: vi.fn((dateStr: string) => new Date(dateStr).toLocaleDateString('es-ES'))
 }));
 
@@ -112,8 +112,8 @@ describe('Mortgage - Integración E2E', () => {
       const formattedLTV = mortgageService.formatLTV(testMortgage);
 
       // Assert
-      expect(formattedLoan).toBe('€200,000');
-      expect(formattedProperty).toBe('€250,000');
+      expect(formattedLoan).toBe('€200.000');
+      expect(formattedProperty).toBe('€250.000');
       expect(formattedLTV).toBe('80%');
     });
   });
@@ -352,8 +352,8 @@ describe('Mortgage - Integración E2E', () => {
 
       // Assert
       expect(results.config).toBeDefined();
-      expect(results.loanAmount).toBe('€200,000');
-      expect(results.propertyValue).toBe('€250,000');
+      expect(results.loanAmount).toBe('€200.000');
+      expect(results.propertyValue).toBe('€250.000');
       expect(results.ltv).toBe('80%');
       expect(results.statusColor).toBe('success');
       expect(results.statusLabel).toBe('Aprobado');
