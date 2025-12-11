@@ -1,16 +1,17 @@
 import { defineConfig, devices } from '@playwright/test'
 
 /**
- * Configuración de Playwright para tests básicos sin servidor de desarrollo
- * Útil para CI/CD, desarrollo rápido o cuando no hay servidor disponible
- * Por defecto ejecuta solo tests **.basic.e2e.test.ts que no requieren servidor
+ * Configuración de Playwright para tests que requieren servidor local
+ * Incluye tests de autenticación y otros que necesitan interacción real con la app
+ * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
   // Directorio de tests E2E
   testDir: './src/test/e2e',
   
-  // Patrón para encontrar tests E2E - Solo tests básicos por defecto
-  testMatch: '**/*.basic.e2e.test.ts',
+  // Patrón para encontrar tests que requieren servidor (excluye los básicos)
+  testMatch: ['**/*.e2e.test.ts'],
+  testIgnore: ['**/*.basic.e2e.test.ts'],
   
   /* Directorio de salida - evitar conflictos de permisos */
   outputDir: './test-results-clean',
@@ -29,14 +30,14 @@ export default defineConfig({
   
   /* Reportes */
   reporter: [
-    ['line'],
+    ['html', { outputFolder: 'playwright-report-clean' }],
     ['json', { outputFile: 'playwright-report-clean/results.json' }]
   ],
   
   /* Configuración global para todos los tests */
   use: {
     /* URL base para usar en los tests con page.goto('/') */
-    baseURL: 'http://localhost:5175', // Puerto actual del servidor de desarrollo
+    baseURL: 'http://localhost:5173',
     
     /* Capturar trazas en fallos */
     trace: 'on-first-retry',
@@ -53,9 +54,34 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-    }
+    },
+    
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
+
+    /* Tests en dispositivos móviles */
+    {
+      name: 'Mobile Chrome',
+      use: { ...devices['Pixel 5'] },
+    },
+    {
+      name: 'Mobile Safari',
+      use: { ...devices['iPhone 12'] },
+    },
   ],
 
-  /* NO iniciar servidor automáticamente - asumir que ya está ejecutándose */
-  // webServer: deshabilitado para evitar conflictos
-});
+  /* Ejecutar servidor de desarrollo antes de empezar tests */
+  webServer: {
+    command: 'pnpm dev',
+    url: 'http://localhost:5173',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120 * 1000, // 2 minutos para que el servidor arranque
+  },
+})

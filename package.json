@@ -12,7 +12,10 @@
     "test:run": "vitest run",
     "coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
-    "test:e2e:no-server": "playwright test --config=playwright.config.no-server.ts"
+    "test:e2e:basic": "playwright test --config=playwright.config.no-server.ts",
+    "test:e2e:auth": "playwright test --config=playwright.config.with-server.ts",
+    "test:e2e:no-server": "pnpm test:e2e:basic",
+    "test:e2e:with-server": "pnpm test:e2e:auth"
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
