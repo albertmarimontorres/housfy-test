@@ -1,3 +1,24 @@
+# Dependencies
+node_modules
+.pnpm-store
+.npm
+.yarn
+.yarn-integrity
+
+# Production builds
+dist
+dist-ssr
+build
+out
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+
 # Logs
 logs
 *.log
@@ -6,35 +27,113 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+*.tlog
 
-Dockerfile
-docker-compose.yml
-node_modules
-.vscode
-.pnpm-store
-dist
-dist-ssr
-*.local
-.env
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
 
-# Test and coverage results
+# Coverage directory used by tools like istanbul
+coverage
+*.lcov
+.nyc_output
+
+# Vitest
 coverage/
+.vitest/
+
+# Test results and reports
 test-results/
+test-results-clean/
 playwright-report/
+playwright-report-clean/
 test-results.html
+*.xml
+junit.xml
 
 # Playwright
 /test-results/
 /playwright-report/
 /playwright/.cache/
+/blob-report/
+/screenshots/
+/videos/
+
+# TypeScript
+*.tsbuildinfo
+.tscache
+
+# Temporary folders
+tmp/
+temp/
+.tmp/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*~
+
+# Vim
+*.swp
+*.swo
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Local development
+.eslintcache
+.stylelintcache
+.parcel-cache
+
+# Package manager lockfiles (uncomment if needed)
+# package-lock.json
+# yarn.lock
+
+# Docker (remove these lines if you want to include Docker files)
+# Dockerfile
+# docker-compose.yml
+# .dockerignore
+
+# Optional: Storybook build outputs
+storybook-static
+
+# Optional: Next.js build output (if using Next.js)
+.next
+
+# Optional: Nuxt.js build / generate output (if using Nuxt.js)
+.nuxt
+dist
+
+# Optional: Gatsby files (if using Gatsby)
+.cache/
+public
+
+# Optional: Sapper build output (if using Sapper)
+__sapper__
