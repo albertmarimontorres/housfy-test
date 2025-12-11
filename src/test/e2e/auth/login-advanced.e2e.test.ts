@@ -3,10 +3,10 @@ import { AuthE2EHelpers } from './auth-helpers';
 
 test.describe('Login E2E Tests - Avanzados', () => {
   test.beforeEach(async ({ page }) => {
-    // Limpiar almacenamiento antes de cada test
-    await AuthE2EHelpers.clearStorage(page);
-    // Navegar a login
+    // Navegar a login primero para tener un contexto válido
     await AuthE2EHelpers.navigateToLogin(page);
+    // Luego limpiar almacenamiento
+    await AuthE2EHelpers.clearStorage(page);
   });
 
   test('flujo completo de login exitoso con credenciales válidas', async ({ page }) => {
@@ -155,19 +155,19 @@ test.describe('Login E2E Tests - Avanzados', () => {
     await page.keyboard.press('Tab'); // Password field
     await expect(page.locator('input[type="password"]')).toBeFocused();
     
-    await page.keyboard.press('Tab'); // Submit button
-    await expect(page.locator('button[type="submit"]')).toBeFocused();
-    
-    // Llenar formulario usando teclado
-    await page.keyboard.press('Shift+Tab'); // Volver a password
+    // No intentar hacer foco en el botón deshabilitado, en su lugar llenar el formulario primero
     await page.keyboard.press('Shift+Tab'); // Volver a email
     
     await page.keyboard.type('test@example.com');
     await page.keyboard.press('Tab');
-    await page.keyboard.type('password123');
+    await page.keyboard.type('password123456'); // Usar password válido
     
-    // Verificar que el botón se habilita
+    // Ahora que el formulario está lleno, el botón debería estar habilitado
     await expect(page.locator('button[type="submit"]')).toBeEnabled();
+    
+    // Ahora sí podemos navegar al botón
+    await page.keyboard.press('Tab'); // Submit button
+    await expect(page.locator('button[type="submit"]')).toBeFocused();
     
     // Enviar con Enter
     await page.keyboard.press('Enter');

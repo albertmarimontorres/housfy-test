@@ -11,7 +11,7 @@ export class AuthE2EHelpers {
   static readonly TEST_USERS = {
     valid: {
       email: 'user@demo.com',
-      password: 'demo123'
+      password: 'demo123456' // 11 characters - válido para pasar la validación
     },
     invalid: {
       email: 'invalid@example.com',
@@ -33,7 +33,7 @@ export class AuthE2EHelpers {
   }) {
     const { token = 'fake-jwt-token', message, delay = 0 } = options || {};
     
-    await page.route('**/api/auth/login', route => {
+    await page.route('**/login', route => {
       const responseBody = success ? {
         success: true,
         bearer: token,
@@ -128,7 +128,7 @@ export class AuthE2EHelpers {
    * Simula diferentes tipos de errores de red
    */
   static async mockNetworkError(page: Page, errorType: 'timeout' | 'server-error' | 'network-failure') {
-    await page.route('**/api/auth/login', route => {
+    await page.route('**/login', route => {
       switch (errorType) {
         case 'timeout':
           // Simular timeout - no responder nunca
@@ -154,24 +154,48 @@ export class AuthE2EHelpers {
    * Verifica que el usuario está autenticado comprobando elementos de la UI privada
    */
   static async verifyUserIsAuthenticated(page: Page) {
-    // Verificar que estamos en una ruta privada
-    await page.waitForURL(/\/app\//, { timeout: 5000 });
+    // Esperar un poco para que la navegación se complete
+    await page.waitForTimeout(500);
     
-    // Verificar elementos de la UI privada (ajustar según tu implementación)
-    await page.locator('[data-testid="user-menu"]').waitFor({ state: 'visible', timeout: 5000 })
-      .catch(() => {
-        // Fallback: verificar que al menos estamos en una ruta privada
-        return page.waitForURL(/\/app\/dashboard/, { timeout: 1000 });
-      });
+    // Verificar que estamos en una ruta privada
+    await page.waitForURL(/\/app\//, { timeout: 8000 });
+    
+    // Verificar elementos de la UI privada - buscar el avatar del usuario o un elemento del layout privado
+    try {
+      await page.locator('.v-avatar').waitFor({ state: 'visible', timeout: 3000 });
+    } catch {
+      // Fallback: verificar que tenemos el navigation drawer (parte del layout privado)
+      await page.locator('.v-navigation-drawer').waitFor({ state: 'visible', timeout: 3000 });
+    }
   }
 
   /**
    * Limpia el almacenamiento local (tokens, etc.)
+   * Maneja errores de seguridad cuando localStorage no está disponible
    */
   static async clearStorage(page: Page) {
-    await page.evaluate(() => {
-      localStorage.clear();
-      sessionStorage.clear();
-    });
+    try {
+      await page.evaluate(() => {
+        try {
+          localStorage.clear();
+          sessionStorage.clear();
+        } catch (error) {
+          // localStorage puede no estar disponible en algunos contextos
+          console.warn('No se pudo limpiar localStorage:', error);
+        }
+      });
+    } catch (error) {
+      // Si no podemos acceder a la página, navegamos a una válida primero
+      console.warn('Error al acceder a storage, navegando a página base:', error);
+      await page.goto('/');
+      await page.evaluate(() => {
+        try {
+          localStorage.clear();
+          sessionStorage.clear();
+        } catch (innerError) {
+          console.warn('No se pudo limpiar localStorage después de navegar:', innerError);
+        }
+      });
+    }
   }
 }

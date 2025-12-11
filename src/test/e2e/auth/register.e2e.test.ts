@@ -7,7 +7,7 @@ test.describe('Register E2E Tests', () => {
 
   test('debe mostrar la página de registro correctamente', async ({ page }) => {
     // Verificar elementos principales del formulario de registro
-    await expect(page.locator('h2')).toContainText(/registro|registra/i);
+    await expect(page.locator('h2')).toContainText('Crea tu cuenta');
     
     // Verificar campos del formulario (ajustar según implementación real)
     const nameField = page.locator('input[type="text"]').first();
@@ -29,7 +29,7 @@ test.describe('Register E2E Tests', () => {
 
   test('debe registrar usuario exitosamente', async ({ page }) => {
     // Mock API de registro exitoso
-    await page.route('**/api/auth/register', route => {
+    await page.route('**/register', route => {
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -44,12 +44,12 @@ test.describe('Register E2E Tests', () => {
     // Llenar formulario (ajustar selectores según implementación)
     await page.locator('input[type="text"]').first().fill('Nuevo Usuario');
     await page.locator('input[type="email"]').fill('nuevo@example.com');
-    await page.locator('input[type="password"]').first().fill('password123');
+    await page.locator('input[type="password"]').first().fill('Password123!'); // Password que cumple todos los requisitos
     
     // Si hay confirmación de password
     const confirmPasswordField = page.locator('input[type="password"]').nth(1);
     if (await confirmPasswordField.isVisible({ timeout: 1000 })) {
-      await confirmPasswordField.fill('password123');
+      await confirmPasswordField.fill('Password123!'); // Usar mismo password que cumple requisitos
     }
     
     // Enviar formulario
@@ -61,7 +61,7 @@ test.describe('Register E2E Tests', () => {
 
   test('debe manejar errores de registro', async ({ page }) => {
     // Mock API con error
-    await page.route('**/api/auth/register', route => {
+    await page.route('**/register', route => {
       route.fulfill({
         status: 400,
         contentType: 'application/json',
@@ -75,7 +75,7 @@ test.describe('Register E2E Tests', () => {
     // Llenar formulario
     await page.locator('input[type="text"]').first().fill('Usuario Test');
     await page.locator('input[type="email"]').fill('existente@example.com');
-    await page.locator('input[type="password"]').first().fill('password123');
+    await page.locator('input[type="password"]').first().fill('Password123!'); // Password que cumple requisitos
     
     // Enviar formulario
     await page.locator('button[type="submit"]').click();

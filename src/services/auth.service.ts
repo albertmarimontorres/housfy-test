@@ -53,9 +53,17 @@ export const AuthService = {
     try {
       // La API ya devuelve los datos extraídos directamente
       return await authApi.login(authCredentials);
-    } catch (error) {
-      // Re-lanzar error personalizado si es conocido
-      if (error instanceof Error) {
+    } catch (error: any) {
+      // Preservar datos de respuesta del servidor para manejo en el store
+      if (error?.response?.data?.message) {
+        const preservedError = new Error(error.response.data.message);
+        (preservedError as any).response = error.response;
+        throw preservedError;
+      } else if (error?.response?.message) {
+        const preservedError = new Error(error.response.message);
+        (preservedError as any).response = error.response;
+        throw preservedError;
+      } else if (error instanceof Error) {
         throw error;
       }
       
@@ -70,9 +78,17 @@ export const AuthService = {
     try {
       // La API ya devuelve los datos extraídos directamente
       return await authApi.register(registerPayload);
-    } catch (error) {
-      // Re-lanzar error personalizado si es conocido
-      if (error instanceof Error) {
+    } catch (error: any) {
+      // Preservar datos de respuesta del servidor para manejo en el store
+      if (error?.response?.data?.message) {
+        const preservedError = new Error(error.response.data.message);
+        (preservedError as any).response = error.response;
+        throw preservedError;
+      } else if (error?.response?.message) {
+        const preservedError = new Error(error.response.message);
+        (preservedError as any).response = error.response;
+        throw preservedError;
+      } else if (error instanceof Error) {
         throw error;
       }
       

@@ -8,7 +8,7 @@ test.describe('Login E2E Tests', () => {
 
   test('debe mostrar la página de login correctamente', async ({ page }) => {
     // Verificar que la página carga correctamente
-    await expect(page).toHaveTitle(/LoginView/);
+    await expect(page).toHaveTitle('Housfy Admin');
     
     // Verificar elementos principales del formulario de login
     await expect(page.locator('h2')).toContainText('Haz login en la plataforma');
@@ -50,7 +50,7 @@ test.describe('Login E2E Tests', () => {
 
   test('debe mostrar estado de carga al enviar el formulario', async ({ page }) => {
     // Interceptar la llamada a la API para controlar la respuesta
-    await page.route('**/api/auth/login', route => {
+    await page.route('**/login', route => {
       // Simular una respuesta lenta para ver el loading
       setTimeout(() => {
         route.fulfill({
@@ -85,7 +85,7 @@ test.describe('Login E2E Tests', () => {
 
   test('debe manejar credenciales inválidas', async ({ page }) => {
     // Interceptar llamada API para simular error de credenciales
-    await page.route('**/api/auth/login', route => {
+    await page.route('**/login', route => {
       route.fulfill({
         status: 401,
         contentType: 'application/json',
@@ -117,7 +117,7 @@ test.describe('Login E2E Tests', () => {
 
   test('debe redirigir al dashboard tras login exitoso', async ({ page }) => {
     // Interceptar llamada API para simular login exitoso
-    await page.route('**/api/auth/login', route => {
+    await page.route('**/login', route => {
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -135,7 +135,7 @@ test.describe('Login E2E Tests', () => {
     
     // Rellenar con credenciales válidas
     await emailField.fill('user@demo.com');
-    await passwordField.fill('demo123');
+    await passwordField.fill('demo123456'); // Usar password válido de 8+ caracteres
     
     // Enviar formulario
     await loginButton.click();
@@ -175,12 +175,15 @@ test.describe('Login E2E Tests', () => {
     await expect(page).toHaveURL(/\/login/);
   });
 
-  test('debe funcionar en dispositivo móvil', async ({ page }) => {
-    // Configurar viewport móvil
-    await page.setViewportSize({ width: 375, height: 667 });
+  test('debe funcionar en dispositivo móvil', async ({ browser }) => {
+    // Crear contexto con soporte táctil
+    const context = await browser.newContext({
+      hasTouch: true,
+      viewport: { width: 375, height: 667 }
+    });
+    const page = await context.newPage();
     
-    // Recargar página para aplicar estilos móviles
-    await page.reload();
+    await page.goto('/login');
     
     // Verificar que los elementos son visibles y accesibles en móvil
     const emailField = page.locator('input[type="email"]');
@@ -196,8 +199,11 @@ test.describe('Login E2E Tests', () => {
     await emailField.fill('mobile@test.com');
     
     await passwordField.tap();
-    await passwordField.fill('password123');
+    await passwordField.fill('password123456'); // Usar password válido
     
     await expect(loginButton).toBeEnabled();
+    
+    // Cerrar contexto
+    await context.close();
   });
 });

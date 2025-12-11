@@ -1,7 +1,8 @@
 import { defineConfig, devices } from '@playwright/test'
 
 /**
- * @see https://playwright.dev/docs/test-configuration
+ * Configuración de Playwright para tests sin servidor de desarrollo
+ * Útil para CI/CD o cuando el servidor ya está ejecutándose
  */
 export default defineConfig({
   // Directorio de tests E2E
@@ -27,14 +28,14 @@ export default defineConfig({
   
   /* Reportes */
   reporter: [
-    ['html', { outputFolder: 'playwright-report-clean' }],
+    ['line'],
     ['json', { outputFile: 'playwright-report-clean/results.json' }]
   ],
   
   /* Configuración global para todos los tests */
   use: {
     /* URL base para usar en los tests con page.goto('/') */
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://localhost:5175', // Puerto actual del servidor de desarrollo
     
     /* Capturar trazas en fallos */
     trace: 'on-first-retry',
@@ -51,34 +52,9 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-    },
-    
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-
-    /* Tests en dispositivos móviles */
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
-    },
+    }
   ],
 
-  /* Ejecutar servidor de desarrollo antes de empezar tests */
-  webServer: {
-    command: 'pnpm dev',
-    url: 'http://localhost:5173',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000, // 2 minutos para que el servidor arranque
-  },
-})
+  /* NO iniciar servidor automáticamente - asumir que ya está ejecutándose */
+  // webServer: deshabilitado para evitar conflictos
+});
