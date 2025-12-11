@@ -5,9 +5,9 @@
     :ripple="false"
     @click="$emit('click', property)"
   >
-    <!-- Header with property image and status -->
+    <!-- Header con imagen y estado de la propiedad -->
     <div class="position-relative property-image-container">
-      <!-- Customizable image slot -->
+      <!-- Imagen customizable slot -->
       <slot name="image" :property="property" :config="config" :image-url="propertyImageUrl">
         <v-img
           :src="propertyImageUrl"
@@ -40,7 +40,7 @@
         {{ statusConfig.label }}
       </v-chip>
       
-      <!-- Property type badge -->
+      <!-- Badge propiedad -->
       <v-chip
         :color="config.color"
         size="small"
@@ -63,7 +63,7 @@
     </v-card-subtitle>
 
     <v-card-text class="pt-2">
-      <!-- Property Details -->
+      <!-- Detalles de la propiedad -->
       <div class="d-flex align-center mb-2">
         <v-icon size="small" class="mr-1">mdi-stairs</v-icon>
         <span class="text-body-2 mr-3">Piso {{ property.propertyFloor }}º</span>
@@ -72,9 +72,9 @@
         <span class="text-body-2">{{ formatDate(property.created_at) }}</span>
       </div>
 
-      <!-- Custom details slot -->
+      <!-- detalles customizados slot -->
       <slot name="details" :property="property" :config="config" :format-date="formatDate">
-        <!-- Default details -->
+        <!-- detalles por defecto -->
         <div class="mb-3">
           <div class="text-caption text-grey-darken-1">
             Última actualización: {{ formatDate(property.last_status_changed_at) }}
@@ -82,13 +82,13 @@
         </div>
       </slot>
 
-      <!-- Price and Action -->
+      <!-- Precio y Acción -->
       <div class="d-flex align-center justify-space-between	">
         <span class="text-h6 font-weight-bold text-primary">
           {{ formatPropertyPrice(property.propertyPriceMinUnit, config.priceFormat) }}
         </span>
         
-        <!-- Custom action slot -->
+        <!-- Acción personalizada slot -->
         <slot name="action" :property="property">
           <v-btn
             size="small"
@@ -146,29 +146,17 @@ export default defineComponent({
         return getDefaultPropertyImage({ width: 400, height: 200 });
       }
       
-      // Usar imágenes curadas de Unsplash específicas para inmuebles
       const propertyId = this.property.uuid || 'default';
       const imageUrl = getPropertyImageByType(this.propertyType, propertyId, { width: 400, height: 200 });
       
-      console.log(`Generated curated image URL for ${this.propertyType}:`, imageUrl);
       return imageUrl;
     },
-  },
-  watch: {
-    propertyImageUrl: {
-      immediate: true,
-      handler(newUrl) {
-        console.log('Property image URL updated:', newUrl);
-      }
-    }
   },
   methods: {
     formatAddress,
     formatDate,
     formatPropertyPrice,
-    handleImageError() {
-      console.log('Image failed to load, trying fallback:', this.propertyImageUrl);
-      
+    handleImageError() {      
       // Si ya estamos en modo error, usar SVG específico del tipo
       if (!this.imageError) {
         this.imageError = true;

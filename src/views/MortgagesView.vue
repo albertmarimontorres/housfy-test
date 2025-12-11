@@ -139,7 +139,7 @@ import { defineComponent, defineAsyncComponent } from 'vue';
 import { useMortgageStore } from '@/stores/mortgage.store';
 import { MORTGAGE_CONFIG } from '@/types/Mortgage';
 
-// ✅ Lazy loading del componente MortgageCard 
+// ✅ Lazy loading del componente MortgageCard para mejor rendimiento
 const MortgageCard = defineAsyncComponent({
   loader: () => import(/* webpackChunkName: "mortgage-components" */ '@/components/domain/MortgageCard.vue'),
   loadingComponent: {
@@ -188,6 +188,7 @@ export default defineComponent({
     }
   },
   methods: {
+    // Actualizar lista de hipotecas
     refreshMortgages() {
       this.mortgageStore.fetchMortgages();
     }

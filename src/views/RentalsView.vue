@@ -100,7 +100,7 @@ import { useRentalStore } from '@/stores/rental.store';
 import type { Rental, RentalFilters } from '@/types/Property';
 import { PROPERTY_CONFIGS } from '@/types/Property';
 
-// ✅ Lazy loading del componente RentalCard para listas grandes
+// ✅ Lazy loading del componente RentalCard para mejor rendimiento
 const RentalCard = defineAsyncComponent({
   loader: () => import(/* webpackChunkName: "rental-components" */ '@/components/domain/RentalCard.vue'),
   loadingComponent: {
@@ -139,8 +139,8 @@ export default defineComponent({
         await this.rentalStore.fetchRentals();
     },
     methods: {
-        // Frontend filtering since API doesn't support filters yet
-        // TODO: When backend filtering is ready, this method would be:
+        // Filtrado en frontend ya que la API no soporta filtros aún
+        // TODO: Cuando el filtrado en backend esté listo, este método sería:
         // async applyFilters() {
         //   const cleanFilters = Object.fromEntries(
         //     Object.entries(this.filters).filter(([_, value]) =>
@@ -151,31 +151,31 @@ export default defineComponent({
         // }
 
         applyFilters() {            
-            // Clean empty values from filters
+            // Limpiar valores vacíos de los filtros
             const cleanFilters = Object.fromEntries(
                 Object.entries(this.filters).filter(([_, value]) =>
                     value !== null && value !== undefined && value !== ''
                 )
             );
 
-            // Apply filters on frontend since backend API is not ready for filtering
+            // Aplicar filtros en frontend ya que la API backend no está lista para filtrado
             this.rentalStore.applyFilters(cleanFilters);
         },
         
+        // Actualizar todos los alquileres y aplicar filtros actuales
         async refreshRentals() {
-            // Fetch all rentals and apply current filters
             await this.rentalStore.fetchRentals();
             if (Object.keys(this.filters).some(key => this.filters[key as keyof RentalFilters] !== undefined)) {
                 this.applyFilters();
             }
         },
-        handleRentalClick(rental: Rental) {
-            console.log('Rental clicked:', rental);
-            // TODO: Navigate to rental detail view
+        // Manejo de clic en alquiler
+        handleRentalClick(_rental: Rental) {
+            // TODO: Navegar a vista de detalle de alquiler
         },
-        handleViewDetails(rental: Rental) {
-            console.log('View details for rental:', rental);
-            // TODO: Open rental detail modal or navigate to detail page
+        // Manejo de ver detalles de alquiler
+        handleViewDetails(_rental: Rental) {
+            // TODO: Abrir modal de detalle o navegar a página de detalle
         },
     },
 });

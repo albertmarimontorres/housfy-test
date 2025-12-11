@@ -28,7 +28,9 @@ const validateStatus = (status: string): void => {
 };
 
 /**
- * Convierte centavos a euros de forma segura
+ * Convierte céntimos de euro a euros de forma segura
+ * @param amountInCents - Cantidad en céntimos (ej: 25000 = 250.00€)
+ * @returns Cantidad en euros o null si es inválida
  */
 const convertCentsToEuros = (amountInCents: number | undefined | null): number | null => {
   if (typeof amountInCents !== 'number' || amountInCents < 0) {

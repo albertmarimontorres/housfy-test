@@ -4,8 +4,8 @@ import type { RealEstateProperty, RealEstateFilters } from '@/types/Property';
 
 export const useRealEstateStore = defineStore('realEstate', {
   state: () => ({
-    allProperties: [] as RealEstateProperty[], // Store all fetched properties for FE filtering
-    filteredProperties: [] as RealEstateProperty[], // Store filtered results
+    allProperties: [] as RealEstateProperty[], // Almacena todas las propiedades obtenidas para filtrado en FE
+    filteredProperties: [] as RealEstateProperty[], // Almacena los resultados filtrados
     loading: false,
     error: null as string | null,
     filters: {} as RealEstateFilters,
@@ -30,7 +30,7 @@ export const useRealEstateStore = defineStore('realEstate', {
   },
   
   actions: {
-    // TODO: Backend implementation would be:
+    // TODO: Implementación del backend sería:
     // async fetchProperties(filters?: RealEstateFilters) {
     //   this.loading = true;
     //   this.error = null;
@@ -49,16 +49,16 @@ export const useRealEstateStore = defineStore('realEstate', {
       this.error = null;
       
       try {
-        // Fetch all properties from backend (no filters applied on BE)
-        // Since API is not ready for filtering, we get all data and filter on FE
+        // Fetch de todas las propiedades desde backend (sin filtros aplicados en BE)
+        // Como la API no está lista para filtrado, obtenemos todos los datos y filtramos en FE
         const response = await getRealEstateProperties();
         if (response && response.success && response.properties) {
           this.allProperties = response.properties;
           
-          // Initialize filtered properties
+          // Inicializar propiedades filtradas
           this.filteredProperties = [...response.properties];
           
-          // Apply filters on frontend if provided
+          // Aplicar filtros en frontend si se proporcionan
           if (filters) {
             this.applyFilters(filters);
           }
@@ -71,50 +71,38 @@ export const useRealEstateStore = defineStore('realEstate', {
         this.allProperties = [];
         this.filteredProperties = [];
         this.error = e?.response?.data?.message || 'Error al obtener las propiedades';
-        console.error('Error fetching real estate properties:', e);
       } finally {
         this.loading = false;
       }
     },
     
-    // Apply filters on the frontend (since backend filtering is not ready)
+    // Aplicar filtros en el frontend (ya que el filtrado en backend no está listo)
     applyFilters(filters: RealEstateFilters) {
-      console.log('Applying filters:', filters);
-      console.log('Current allProperties count:', this.allProperties.length);
-      
       this.filters = { ...filters };
       
-      // Apply filtering logic
+      // Aplicar lógica de filtrado
       let filtered = [...this.allProperties];
       
-      // Apply frontend filters to the complete dataset
+      // Aplicar filtros de frontend al conjunto completo de datos
       if (this.filters.status) {
-        console.log('Filtering by status:', this.filters.status);
-        const beforeFilter = filtered.length;
         filtered = filtered.filter(property => property.status === this.filters.status);
-        console.log(`Status filter: ${beforeFilter} -> ${filtered.length} properties`);
       }
       
       if (this.filters.propertyStreet) {
-        console.log('Filtering by street:', this.filters.propertyStreet);
         filtered = filtered.filter(property => 
           property.propertyStreet.toLowerCase().includes(this.filters.propertyStreet!.toLowerCase())
         );
       }
       
       if (this.filters.minPrice !== undefined && this.filters.minPrice !== null) {
-        console.log('Filtering by minPrice:', this.filters.minPrice);
         filtered = filtered.filter(property => property.propertyPriceMinUnit >= this.filters.minPrice!);
       }
       
       if (this.filters.maxPrice !== undefined && this.filters.maxPrice !== null) {
-        console.log('Filtering by maxPrice:', this.filters.maxPrice);
         filtered = filtered.filter(property => property.propertyPriceMinUnit <= this.filters.maxPrice!);
       }
       
       this.filteredProperties = filtered;
-      
-      console.log('Final filtered count:', filtered.length);
     },
     
     setFilters(filters: RealEstateFilters) {

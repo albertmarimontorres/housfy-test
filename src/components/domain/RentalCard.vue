@@ -5,7 +5,6 @@
     @click="$emit('click', rental)"
     @view-details="$emit('viewDetails', rental)"
   >
-    <!-- Personalizar imagen específica para rentals -->
     <template #image="{ property, imageUrl }">
       <v-img
         :src="imageUrl"

@@ -1,5 +1,3 @@
-// src/router/guards.ts
-
 import { useAuthStore } from "@/stores/auth.store";
 
 export function authGuard(_to: any, _from: any, next: any) {

@@ -4,8 +4,8 @@ import type { Rental, RentalFilters } from '@/types/Property';
 
 export const useRentalStore = defineStore('rental', {
   state: () => ({
-    allRentals: [] as Rental[], // Store all fetched rentals for FE filtering
-    filteredRentals: [] as Rental[], // Store filtered results
+    allRentals: [] as Rental[], // Almacena todos los alquileres obtenidos para filtrado en FE
+    filteredRentals: [] as Rental[], // Almacena los resultados filtrados
     loading: false,
     error: null as string | null,
     filters: {} as RentalFilters,
@@ -35,7 +35,7 @@ export const useRentalStore = defineStore('rental', {
   },
   
   actions: {
-    // TODO: Backend implementation would be:
+    // TODO: Implementación del backend sería:
     // async fetchRentals(filters?: RentalFilters) {
     //   this.loading = true;
     //   this.error = null;
@@ -54,16 +54,16 @@ export const useRentalStore = defineStore('rental', {
       this.error = null;
       
       try {
-        // Fetch all rentals from backend (no filters applied on BE)
-        // Since API is not ready for filtering, we get all data and filter on FE
+        // Fetch de todos los alquileres desde backend (sin filtros aplicados en BE)
+        // Como la API no está lista para filtrado, obtenemos todos los datos y filtramos en FE
         const response = await getRentals();
         if (response && response.success && response.properties) {
           this.allRentals = response.properties; // API retorna "properties" no "rentals"
           
-          // Initialize filtered rentals
+          // Inicializar alquileres filtrados
           this.filteredRentals = [...response.properties];
           
-          // Apply filters on frontend if provided
+          // Aplicar filtros en frontend si se proporcionan
           if (filters) {
             this.applyFilters(filters);
           }
@@ -76,20 +76,19 @@ export const useRentalStore = defineStore('rental', {
         this.allRentals = [];
         this.filteredRentals = [];
         this.error = e?.response?.data?.message || 'Error al obtener los alquileres';
-        console.error('Error fetching rentals:', e);
       } finally {
         this.loading = false;
       }
     },
 
-    // Apply filters on the frontend (since backend filtering is not ready)
+    // Aplicar filtros en el frontend (ya que el filtrado en backend no está listo)
     applyFilters(filters: RentalFilters) {      
       this.filters = { ...filters };
       
-      // Apply filtering logic
+      // Aplicar lógica de filtrado
       let filtered = [...this.allRentals];
       
-      // Apply frontend filters to the complete dataset
+      // Aplicar filtros de frontend al conjunto completo de datos
       if (this.filters.status) {
         filtered = filtered.filter(rental => rental.status === this.filters.status);
       }

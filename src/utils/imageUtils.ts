@@ -76,47 +76,6 @@ export function getEnhancedPropertyImage(
 }
 
 /**
- * Función de respaldo usando términos específicos de Unsplash Source
- */
-export function getUnsplashSourceImage(
-  propertyType: string,
-  propertyId: string | number,
-  config: ImageConfig = { width: 400, height: 300 }
-): string {
-  const { width, height } = config;
-  
-  const searchTerms = {
-    rental: [
-      'modern-apartment-interior',
-      'apartment-living-room',
-      'cozy-bedroom-apartment',
-      'bright-kitchen-apartment',
-      'urban-apartment-design'
-    ],
-    mortgage: [
-      'family-home-exterior',
-      'suburban-house-architecture',
-      'modern-house-design',
-      'residential-home-front',
-      'beautiful-house-garden'
-    ],
-    realEstate: [
-      'luxury-villa-exterior',
-      'premium-property-architecture',
-      'expensive-mansion-design',
-      'high-end-real-estate',
-      'elegant-property-facade'
-    ]
-  };
-  
-  const terms = searchTerms[propertyType as keyof typeof searchTerms] || searchTerms.rental;
-  const hash = Math.abs(propertyId.toString().split('').reduce((acc, char) => acc + char.charCodeAt(0), 0));
-  const selectedTerm = terms[hash % terms.length];
-  
-  return `https://source.unsplash.com/${width}x${height}/?${selectedTerm}`;
-}
-
-/**
  * Función de respaldo usando los IDs curados como alternativa
  */
 export function getArchitectureImage(
@@ -218,11 +177,9 @@ export function getRealEstateImage(
     // Prioridad: IDs curados por tipo -> Todos los IDs curados -> SVG fallback
     return getPropertyImageByType(propertyType, propertyId, config);
   } catch (error) {
-    console.warn('Error loading curated image by type, using all curated images');
     try {
       return getAllCuratedImages(propertyId, config);
     } catch (fallbackError) {
-      console.warn('Error loading any curated image, using SVG fallback');
       return getTypedFallbackImage(propertyType, config);
     }
   }

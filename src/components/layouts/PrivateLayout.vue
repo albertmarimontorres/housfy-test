@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <!-- Navigation Drawer - Hidden on mobile -->
+    <!-- Drawer - Oculto en móvil -->
     <v-navigation-drawer 
       v-model="drawer" 
       :permanent="!$vuetify.display.mobile"
@@ -47,7 +47,7 @@
           <v-list-item-title>Hipotecas</v-list-item-title>
         </v-list-item>
         
-        <!-- Logout in mobile menu -->
+        <!-- Cerrar sesión en el menú móvil -->
         <v-divider v-if="$vuetify.display.mobile" class="my-2" />
         <v-list-item v-if="$vuetify.display.mobile" @click="logout">
           <template #prepend>
@@ -62,7 +62,7 @@
       <v-app-bar app color="primary" dark>
         <div class="w-100 d-flex align-center justify-space-between px-4">
           <div class="d-flex align-center">
-            <!-- Mobile hamburger menu -->
+            <!-- Menú hamburguesa móvil -->
             <v-btn 
               v-if="$vuetify.display.mobile"
               icon 
@@ -95,7 +95,7 @@
             </v-breadcrumbs>
           </div>
           
-          <!-- Logout button - only visible on desktop -->
+          <!-- Botón de cerrar sesión - solo visible en escritorio -->
           <v-tooltip 
             v-if="!$vuetify.display.mobile"
             text="Cerrar sesión" 
@@ -130,7 +130,7 @@ export default defineComponent({
   name: "PrivateLayout",
   data() {
     return {
-      drawer: true, // Controls drawer visibility
+      drawer: true,
     };
   },
   computed: {
@@ -193,7 +193,7 @@ export default defineComponent({
         breadcrumbs.push({
           title: currentRoute.title,
           to: currentRoute.to,
-          disabled: true // Current page is disabled
+          disabled: true // Página actual deshabilitada
         });
       }
 
@@ -224,7 +224,7 @@ export default defineComponent({
       this.$router.push("/login");
     },
     closeMobileDrawer() {
-      // Close drawer on mobile after navigation
+      // Cerrar drawer en móvil después de la navegación
       if (this.$vuetify.display.mobile) {
         this.drawer = false;
       }

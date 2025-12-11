@@ -80,15 +80,18 @@ export default defineComponent({
   },
 
   methods: {
+    // Validación de formato de email
     validateEmail(value: string) {
       const re = /^(([^<>()\[\]\\.,;:\s@\"]+(\.[^<>()\[\]\\.,;:\s@\"]+)*)|(".+"))@(([^<>()[\]\\.,;:\s@\"]+\.)+[^<>()[\]\\.,;:\s@\"]{2,})$/i;
       return re.test(value) || 'Introduce un email válido';
     },
+    // Validación de seguridad de contraseña
     validatePassword(value: string) {
-      // At least 8 chars, one uppercase, one lowercase, one number, one special char
+      // Al menos 8 caracteres, una mayúscula, una minúscula, un número y un símbolo
       const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
       return re.test(value) || 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un símbolo.';
     },
+    // Manejo del registro de nuevo usuario
     async handleRegister() {
       const auth = useAuthStore();
 
@@ -119,21 +122,21 @@ export default defineComponent({
   justify-content: center;
 }
 
-/* Desktop styling - white card */
+/* Estilizado para escritorio */
 .desktop-card {
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 16px 0 rgba(0,0,0,0.08);
 }
 
-/* Mobile styling - transparent background */
+/* Estilizado móvil - fondo transparente */
 .mobile-transparent {
   background: transparent;
   border-radius: 0;
   box-shadow: none;
 }
 
-/* Mobile text styling for better contrast */
+/* Estilizado de texto móvil para mejor contraste */
 @media (max-width: 960px) {
   .mobile-transparent h2 {
     color: rgba(0, 0, 0, 0.95) !important;

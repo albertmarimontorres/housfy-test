@@ -98,10 +98,10 @@ import { defineComponent, defineAsyncComponent } from 'vue';
 import { useRealEstateStore } from '@/stores/real-estate.store';
 import type { RealEstateProperty, RealEstateFilters } from '@/types/Property';
 
-// ✅ Lazy loading del componente RealEstateCard (puede ser grande con muchas propiedades)
+// ✅ Lazy loading del componente RealEstateCard para mejor rendimiento
 const RealEstateCard = defineAsyncComponent({
   loader: () => import(/* webpackChunkName: "real-estate-components" */ '@/components/domain/RealEstateCard.vue'),
-  // Loading component mientras se carga - Con distribución correcta
+  // Componente de carga mientras se carga
   loadingComponent: {
     template: `
       <div style="height: 400px;">
@@ -143,8 +143,8 @@ export default defineComponent({
     await this.realEstateStore.fetchProperties();
   },
   methods: {
-    // Frontend filtering since API doesn't support filters yet
-    // TODO: When backend filtering is ready, this method would be:
+    // Filtrado en frontend ya que la API no soporta filtros aún
+    // TODO: Cuando el filtrado en backend esté listo, este método sería:
     // async applyFilters() {
     //   const cleanFilters = Object.fromEntries(
     //     Object.entries(this.filters).filter(([_, value]) =>
@@ -155,35 +155,31 @@ export default defineComponent({
     // }
     
     applyFilters() {
-      console.log('RealEstateView.applyFilters called with:', this.filters);
-      
-      // Clean empty values from filters
+      // Limpiar valores vacíos de los filtros
       const cleanFilters = Object.fromEntries(
         Object.entries(this.filters).filter(([_, value]) =>
           value !== null && value !== undefined && value !== ''
         )
       );
 
-      console.log('Clean filters:', cleanFilters);
-
-      // Apply filters on frontend since backend API is not ready for filtering
+      // Aplicar filtros en frontend ya que la API backend no está lista para filtrado
       this.realEstateStore.applyFilters(cleanFilters);
     },
     
+    // Actualizar todas las propiedades y aplicar filtros actuales
     async refreshProperties() {
-      // Fetch all properties and apply current filters
       await this.realEstateStore.fetchProperties();
       if (Object.keys(this.filters).some(key => this.filters[key as keyof RealEstateFilters] !== undefined)) {
         this.applyFilters();
       }
     },
-    handlePropertyClick(property: RealEstateProperty) {
-      console.log('Property clicked:', property);
-      // TODO: Navigate to property detail view
+    // Manejo de clic en propiedad
+    handlePropertyClick(_property: RealEstateProperty) {
+      // TODO: Navegar a vista de detalle de propiedad
     },
-    handleViewDetails(property: RealEstateProperty) {
-      console.log('View details for property:', property);
-      // TODO: Open property detail modal or navigate to detail page
+    // Manejo de ver detalles de propiedad
+    handleViewDetails(_property: RealEstateProperty) {
+      // TODO: Abrir modal de detalle o navegar a página de detalle
     },
   },
 });

@@ -2,7 +2,7 @@
   <v-app>
     <v-container fluid class="fill-height pa-0">
       <v-row no-gutters class="fill-height">
-        <!-- Columna izquierda - Hidden on mobile -->
+        <!-- Columna izquierda - Oculto en móvil -->
         <v-col 
           cols="12" 
           md="6" 
@@ -35,10 +35,10 @@
           class="d-flex align-center justify-center"
           :class="{ 'mobile-bg': $vuetify.display.mobile }"
         >
-          <!-- Mobile background overlay -->
+          <!-- Fondo móvil superpuesto -->
           <div v-if="$vuetify.display.mobile" class="mobile-bg-overlay"></div>
           
-          <!-- Form container with mobile styling -->
+          <!-- Contenedor del formulario con estilo móvil -->
           <div class="form-container" :class="{ 'mobile-form': $vuetify.display.mobile }">
             <router-view />
           </div>
@@ -74,7 +74,7 @@ export default defineComponent({ name: 'PublicLayout' });
   z-index: 1;
 }
 
-/* Mobile background styling */
+/* Móvil background */
 .mobile-bg {
   position: relative;
   background: url('https://static0.housfy.com/prod/blog/images/2019/04/30155650/DSC04355.jpg') center center/cover no-repeat;
@@ -83,7 +83,7 @@ export default defineComponent({ name: 'PublicLayout' });
 }
 
 .mobile-bg-overlay {
-  /* Remove this overlay - we want the image to be clear */
+  /* Eliminar overlay - queremos que la imagen esté clara */
   display: none;
 }
 
@@ -111,7 +111,6 @@ export default defineComponent({ name: 'PublicLayout' });
   overflow: hidden;
 }
 
-/* Add a subtle inner glow for better readability */
 .mobile-form::before {
   content: '';
   position: absolute;
@@ -124,7 +123,7 @@ export default defineComponent({ name: 'PublicLayout' });
   z-index: -1;
 }
 
-/* Ensure text is readable in mobile form */
+/* Asegurar que el texto sea legible en el formulario móvil */
 .mobile-form :deep(.v-field__input),
 .mobile-form :deep(.v-field__label),
 .mobile-form :deep(.v-btn),
@@ -201,7 +200,7 @@ export default defineComponent({ name: 'PublicLayout' });
   line-height: 1.2;
 }
 
-/* Responsive adjustments */
+/* Responsive ajustes */
 @media (max-width: 960px) {
   .slogan-text {
     font-size: 1.8rem;

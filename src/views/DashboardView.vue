@@ -117,12 +117,15 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'DashboardView',
   methods: {
+    // Navegación a la sección de inmobiliaria (ventas)
     navigateToRealEstate() {
       this.$router.push('/app/real-estate');
     },
+    // Navegación a la sección de alquileres
     navigateToRentals() {
       this.$router.push('/app/rentals');
     },
+    // Navegación a la sección de hipotecas
     navigateToMortgages() {
       this.$router.push('/app/mortgages');
     },
@@ -141,7 +144,7 @@ export default defineComponent({
   padding: 20px 0;
 }
 
-/* Navigation Cards */
+/* Tarjetas de navegación principal */
 .navigation-card {
   height: 280px;
   cursor: pointer;
@@ -166,7 +169,7 @@ export default defineComponent({
   opacity: 0.95;
 }
 
-/* Modern gradient backgrounds */
+/* Gradientes modernos específicos por sección */
 .real-estate-gradient {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
@@ -179,7 +182,7 @@ export default defineComponent({
   background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
 }
 
-/* Icon styling */
+/* Estilizado de iconos */
 .icon-container {
   position: relative;
   z-index: 2;
@@ -189,12 +192,12 @@ export default defineComponent({
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
-/* Card content positioning */
+/* Posicionamiento del contenido de las tarjetas */
 .v-card-text {
   z-index: 2;
 }
 
-/* Glassmorphism effect on hover */
+/* Efecto glassmorphism al hacer hover */
 .navigation-card:hover .card-gradient::after {
   content: '';
   position: absolute;
@@ -206,7 +209,7 @@ export default defineComponent({
   backdrop-filter: blur(10px);
 }
 
-/* Stats card styling */
+/* Estilizado de la tarjeta de estadísticas */
 .stats-card {
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   border-radius: 12px !important;
@@ -216,7 +219,7 @@ export default defineComponent({
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Chips styling */
+/* Estilizado de chips */
 .v-chip {
   backdrop-filter: blur(10px);
   background: rgba(255, 255, 255, 0.2) !important;
@@ -224,7 +227,7 @@ export default defineComponent({
   color: white !important;
 }
 
-/* Responsive adjustments */
+/* Ajustes responsivos */
 @media (max-width: 960px) {
   .dashboard-view {
     padding: 16px;
@@ -240,7 +243,7 @@ export default defineComponent({
   }
 }
 
-/* Add subtle animations */
+/* Animaciones sutiles */
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }

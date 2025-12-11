@@ -64,7 +64,7 @@ export default defineComponent({
   },
 
   methods: {
-    // Email validation removed as per user request
+    // Manejo del login de usuario
     async handleLogin() {
       const auth = useAuthStore();
       await auth.login({
@@ -93,21 +93,21 @@ export default defineComponent({
   justify-content: center;
 }
 
-/* Desktop styling - white card */
+/* Estilizado para escritorio */
 .desktop-card {
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 16px 0 rgba(0,0,0,0.08);
 }
 
-/* Mobile styling - transparent background */
+/* Estilizado móvil - fondo transparente */
 .mobile-transparent {
   background: transparent;
   border-radius: 0;
   box-shadow: none;
 }
 
-/* Mobile text styling for better contrast */
+/* Estilizado de texto móvil para mejor contraste */
 @media (max-width: 960px) {
   .mobile-transparent h2 {
     color: rgba(0, 0, 0, 0.95) !important;

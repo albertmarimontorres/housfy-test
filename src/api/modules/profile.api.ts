@@ -8,7 +8,6 @@ export const profileApi = {
   async getProfile(): Promise<ProfileResponse> {
     const response = await http.get<ProfileResponse>('/profile');
     
-    // Handle edge cases where response might not have expected structure
     if (!response) {
       throw new Error('No response received from server');
     }
