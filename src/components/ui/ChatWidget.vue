@@ -13,24 +13,15 @@
       aria-label="Abrir chat con asistente virtual"
     >
       <v-icon size="28">mdi-robot-outline</v-icon>
-      
+
       <!-- Tooltip que aparece al hover -->
-      <v-tooltip
-        activator="parent"
-        location="left"
-        :open-delay="200"
-      >
+      <v-tooltip activator="parent" location="left" :open-delay="200">
         <span class="tooltip-text">¿Necesitas ayuda?</span>
       </v-tooltip>
     </v-btn>
 
     <!-- Chat expandido -->
-    <v-card
-      v-if="isOpen"
-      class="chat-container"
-      elevation="12"
-      rounded="lg"
-    >
+    <v-card v-if="isOpen" class="chat-container" elevation="12" rounded="lg">
       <!-- Header del chat -->
       <v-card-title class="chat-header d-flex align-center pa-4">
         <v-avatar size="32" color="primary" class="mr-3">
@@ -38,15 +29,9 @@
         </v-avatar>
         <div class="flex-grow-1">
           <div class="text-subtitle-1 font-weight-bold">Asistente Virtual</div>
-          <div class="text-caption" style="color: rgba(255, 255, 255, 0.8);">En línea</div>
+          <div class="text-caption" style="color: rgba(255, 255, 255, 0.8)">En línea</div>
         </div>
-        <v-btn
-          @click="toggleChat"
-          data-testid="close-button"
-          icon
-          size="small"
-          variant="text"
-        >
+        <v-btn @click="toggleChat" data-testid="close-button" icon size="small" variant="text">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
@@ -187,7 +172,7 @@ export default defineComponent({
 
       const userMessage = chatService.createUserMessage(this.currentMessage);
       this.messages.push(userMessage);
-      
+
       const messageToSend = this.currentMessage;
       this.currentMessage = '';
       this.isLoading = true;
@@ -197,7 +182,7 @@ export default defineComponent({
 
       try {
         const response = await chatService.sendMessage(messageToSend);
-        
+
         if (response.success) {
           const assistantMessage = chatService.createAssistantMessage(response.output);
           this.messages.push(assistantMessage);
@@ -271,7 +256,11 @@ export default defineComponent({
 }
 
 .chat-header {
-  background: linear-gradient(135deg, rgb(var(--v-theme-primary)) 0%, rgb(var(--v-theme-primary-darken-1)) 100%);
+  background: linear-gradient(
+    135deg,
+    rgb(var(--v-theme-primary)) 0%,
+    rgb(var(--v-theme-primary-darken-1)) 100%
+  );
   color: white;
   flex-shrink: 0;
 }
@@ -361,11 +350,17 @@ export default defineComponent({
   animation: typing 1.4s infinite ease-in-out;
 }
 
-.typing-dots span:nth-child(1) { animation-delay: -0.32s; }
-.typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+.typing-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+.typing-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
 
 @keyframes typing {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     transform: scale(0.8);
     opacity: 0.4;
   }
@@ -398,18 +393,18 @@ export default defineComponent({
     bottom: 16px;
     right: 16px;
   }
-  
+
   .chat-container {
     width: calc(100vw - 32px);
     height: calc(100vh - 200px);
     max-width: 380px;
     max-height: 500px;
   }
-  
+
   .message-wrapper.user-message {
     margin-left: 40px;
   }
-  
+
   .message-wrapper.assistant-message {
     margin-right: 40px;
   }

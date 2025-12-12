@@ -20,9 +20,9 @@ describe('Chat API - Flujo Principal', () => {
       const expectedResponse: ChatResponse = {
         success: true,
         message: 'Success',
-        output: '¡Hola! Estoy aquí para ayudarte. ¿En qué puedo asistirte?'
+        output: '¡Hola! Estoy aquí para ayudarte. ¿En qué puedo asistirte?',
       };
-      
+
       (mockHttp.post as any).mockResolvedValue({ data: expectedResponse });
 
       // Act
@@ -31,7 +31,7 @@ describe('Chat API - Flujo Principal', () => {
       // Assert - Verificar llamada HTTP
       expect(mockHttp.post).toHaveBeenCalledWith('/ai-chat', { input });
       expect(mockHttp.post).toHaveBeenCalledTimes(1);
-      
+
       // Assert - Verificar respuesta
       expect(result.success).toBe(true);
       expect(result.output).toBe('¡Hola! Estoy aquí para ayudarte. ¿En qué puedo asistirte?');

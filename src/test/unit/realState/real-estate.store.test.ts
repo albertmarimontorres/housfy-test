@@ -64,8 +64,8 @@ describe('Real Estate Store', () => {
           status: 'Publicado',
           propertyPriceMinUnit: 250000,
           last_status_changed_at: '2023-01-15T10:30:00Z',
-          created_at: '2023-01-01T00:00:00Z'
-        }
+          created_at: '2023-01-01T00:00:00Z',
+        },
       ];
 
       // Act
@@ -82,8 +82,26 @@ describe('Real Estate Store', () => {
 
       // Act
       store.filteredProperties = [
-        { uuid: '1', propertyStreet: 'Calle A', propertyStreetNumber: 1, propertyFloor: 1, status: 'Publicado', propertyPriceMinUnit: 100000, last_status_changed_at: '2023-01-01', created_at: '2023-01-01' },
-        { uuid: '2', propertyStreet: 'Calle B', propertyStreetNumber: 2, propertyFloor: 2, status: 'Reservado', propertyPriceMinUnit: 200000, last_status_changed_at: '2023-01-01', created_at: '2023-01-01' }
+        {
+          uuid: '1',
+          propertyStreet: 'Calle A',
+          propertyStreetNumber: 1,
+          propertyFloor: 1,
+          status: 'Publicado',
+          propertyPriceMinUnit: 100000,
+          last_status_changed_at: '2023-01-01',
+          created_at: '2023-01-01',
+        },
+        {
+          uuid: '2',
+          propertyStreet: 'Calle B',
+          propertyStreetNumber: 2,
+          propertyFloor: 2,
+          status: 'Reservado',
+          propertyPriceMinUnit: 200000,
+          last_status_changed_at: '2023-01-01',
+          created_at: '2023-01-01',
+        },
       ];
 
       // Assert
@@ -99,7 +117,16 @@ describe('Real Estate Store', () => {
 
       // Con propiedades
       store.filteredProperties = [
-        { uuid: '1', propertyStreet: 'Calle A', propertyStreetNumber: 1, propertyFloor: 1, status: 'Publicado', propertyPriceMinUnit: 100000, last_status_changed_at: '2023-01-01', created_at: '2023-01-01' }
+        {
+          uuid: '1',
+          propertyStreet: 'Calle A',
+          propertyStreetNumber: 1,
+          propertyFloor: 1,
+          status: 'Publicado',
+          propertyPriceMinUnit: 100000,
+          last_status_changed_at: '2023-01-01',
+          created_at: '2023-01-01',
+        },
       ];
       expect(store.hasProperties).toBe(true);
     });
@@ -110,9 +137,36 @@ describe('Real Estate Store', () => {
 
       // Act
       store.filteredProperties = [
-        { uuid: '1', propertyStreet: 'Calle A', propertyStreetNumber: 1, propertyFloor: 1, status: 'Publicado', propertyPriceMinUnit: 100000, last_status_changed_at: '2023-01-01', created_at: '2023-01-01' },
-        { uuid: '2', propertyStreet: 'Calle B', propertyStreetNumber: 2, propertyFloor: 2, status: 'Publicado', propertyPriceMinUnit: 200000, last_status_changed_at: '2023-01-01', created_at: '2023-01-01' },
-        { uuid: '3', propertyStreet: 'Calle C', propertyStreetNumber: 3, propertyFloor: 3, status: 'Reservado', propertyPriceMinUnit: 300000, last_status_changed_at: '2023-01-01', created_at: '2023-01-01' }
+        {
+          uuid: '1',
+          propertyStreet: 'Calle A',
+          propertyStreetNumber: 1,
+          propertyFloor: 1,
+          status: 'Publicado',
+          propertyPriceMinUnit: 100000,
+          last_status_changed_at: '2023-01-01',
+          created_at: '2023-01-01',
+        },
+        {
+          uuid: '2',
+          propertyStreet: 'Calle B',
+          propertyStreetNumber: 2,
+          propertyFloor: 2,
+          status: 'Publicado',
+          propertyPriceMinUnit: 200000,
+          last_status_changed_at: '2023-01-01',
+          created_at: '2023-01-01',
+        },
+        {
+          uuid: '3',
+          propertyStreet: 'Calle C',
+          propertyStreetNumber: 3,
+          propertyFloor: 3,
+          status: 'Reservado',
+          propertyPriceMinUnit: 300000,
+          last_status_changed_at: '2023-01-01',
+          created_at: '2023-01-01',
+        },
       ];
 
       // Assert
@@ -143,9 +197,9 @@ describe('Real Estate Store', () => {
               status: 'Publicado',
               propertyPriceMinUnit: 250000,
               last_status_changed_at: '2023-01-15T10:30:00Z',
-              created_at: '2023-01-01T00:00:00Z'
-            }
-          ]
+              created_at: '2023-01-01T00:00:00Z',
+            },
+          ],
         };
 
         mockGetRealEstateProperties.mockResolvedValue(mockResponse);
@@ -176,7 +230,7 @@ describe('Real Estate Store', () => {
               status: 'Publicado',
               propertyPriceMinUnit: 250000,
               last_status_changed_at: '2023-01-15T10:30:00Z',
-              created_at: '2023-01-01T00:00:00Z'
+              created_at: '2023-01-01T00:00:00Z',
             },
             {
               uuid: '2',
@@ -186,13 +240,13 @@ describe('Real Estate Store', () => {
               status: 'Reservado',
               propertyPriceMinUnit: 180000,
               last_status_changed_at: '2023-02-01T14:20:00Z',
-              created_at: '2023-01-15T00:00:00Z'
-            }
-          ]
+              created_at: '2023-01-15T00:00:00Z',
+            },
+          ],
         };
 
         const filters: RealEstateFilters = {
-          status: 'Publicado'
+          status: 'Publicado',
         };
 
         mockGetRealEstateProperties.mockResolvedValue(mockResponse);
@@ -213,7 +267,7 @@ describe('Real Estate Store', () => {
         const mockResponse: RealEstateResponse = {
           success: true,
           message: 'OK',
-          properties: []
+          properties: [],
         };
 
         let resolvePromise: (value: any) => void;
@@ -246,7 +300,7 @@ describe('Real Estate Store', () => {
         const mockResponse = {
           success: false,
           message: 'Error del servidor',
-          properties: null
+          properties: null,
         };
 
         mockGetRealEstateProperties.mockResolvedValue(mockResponse);
@@ -267,7 +321,7 @@ describe('Real Estate Store', () => {
         const mockResponse = {
           success: true,
           message: 'Respuesta sin propiedades',
-          properties: null
+          properties: null,
         };
 
         mockGetRealEstateProperties.mockResolvedValue(mockResponse);
@@ -289,8 +343,8 @@ describe('Real Estate Store', () => {
         // Simular estructura de error de Axios
         (apiError as any).response = {
           data: {
-            message: 'Error de conexión'
-          }
+            message: 'Error de conexión',
+          },
         };
 
         mockGetRealEstateProperties.mockRejectedValue(apiError);
@@ -303,7 +357,10 @@ describe('Real Estate Store', () => {
         expect(store.filteredProperties).toEqual([]);
         expect(store.error).toBe('Error de conexión');
         expect(store.loading).toBe(false);
-        expect(console.error).toHaveBeenCalledWith('Error fetching real estate properties:', apiError);
+        expect(console.error).toHaveBeenCalledWith(
+          'Error fetching real estate properties:',
+          apiError
+        );
       });
 
       it('debería manejar errores sin response.data', async () => {
@@ -338,7 +395,7 @@ describe('Real Estate Store', () => {
           status: 'Publicado',
           propertyPriceMinUnit: 250000,
           last_status_changed_at: '2023-01-01',
-          created_at: '2023-01-01'
+          created_at: '2023-01-01',
         },
         {
           uuid: '2',
@@ -348,7 +405,7 @@ describe('Real Estate Store', () => {
           status: 'Reservado',
           propertyPriceMinUnit: 180000,
           last_status_changed_at: '2023-01-01',
-          created_at: '2023-01-01'
+          created_at: '2023-01-01',
         },
         {
           uuid: '3',
@@ -358,8 +415,8 @@ describe('Real Estate Store', () => {
           status: 'Publicado',
           propertyPriceMinUnit: 320000,
           last_status_changed_at: '2023-01-01',
-          created_at: '2023-01-01'
-        }
+          created_at: '2023-01-01',
+        },
       ];
       store.filteredProperties = [...store.allProperties];
     });
@@ -422,7 +479,7 @@ describe('Real Estate Store', () => {
       const store = useRealEstateStore();
       const filters: RealEstateFilters = {
         status: 'Publicado',
-        minPrice: 300000
+        minPrice: 300000,
       };
 
       // Act
@@ -454,7 +511,7 @@ describe('Real Estate Store', () => {
         status: 'Publicado',
         minPrice: null as any,
         maxPrice: undefined,
-        propertyStreet: undefined
+        propertyStreet: undefined,
       };
 
       // Act
@@ -494,7 +551,18 @@ describe('Real Estate Store', () => {
     it('clearProperties debería limpiar todo el estado', () => {
       // Arrange
       const store = useRealEstateStore();
-      store.allProperties = [{ uuid: '1', propertyStreet: 'Test', propertyStreetNumber: 1, propertyFloor: 1, status: 'Test', propertyPriceMinUnit: 100000, last_status_changed_at: '2023-01-01', created_at: '2023-01-01' }];
+      store.allProperties = [
+        {
+          uuid: '1',
+          propertyStreet: 'Test',
+          propertyStreetNumber: 1,
+          propertyFloor: 1,
+          status: 'Test',
+          propertyPriceMinUnit: 100000,
+          last_status_changed_at: '2023-01-01',
+          created_at: '2023-01-01',
+        },
+      ];
       store.filteredProperties = [...store.allProperties];
       store.error = 'Some error';
       store.filters = { status: 'Test' };
@@ -520,7 +588,7 @@ describe('Real Estate Store', () => {
         status: 'Test',
         propertyPriceMinUnit: 100000,
         last_status_changed_at: '2023-01-01',
-        created_at: '2023-01-01'
+        created_at: '2023-01-01',
       };
       store.allProperties = [testProperty];
 
@@ -555,7 +623,16 @@ describe('Real Estate Store', () => {
 
       // Cambiar estado
       store.filteredProperties = [
-        { uuid: '1', propertyStreet: 'Test', propertyStreetNumber: 1, propertyFloor: 1, status: 'Test', propertyPriceMinUnit: 100000, last_status_changed_at: '2023-01-01', created_at: '2023-01-01' }
+        {
+          uuid: '1',
+          propertyStreet: 'Test',
+          propertyStreetNumber: 1,
+          propertyFloor: 1,
+          status: 'Test',
+          propertyPriceMinUnit: 100000,
+          last_status_changed_at: '2023-01-01',
+          created_at: '2023-01-01',
+        },
       ];
 
       // Verificar reactividad

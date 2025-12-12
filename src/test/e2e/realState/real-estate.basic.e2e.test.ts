@@ -5,7 +5,6 @@ import { test, expect } from '@playwright/test';
  * Optimizados para funcionar sin servidor de desarrollo
  */
 test.describe('Real Estate E2E - Tests Básicos', () => {
-  
   test('debe poder acceder a la ruta de real-estate con autenticación mock', async ({ page }) => {
     // Mock de JWT token en localStorage para simular usuario autenticado
     await page.addInitScript(() => {
@@ -32,23 +31,22 @@ test.describe('Real Estate E2E - Tests Básicos', () => {
               squareMeters: 85,
               bedrooms: 3,
               bathrooms: 2,
-              status: 'En venta'
-            }
-          ]
-        })
+              status: 'En venta',
+            },
+          ],
+        }),
       });
     });
 
     try {
       // Intentar navegar directamente a la ruta de propiedades
       await page.goto('/app/real-estate');
-      
+
       // Verificar que la página se carga (aunque pueda redirigir por auth)
       await page.waitForLoadState('networkidle');
-      
+
       // Si la página carga correctamente, el test pasa
       expect(page.url()).toBeTruthy();
-      
     } catch (error) {
       // Si hay redirección por auth, verificar que al menos la app responde
       const currentUrl = page.url();
@@ -67,8 +65,8 @@ test.describe('Real Estate E2E - Tests Básicos', () => {
         body: JSON.stringify({
           success: true,
           message: 'Test endpoint response',
-          properties: []
-        })
+          properties: [],
+        }),
       });
     });
 
@@ -95,7 +93,7 @@ test.describe('Real Estate E2E - Tests Básicos', () => {
       squareMeters: 85,
       bedrooms: 3,
       bathrooms: 2,
-      status: 'En venta'
+      status: 'En venta',
     };
 
     // Verificar estructura de datos
@@ -121,9 +119,9 @@ test.describe('Real Estate E2E - Tests Básicos', () => {
           squareMeters: 50,
           bedrooms: 2,
           bathrooms: 1,
-          status: 'Test Status'
-        }
-      ]
+          status: 'Test Status',
+        },
+      ],
     };
 
     // Verificar estructura de respuesta

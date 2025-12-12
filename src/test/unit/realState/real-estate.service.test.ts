@@ -1,7 +1,19 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { RealEstateService, getRealEstateProperties, getRealEstateProperty, formatPrice, formatAddress, getStatusLabel, getStatusColor } from '@/services/real-estate.service';
+import {
+  RealEstateService,
+  getRealEstateProperties,
+  getRealEstateProperty,
+  formatPrice,
+  formatAddress,
+  getStatusLabel,
+  getStatusColor,
+} from '@/services/real-estate.service';
 import { realEstateApi } from '@/api/modules/real-estate.api';
-import { formatAddress as baseFormatAddress, formatPropertyPrice, getStatusConfig } from '@/services/property.service';
+import {
+  formatAddress as baseFormatAddress,
+  formatPropertyPrice,
+  getStatusConfig,
+} from '@/services/property.service';
 import type { RealEstateResponse, RealEstateFilters } from '@/types/Property';
 
 // Mock de la API
@@ -23,13 +35,13 @@ describe('Real Estate Service', () => {
     mockPropertyService = {
       formatAddress: vi.mocked(baseFormatAddress),
       formatPropertyPrice: vi.mocked(formatPropertyPrice),
-      getStatusConfig: vi.mocked(getStatusConfig)
+      getStatusConfig: vi.mocked(getStatusConfig),
     };
 
     // Configuración por defecto para getStatusConfig
     mockPropertyService.getStatusConfig.mockImplementation((status: string, _type: string) => ({
       label: status === 'Publicado' ? 'Disponible' : status,
-      color: status === 'Publicado' ? 'green' : 'blue'
+      color: status === 'Publicado' ? 'green' : 'blue',
     }));
   });
 
@@ -53,9 +65,9 @@ describe('Real Estate Service', () => {
               status: 'Publicado',
               propertyPriceMinUnit: 250000,
               last_status_changed_at: '2023-01-15T10:30:00Z',
-              created_at: '2023-01-01T00:00:00Z'
-            }
-          ]
+              created_at: '2023-01-01T00:00:00Z',
+            },
+          ],
         };
 
         mockRealEstateApi.getProperties.mockResolvedValue(mockResponse);
@@ -74,13 +86,13 @@ describe('Real Estate Service', () => {
         const filters: RealEstateFilters = {
           status: 'Publicado',
           minPrice: 200000,
-          maxPrice: 500000
+          maxPrice: 500000,
         };
 
         const mockResponse: RealEstateResponse = {
           success: true,
           message: 'Propiedades filtradas',
-          properties: []
+          properties: [],
         };
 
         mockRealEstateApi.getProperties.mockResolvedValue(mockResponse);
@@ -98,7 +110,7 @@ describe('Real Estate Service', () => {
         const mockResponse: RealEstateResponse = {
           success: true,
           message: 'No hay propiedades disponibles',
-          properties: []
+          properties: [],
         };
 
         mockRealEstateApi.getProperties.mockResolvedValue(mockResponse);
@@ -129,7 +141,9 @@ describe('Real Estate Service', () => {
         mockRealEstateApi.getProperties.mockRejectedValue(unknownError);
 
         // Act & Assert
-        await expect(RealEstateService.getProperties()).rejects.toThrow('Error desconocido al obtener las propiedades inmobiliarias');
+        await expect(RealEstateService.getProperties()).rejects.toThrow(
+          'Error desconocido al obtener las propiedades inmobiliarias'
+        );
       });
 
       it('debería manejar error null/undefined', async () => {
@@ -137,7 +151,9 @@ describe('Real Estate Service', () => {
         mockRealEstateApi.getProperties.mockRejectedValue(null);
 
         // Act & Assert
-        await expect(RealEstateService.getProperties()).rejects.toThrow('Error desconocido al obtener las propiedades inmobiliarias');
+        await expect(RealEstateService.getProperties()).rejects.toThrow(
+          'Error desconocido al obtener las propiedades inmobiliarias'
+        );
       });
     });
 
@@ -147,7 +163,7 @@ describe('Real Estate Service', () => {
         const mockResponse: RealEstateResponse = {
           success: true,
           message: 'OK',
-          properties: []
+          properties: [],
         };
 
         mockRealEstateApi.getProperties.mockResolvedValue(mockResponse);
@@ -156,7 +172,7 @@ describe('Real Estate Service', () => {
         const promises = [
           RealEstateService.getProperties(),
           RealEstateService.getProperties({ status: 'Publicado' }),
-          RealEstateService.getProperties({ minPrice: 100000 })
+          RealEstateService.getProperties({ minPrice: 100000 }),
         ];
 
         const results = await Promise.all(promises);
@@ -175,22 +191,30 @@ describe('Real Estate Service', () => {
     describe('casos de validación', () => {
       it('debería validar UUID requerido', async () => {
         // Act & Assert
-        await expect(RealEstateService.getPropertyById('')).rejects.toThrow('UUID de la propiedad es requerido');
+        await expect(RealEstateService.getPropertyById('')).rejects.toThrow(
+          'UUID de la propiedad es requerido'
+        );
       });
 
       it('debería validar UUID no es solo espacios', async () => {
         // Act & Assert
-        await expect(RealEstateService.getPropertyById('   ')).rejects.toThrow('UUID de la propiedad es requerido');
+        await expect(RealEstateService.getPropertyById('   ')).rejects.toThrow(
+          'UUID de la propiedad es requerido'
+        );
       });
 
       it('debería validar formato de UUID', async () => {
         // Act & Assert
-        await expect(RealEstateService.getPropertyById('invalid-uuid')).rejects.toThrow('UUID de la propiedad no tiene un formato válido');
+        await expect(RealEstateService.getPropertyById('invalid-uuid')).rejects.toThrow(
+          'UUID de la propiedad no tiene un formato válido'
+        );
       });
 
       it('debería validar UUID con formato correcto pero inválido', async () => {
         // Act & Assert
-        await expect(RealEstateService.getPropertyById('12345678-1234-1234-1234-123456789012')).rejects.toThrow('UUID de la propiedad no tiene un formato válido');
+        await expect(
+          RealEstateService.getPropertyById('12345678-1234-1234-1234-123456789012')
+        ).rejects.toThrow('UUID de la propiedad no tiene un formato válido');
       });
 
       it('debería aceptar UUID válido pero lanzar error de no implementado', async () => {
@@ -198,7 +222,9 @@ describe('Real Estate Service', () => {
         const validUUID = '123e4567-e89b-12d3-a456-426614174000';
 
         // Act & Assert
-        await expect(RealEstateService.getPropertyById(validUUID)).rejects.toThrow('Endpoint para obtener propiedad por ID no está implementado');
+        await expect(RealEstateService.getPropertyById(validUUID)).rejects.toThrow(
+          'Endpoint para obtener propiedad por ID no está implementado'
+        );
       });
 
       it('debería aceptar diferentes variantes de UUID válidos', async () => {
@@ -206,12 +232,14 @@ describe('Real Estate Service', () => {
         const validUUIDs = [
           '123e4567-e89b-12d3-a456-426614174000',
           'A1B2C3D4-E5F6-1234-8901-ABCDEF123456',
-          '00000000-0000-1000-8000-000000000000'
+          '00000000-0000-1000-8000-000000000000',
         ];
 
         // Act & Assert
         for (const uuid of validUUIDs) {
-          await expect(RealEstateService.getPropertyById(uuid)).rejects.toThrow('Endpoint para obtener propiedad por ID no está implementado');
+          await expect(RealEstateService.getPropertyById(uuid)).rejects.toThrow(
+            'Endpoint para obtener propiedad por ID no está implementado'
+          );
         }
       });
     });
@@ -222,12 +250,16 @@ describe('Real Estate Service', () => {
         const uuidWithSpaces = '  123e4567-e89b-12d3-a456-426614174000  ';
 
         // Act & Assert
-        await expect(RealEstateService.getPropertyById(uuidWithSpaces)).rejects.toThrow('Endpoint para obtener propiedad por ID no está implementado');
+        await expect(RealEstateService.getPropertyById(uuidWithSpaces)).rejects.toThrow(
+          'Endpoint para obtener propiedad por ID no está implementado'
+        );
       });
 
       it('debería rechazar UUID con caracteres especiales', async () => {
         // Act & Assert
-        await expect(RealEstateService.getPropertyById('123e4567-e89b-12d3-a456-426614174000!')).rejects.toThrow('UUID de la propiedad no tiene un formato válido');
+        await expect(
+          RealEstateService.getPropertyById('123e4567-e89b-12d3-a456-426614174000!')
+        ).rejects.toThrow('UUID de la propiedad no tiene un formato válido');
       });
     });
   });
@@ -318,7 +350,7 @@ describe('Real Estate Service', () => {
     beforeEach(() => {
       mockPropertyService.getStatusConfig.mockReturnValue({
         label: 'Disponible',
-        color: 'green'
+        color: 'green',
       });
     });
 
@@ -336,7 +368,7 @@ describe('Real Estate Service', () => {
         // Arrange
         mockPropertyService.getStatusConfig.mockReturnValue({
           label: 'Oferta Recibida',
-          color: 'orange'
+          color: 'orange',
         });
 
         // Act
@@ -344,7 +376,10 @@ describe('Real Estate Service', () => {
 
         // Assert
         expect(result).toBe('Oferta Recibida');
-        expect(mockPropertyService.getStatusConfig).toHaveBeenCalledWith('Oferta recibida', 'realEstate');
+        expect(mockPropertyService.getStatusConfig).toHaveBeenCalledWith(
+          'Oferta recibida',
+          'realEstate'
+        );
       });
     });
 
@@ -382,7 +417,7 @@ describe('Real Estate Service', () => {
     beforeEach(() => {
       mockPropertyService.getStatusConfig.mockReturnValue({
         label: 'Disponible',
-        color: 'green'
+        color: 'green',
       });
     });
 
@@ -471,7 +506,7 @@ describe('Real Estate Service', () => {
       expect(formatAddress).toBeDefined();
       expect(getStatusLabel).toBeDefined();
       expect(getStatusColor).toBeDefined();
-      
+
       expect(typeof formatPrice).toBe('function');
       expect(typeof formatAddress).toBe('function');
       expect(typeof getStatusLabel).toBe('function');

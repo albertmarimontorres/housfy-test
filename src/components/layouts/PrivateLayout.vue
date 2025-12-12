@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <!-- Drawer - Oculto en móvil -->
-    <v-navigation-drawer 
-      v-model="drawer" 
+    <v-navigation-drawer
+      v-model="drawer"
       :permanent="!$vuetify.display.mobile"
       :temporary="$vuetify.display.mobile"
       app
@@ -16,8 +16,13 @@
         <div class="ml-4">
           <div class="text-body-2">Hola</div>
           <v-skeleton-loader v-if="profileLoading" type="text" width="120" height="20" />
-          <div v-else class="font-weight-bold text-body-1" v-if="profileStore.user && profileStore.user.fullName">{{
-            formattedFullName }}</div>
+          <div
+            v-else
+            class="font-weight-bold text-body-1"
+            v-if="profileStore.user && profileStore.user.fullName"
+          >
+            {{ formattedFullName }}
+          </div>
         </div>
       </div>
 
@@ -46,7 +51,7 @@
           </template>
           <v-list-item-title>Hipotecas</v-list-item-title>
         </v-list-item>
-        
+
         <!-- Cerrar sesión en el menú móvil -->
         <v-divider v-if="$vuetify.display.mobile" class="my-2" />
         <v-list-item v-if="$vuetify.display.mobile" @click="logout">
@@ -63,23 +68,18 @@
         <div class="w-100 d-flex align-center justify-space-between px-4">
           <div class="d-flex align-center">
             <!-- Menú hamburguesa móvil -->
-            <v-btn 
+            <v-btn
               v-if="$vuetify.display.mobile"
-              icon 
+              icon
               color="white"
               @click="drawer = !drawer"
               class="mr-3"
             >
               <v-icon>mdi-menu</v-icon>
             </v-btn>
-            
+
             <v-icon class="mr-3" size="28">{{ pageIcon }}</v-icon>
-            <v-breadcrumbs
-              :items="breadcrumbItems"
-              color="white"
-              divider="/"
-              class="pa-0"
-            >
+            <v-breadcrumbs :items="breadcrumbItems" color="white" divider="/" class="pa-0">
               <template #item="{ item }">
                 <v-breadcrumbs-item
                   :to="item.to"
@@ -94,13 +94,9 @@
               </template>
             </v-breadcrumbs>
           </div>
-          
+
           <!-- Botón de cerrar sesión - solo visible en escritorio -->
-          <v-tooltip 
-            v-if="!$vuetify.display.mobile"
-            text="Cerrar sesión" 
-            location="bottom"
-          >
+          <v-tooltip v-if="!$vuetify.display.mobile" text="Cerrar sesión" location="bottom">
             <template #activator="{ props }">
               <v-btn icon color="white" v-bind="props" @click="logout">
                 <v-icon>mdi-logout</v-icon>
@@ -122,12 +118,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { useAuthStore } from "@/stores/auth.store";
-import { useProfileStore } from "@/stores/profile.store";
+import { defineComponent } from 'vue';
+import { useAuthStore } from '@/stores/auth.store';
+import { useProfileStore } from '@/stores/profile.store';
 
 export default defineComponent({
-  name: "PrivateLayout",
+  name: 'PrivateLayout',
   data() {
     return {
       drawer: true,
@@ -164,7 +160,12 @@ export default defineComponent({
         Mortgages: 'Hipotecas',
       };
       const routeName = typeof route.name === 'string' ? route.name : '';
-      if (routeName === 'Dashboard' || routeName === 'RealEstate' || routeName === 'Rentals' || routeName === 'Mortgages') {
+      if (
+        routeName === 'Dashboard' ||
+        routeName === 'RealEstate' ||
+        routeName === 'Rentals' ||
+        routeName === 'Mortgages'
+      ) {
         return nameMap[routeName];
       }
       return 'Área privada';
@@ -172,13 +173,13 @@ export default defineComponent({
     breadcrumbItems() {
       const route = this.$route;
       const routeName = typeof route.name === 'string' ? route.name : '';
-      
+
       const breadcrumbs = [
         {
           title: 'Inicio',
           to: '/app/dashboard',
-          disabled: false
-        }
+          disabled: false,
+        },
       ];
 
       const routeMap = {
@@ -193,7 +194,7 @@ export default defineComponent({
         breadcrumbs.push({
           title: currentRoute.title,
           to: currentRoute.to,
-          disabled: true // Página actual deshabilitada
+          disabled: true, // Página actual deshabilitada
         });
       }
 
@@ -208,11 +209,16 @@ export default defineComponent({
         Mortgages: 'mdi-bank',
       };
       const routeName = typeof route.name === 'string' ? route.name : '';
-      if (routeName === 'Dashboard' || routeName === 'RealEstate' || routeName === 'Rentals' || routeName === 'Mortgages') {
+      if (
+        routeName === 'Dashboard' ||
+        routeName === 'RealEstate' ||
+        routeName === 'Rentals' ||
+        routeName === 'Mortgages'
+      ) {
         return iconMap[routeName];
       }
       return 'mdi-home-city';
-    }
+    },
   },
   async mounted() {
     await this.profileStore.fetchProfile();
@@ -221,15 +227,15 @@ export default defineComponent({
     logout() {
       const auth = useAuthStore();
       auth.logout();
-      this.$router.push("/login");
+      this.$router.push('/login');
     },
     closeMobileDrawer() {
       // Cerrar drawer en móvil después de la navegación
       if (this.$vuetify.display.mobile) {
         this.drawer = false;
       }
-    }
-  }
+    },
+  },
 });
 </script>
 

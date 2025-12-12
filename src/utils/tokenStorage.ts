@@ -2,9 +2,9 @@
 // Si se añade un backend, usar cookie HttpOnly + sameSite=Strict para mayor seguridad.
 // * Nota: no soluciona XSS, pero reduce vectores y centraliza la lógica.
 
-const TOKEN_KEY = "auth_token_v1";
-const EXPIRES_KEY = "auth_expires_v1";
-const OBFUSCATION_PREFIX = "hf_"; // Genero ruido para evitar lectura normal
+const TOKEN_KEY = 'auth_token_v1';
+const EXPIRES_KEY = 'auth_expires_v1';
+const OBFUSCATION_PREFIX = 'hf_'; // Genero ruido para evitar lectura normal
 
 export const tokenStorage = {
   set(token: string, expiresInSeconds: number = 3600) {
@@ -34,7 +34,7 @@ export const tokenStorage = {
       // Validación del prefijo
       if (!decoded.startsWith(OBFUSCATION_PREFIX)) return null;
 
-      return decoded.replace(OBFUSCATION_PREFIX, "");
+      return decoded.replace(OBFUSCATION_PREFIX, '');
     } catch {
       return null;
     }
@@ -43,5 +43,5 @@ export const tokenStorage = {
   clear() {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(EXPIRES_KEY);
-  }
+  },
 };

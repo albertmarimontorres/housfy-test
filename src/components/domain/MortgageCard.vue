@@ -7,13 +7,13 @@
         <h3 class="text-h6 font-weight-bold mb-1">{{ mortgage.bank }}</h3>
         <div class="text-body-2 text-green-darken-1">Hipoteca</div>
       </div>
-      
+
       <!-- Status chip -->
       <v-chip
         :color="statusColor"
         size="small"
         class="position-absolute chip-with-shadow status-chip"
-        style="top: 12px; right: 12px; z-index: 2;"
+        style="top: 12px; right: 12px; z-index: 2"
       >
         {{ statusLabel }}
       </v-chip>
@@ -52,7 +52,7 @@
         <span>Creado: {{ mortgageService.formatCreatedAt(mortgage) }}</span>
         <span>Actualizado: {{ mortgageService.formatLastStatusChanged(mortgage) }}</span>
       </div>
-      
+
       <!-- Action buttons -->
       <!-- <div class="d-flex justify-space-between align-center mt-3">
         <v-btn
@@ -78,8 +78,8 @@ export default defineComponent({
   props: {
     mortgage: {
       type: Object as () => Mortgage,
-      required: true
-    }
+      required: true,
+    },
   },
   emits: ['click', 'viewDetails'],
   computed: {
@@ -91,8 +91,8 @@ export default defineComponent({
     },
     mortgageService() {
       return mortgageService;
-    }
-  }
+    },
+  },
 });
 </script>
 
@@ -113,8 +113,8 @@ export default defineComponent({
 }
 
 .mortgage-header {
-  background: linear-gradient(135deg, #E8F5E8 0%, #C8E6C9 100%);
-  border-bottom: 3px solid #4CAF50;
+  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+  border-bottom: 3px solid #4caf50;
   min-height: 120px;
   display: flex;
   flex-direction: column;
@@ -123,18 +123,22 @@ export default defineComponent({
 }
 
 .mortgage-card:hover .mortgage-header {
-  background: linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%);
+  background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
 }
 
 /* Chip styles with shadow and contrast - matching PropertyCard */
 .chip-with-shadow {
   backdrop-filter: blur(8px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    0 1px 3px rgba(0, 0, 0, 0.4) !important;
 }
 
 .chip-with-shadow .v-chip__content {
   font-weight: 700 !important;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8), 0 0 5px rgba(0, 0, 0, 0.5) !important;
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.8),
+    0 0 5px rgba(0, 0, 0, 0.5) !important;
   color: white !important;
   letter-spacing: 0.5px;
 }
@@ -150,35 +154,35 @@ export default defineComponent({
 }
 
 /* Colores específicos para cada estado */
-.status-chip.v-chip[data-v-chip-color="success"],
+.status-chip.v-chip[data-v-chip-color='success'],
 .status-chip.v-chip.text-success,
 .status-chip.v-chip.v-chip--color.bg-success,
 .status-chip.v-chip.v-chip--variant-elevated.bg-success {
   background-color: rgba(46, 125, 50, 0.95) !important;
 }
 
-.status-chip.v-chip[data-v-chip-color="warning"],
+.status-chip.v-chip[data-v-chip-color='warning'],
 .status-chip.v-chip.text-warning,
 .status-chip.v-chip.v-chip--color.bg-warning,
 .status-chip.v-chip.v-chip--variant-elevated.bg-warning {
   background-color: rgba(245, 124, 0, 0.95) !important;
 }
 
-.status-chip.v-chip[data-v-chip-color="error"],
+.status-chip.v-chip[data-v-chip-color='error'],
 .status-chip.v-chip.text-error,
 .status-chip.v-chip.v-chip--color.bg-error,
 .status-chip.v-chip.v-chip--variant-elevated.bg-error {
   background-color: rgba(198, 40, 40, 0.95) !important;
 }
 
-.status-chip.v-chip[data-v-chip-color="info"],
+.status-chip.v-chip[data-v-chip-color='info'],
 .status-chip.v-chip.text-info,
 .status-chip.v-chip.v-chip--color.bg-info,
 .status-chip.v-chip.v-chip--variant-elevated.bg-info {
   background-color: rgba(25, 118, 210, 0.95) !important;
 }
 
-.status-chip.v-chip[data-v-chip-color="grey"],
+.status-chip.v-chip[data-v-chip-color='grey'],
 .status-chip.v-chip.text-grey,
 .status-chip.v-chip.v-chip--color.bg-grey,
 .status-chip.v-chip.v-chip--variant-elevated.bg-grey {

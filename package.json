@@ -15,7 +15,11 @@
     "test:e2e:basic": "playwright test --config=playwright.config.no-server.ts",
     "test:e2e:auth": "playwright test --config=playwright.config.with-server.ts",
     "test:e2e:no-server": "pnpm test:e2e:basic",
-    "test:e2e:with-server": "pnpm test:e2e:auth"
+    "test:e2e:with-server": "pnpm test:e2e:auth",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
+    "lint:fix": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
+    "format": "prettier --write src/",
+    "format:check": "prettier --check src/"
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
@@ -27,19 +31,29 @@
     "vuetify": "^3"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
     "@playwright/test": "^1.57.0",
+    "@types/eslint__js": "^9.14.0",
     "@types/node": "^24.10.1",
+    "@typescript-eslint/eslint-plugin": "^8.49.0",
+    "@typescript-eslint/parser": "^8.49.0",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vitest/coverage-v8": "^4.0.14",
     "@vitest/ui": "^4.0.14",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.8.1",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-vue": "^10.6.2",
     "happy-dom": "^20.0.11",
     "jsdom": "^27.2.0",
+    "prettier": "^3.7.4",
     "sass": "^1.94.2",
     "typescript": "~5.9.3",
+    "typescript-eslint": "^8.49.0",
     "vite": "^7.2.4",
     "vitest": "^4.0.14",
+    "vue-eslint-parser": "^10.2.0",
     "vue-tsc": "^3.1.4"
   }
 }

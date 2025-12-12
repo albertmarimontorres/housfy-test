@@ -15,7 +15,7 @@ describe('Profile Store', () => {
     // Crear nueva instancia de Pinia para cada test
     setActivePinia(createPinia());
     profileStore = useProfileStore();
-    
+
     // Limpiar mocks
     vi.clearAllMocks();
   });
@@ -32,7 +32,7 @@ describe('Profile Store', () => {
       expect(profileStore.$state).toEqual({
         user: null,
         loading: false,
-        error: null
+        error: null,
       });
     });
   });
@@ -45,13 +45,13 @@ describe('Profile Store', () => {
           id: 123,
           email: 'test@example.com',
           fullName: 'Juan Pérez',
-          createdAt: '2023-01-01T00:00:00Z'
+          createdAt: '2023-01-01T00:00:00Z',
         };
 
         const mockResponse: ProfileResponse = {
           success: true,
           message: 'Perfil obtenido correctamente',
-          user: mockUser
+          user: mockUser,
         };
 
         mockGetProfile.mockResolvedValue(mockResponse);
@@ -76,8 +76,8 @@ describe('Profile Store', () => {
             id: 1,
             email: 'test@example.com',
             fullName: 'Test User',
-            createdAt: '2023-01-01T00:00:00Z'
-          }
+            createdAt: '2023-01-01T00:00:00Z',
+          },
         };
 
         mockGetProfile.mockImplementation(async () => {
@@ -96,7 +96,7 @@ describe('Profile Store', () => {
       it('debería limpiar error previo al iniciar fetch', async () => {
         // Arrange
         profileStore.error = 'Error previo';
-        
+
         const mockResponse: ProfileResponse = {
           success: true,
           message: 'OK',
@@ -104,8 +104,8 @@ describe('Profile Store', () => {
             id: 1,
             email: 'test@example.com',
             fullName: 'Test User',
-            createdAt: '2023-01-01T00:00:00Z'
-          }
+            createdAt: '2023-01-01T00:00:00Z',
+          },
         };
 
         mockGetProfile.mockResolvedValue(mockResponse);
@@ -123,13 +123,13 @@ describe('Profile Store', () => {
           id: 456,
           email: 'nuevo@example.com',
           fullName: 'Usuario Nuevo',
-          createdAt: '2023-06-01T00:00:00Z'
+          createdAt: '2023-06-01T00:00:00Z',
         };
 
         const mockResponse: ProfileResponse = {
           success: true,
           message: 'Perfil actualizado',
-          user: mockUser
+          user: mockUser,
         };
 
         mockGetProfile.mockResolvedValue(mockResponse);
@@ -150,7 +150,7 @@ describe('Profile Store', () => {
         const mockResponse = {
           success: true,
           message: 'Sin datos de usuario',
-          user: null
+          user: null,
         };
 
         mockGetProfile.mockResolvedValue(mockResponse);
@@ -195,7 +195,7 @@ describe('Profile Store', () => {
         const mockResponse = {
           success: true,
           message: 'Usuario no disponible temporalmente',
-          user: undefined
+          user: undefined,
         };
 
         mockGetProfile.mockResolvedValue(mockResponse);
@@ -214,9 +214,9 @@ describe('Profile Store', () => {
         const error = {
           response: {
             data: {
-              message: 'Error del servidor'
-            }
-          }
+              message: 'Error del servidor',
+            },
+          },
         };
         mockGetProfile.mockRejectedValue(error);
 
@@ -299,8 +299,8 @@ describe('Profile Store', () => {
             id: 1,
             email: 'concurrent@test.com',
             fullName: 'Concurrent User',
-            createdAt: '2023-01-01T00:00:00Z'
-          }
+            createdAt: '2023-01-01T00:00:00Z',
+          },
         };
 
         mockGetProfile.mockResolvedValue(mockResponse);
@@ -309,7 +309,7 @@ describe('Profile Store', () => {
         const promises = [
           profileStore.fetchProfile(),
           profileStore.fetchProfile(),
-          profileStore.fetchProfile()
+          profileStore.fetchProfile(),
         ];
 
         await Promise.all(promises);
@@ -343,7 +343,7 @@ describe('Profile Store', () => {
         id: 123,
         email: 'test@example.com',
         fullName: 'Test User',
-        createdAt: '2023-01-01T00:00:00Z'
+        createdAt: '2023-01-01T00:00:00Z',
       };
       profileStore.error = 'Some error';
 
@@ -362,7 +362,7 @@ describe('Profile Store', () => {
         id: 123,
         email: 'test@example.com',
         fullName: 'Test User',
-        createdAt: '2023-01-01T00:00:00Z'
+        createdAt: '2023-01-01T00:00:00Z',
       };
 
       // Act
@@ -397,8 +397,8 @@ describe('Profile Store', () => {
           id: 123,
           email: 'integration@test.com',
           fullName: 'Integration User',
-          createdAt: '2023-01-01T00:00:00Z'
-        }
+          createdAt: '2023-01-01T00:00:00Z',
+        },
       };
 
       mockGetProfile.mockResolvedValue(mockResponse);
@@ -427,7 +427,7 @@ describe('Profile Store', () => {
         id: 1,
         email: 'test1@example.com',
         fullName: 'Test User 1',
-        createdAt: '2023-01-01T00:00:00Z'
+        createdAt: '2023-01-01T00:00:00Z',
       };
 
       // Assert - Ambos stores comparten el mismo estado (Pinia singleton)
@@ -444,8 +444,8 @@ describe('Profile Store', () => {
           id: 456,
           email: 'recovery@test.com',
           fullName: 'Recovery User',
-          createdAt: '2023-01-01T00:00:00Z'
-        }
+          createdAt: '2023-01-01T00:00:00Z',
+        },
       };
 
       // Act - Error

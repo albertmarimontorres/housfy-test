@@ -16,7 +16,13 @@
               </div>
             </div>
 
-            <v-btn color="primary" size="large" @click="refreshMortgages" :loading="loading" class="align-self-start align-self-md-center">
+            <v-btn
+              color="primary"
+              size="large"
+              @click="refreshMortgages"
+              :loading="loading"
+              class="align-self-start align-self-md-center"
+            >
               <v-icon start>mdi-refresh</v-icon>
               Actualizar
             </v-btn>
@@ -40,18 +46,10 @@
                 />
               </v-col>
               <v-col cols="12" sm="6" md="3">
-                <v-text-field
-                  v-model="filters.city"
-                  label="Ciudad"
-                  clearable
-                />
+                <v-text-field v-model="filters.city" label="Ciudad" clearable />
               </v-col>
               <v-col cols="12" sm="6" md="3">
-                <v-text-field
-                  v-model="filters.bank"
-                  label="Banco"
-                  clearable
-                />
+                <v-text-field v-model="filters.bank" label="Banco" clearable />
               </v-col>
               <v-col cols="12" sm="6" md="3">
                 <v-text-field
@@ -68,42 +66,20 @@
         <!-- Loading State -->
         <div v-if="loading">
           <v-row>
-            <v-col
-              v-for="n in 6"
-              :key="n"
-              cols="12"
-              sm="6"
-              md="4"
-              lg="3"
-            >
-              <v-skeleton-loader
-                type="card"
-                height="300"
-              />
+            <v-col v-for="n in 6" :key="n" cols="12" sm="6" md="4" lg="3">
+              <v-skeleton-loader type="card" height="300" />
             </v-col>
           </v-row>
         </div>
 
         <!-- Error State -->
-        <v-alert
-          v-else-if="error"
-          type="error"
-          variant="tonal"
-          class="mb-6"
-        >
+        <v-alert v-else-if="error" type="error" variant="tonal" class="mb-6">
           {{ error }}
         </v-alert>
 
         <!-- Empty State -->
-        <div
-          v-else-if="isEmpty && !loading"
-          class="text-center py-12"
-        >
-          <v-icon
-            size="64"
-            color="grey-lighten-1"
-            class="mb-4"
-          >
+        <div v-else-if="isEmpty && !loading" class="text-center py-12">
+          <v-icon size="64" color="grey-lighten-1" class="mb-4">
             {{ config.emptyStateIcon }}
           </v-icon>
           <h3 class="text-h5 mb-2 text-grey-darken-1">
@@ -141,22 +117,23 @@ import { MORTGAGE_CONFIG } from '@/types/Mortgage';
 
 // ✅ Lazy loading del componente MortgageCard para mejor rendimiento
 const MortgageCard = defineAsyncComponent({
-  loader: () => import(/* webpackChunkName: "mortgage-components" */ '@/components/domain/MortgageCard.vue'),
+  loader: () =>
+    import(/* webpackChunkName: "mortgage-components" */ '@/components/domain/MortgageCard.vue'),
   loadingComponent: {
     template: `
       <div style="height: 300px;">
         <v-skeleton-loader type="card" height="300" />
       </div>
-    `
+    `,
   },
   delay: 200,
-  timeout: 3000
+  timeout: 3000,
 });
 
 export default defineComponent({
   name: 'MortgagesView',
   components: {
-    MortgageCard
+    MortgageCard,
   },
   computed: {
     mortgageStore() {
@@ -183,19 +160,19 @@ export default defineComponent({
     statusOptions() {
       return this.config.statusOptions.map(option => ({
         title: option.title,
-        value: option.value
+        value: option.value,
       }));
-    }
+    },
   },
   methods: {
     // Actualizar lista de hipotecas
     refreshMortgages() {
       this.mortgageStore.fetchMortgages();
-    }
+    },
   },
   mounted() {
     this.mortgageStore.fetchMortgages();
-  }
+  },
 });
 </script>
 

@@ -20,8 +20,8 @@ describe('Profile Validation', () => {
           id: 123,
           email: 'test@example.com',
           fullName: 'Juan Pérez',
-          createdAt: '2023-01-01T00:00:00Z'
-        }
+          createdAt: '2023-01-01T00:00:00Z',
+        },
       };
 
       const { profileApi } = await import('@/api/modules/profile.api');
@@ -36,15 +36,14 @@ describe('Profile Validation', () => {
       const invalidResponse = {
         success: false,
         message: 'Usuario no encontrado',
-        user: null
+        user: null,
       };
 
       const { profileApi } = await import('@/api/modules/profile.api');
       (profileApi.getProfile as any).mockResolvedValue(invalidResponse);
 
       // Act & Assert
-      await expect(ProfileService.getProfile())
-        .rejects.toThrow('Usuario no encontrado');
+      await expect(ProfileService.getProfile()).rejects.toThrow('Usuario no encontrado');
     });
 
     it('debería rechazar respuesta null', async () => {
@@ -53,8 +52,7 @@ describe('Profile Validation', () => {
       (profileApi.getProfile as any).mockResolvedValue(null);
 
       // Act & Assert
-      await expect(ProfileService.getProfile())
-        .rejects.toThrow('Respuesta del perfil inválida');
+      await expect(ProfileService.getProfile()).rejects.toThrow('Respuesta del perfil inválida');
     });
 
     it('debería rechazar respuesta undefined', async () => {
@@ -63,8 +61,7 @@ describe('Profile Validation', () => {
       (profileApi.getProfile as any).mockResolvedValue(undefined);
 
       // Act & Assert
-      await expect(ProfileService.getProfile())
-        .rejects.toThrow('Respuesta del perfil inválida');
+      await expect(ProfileService.getProfile()).rejects.toThrow('Respuesta del perfil inválida');
     });
 
     it('debería rechazar respuesta que no es objeto', async () => {
@@ -73,8 +70,7 @@ describe('Profile Validation', () => {
       (profileApi.getProfile as any).mockResolvedValue('not an object');
 
       // Act & Assert
-      await expect(ProfileService.getProfile())
-        .rejects.toThrow('Respuesta del perfil inválida');
+      await expect(ProfileService.getProfile()).rejects.toThrow('Respuesta del perfil inválida');
     });
   });
 
@@ -85,13 +81,13 @@ describe('Profile Validation', () => {
         id: 123,
         email: 'usuario@example.com',
         fullName: 'Juan Carlos Pérez López',
-        createdAt: '2023-01-01T00:00:00Z'
+        createdAt: '2023-01-01T00:00:00Z',
       };
 
       const response: ProfileResponse = {
         success: true,
         message: 'OK',
-        user: validUser
+        user: validUser,
       };
 
       const { profileApi } = await import('@/api/modules/profile.api');
@@ -119,8 +115,8 @@ describe('Profile Validation', () => {
             id,
             email: 'test@example.com',
             fullName: 'Test User',
-            createdAt: '2023-01-01T00:00:00Z'
-          }
+            createdAt: '2023-01-01T00:00:00Z',
+          },
         };
 
         const { profileApi } = await import('@/api/modules/profile.api');
@@ -141,7 +137,7 @@ describe('Profile Validation', () => {
         'test.email@domain.co.uk',
         'user+tag@example.org',
         'user123@test-domain.com',
-        'a@b.co'
+        'a@b.co',
       ];
 
       for (const email of validEmails) {
@@ -152,8 +148,8 @@ describe('Profile Validation', () => {
             id: 1,
             email,
             fullName: 'Test User',
-            createdAt: '2023-01-01T00:00:00Z'
-          }
+            createdAt: '2023-01-01T00:00:00Z',
+          },
         };
 
         const { profileApi } = await import('@/api/modules/profile.api');
@@ -173,10 +169,10 @@ describe('Profile Validation', () => {
         'Juan Pérez',
         'María José García López',
         'José',
-        'Ana-Sofía O\'Connor',
+        "Ana-Sofía O'Connor",
         'François Müller',
         '李小明',
-        'محمد عبدالله'
+        'محمد عبدالله',
       ];
 
       for (const fullName of validNames) {
@@ -187,8 +183,8 @@ describe('Profile Validation', () => {
             id: 1,
             email: 'test@example.com',
             fullName,
-            createdAt: '2023-01-01T00:00:00Z'
-          }
+            createdAt: '2023-01-01T00:00:00Z',
+          },
         };
 
         const { profileApi } = await import('@/api/modules/profile.api');
@@ -208,7 +204,7 @@ describe('Profile Validation', () => {
         '2023-01-01T00:00:00Z',
         '2023-12-31T23:59:59Z',
         '2020-02-29T12:30:45Z', // leap year
-        '1970-01-01T00:00:00Z'
+        '1970-01-01T00:00:00Z',
       ];
 
       for (const createdAt of validDates) {
@@ -219,8 +215,8 @@ describe('Profile Validation', () => {
             id: 1,
             email: 'test@example.com',
             fullName: 'Test User',
-            createdAt
-          }
+            createdAt,
+          },
         };
 
         const { profileApi } = await import('@/api/modules/profile.api');
@@ -240,15 +236,15 @@ describe('Profile Validation', () => {
       // Arrange
       const edgeCaseUser: User = {
         id: Number.MAX_SAFE_INTEGER,
-        email: 'a'.repeat(50) + '@' + 'b'.repeat(50) + '.com', // email muy largo
+        email: `${'a'.repeat(50)  }@${  'b'.repeat(50)  }.com`, // email muy largo
         fullName: 'A'.repeat(100), // nombre muy largo
-        createdAt: '9999-12-31T23:59:59Z' // fecha futura
+        createdAt: '9999-12-31T23:59:59Z', // fecha futura
       };
 
       const response: ProfileResponse = {
         success: true,
         message: 'Edge case user',
-        user: edgeCaseUser
+        user: edgeCaseUser,
       };
 
       const { profileApi } = await import('@/api/modules/profile.api');
@@ -267,13 +263,13 @@ describe('Profile Validation', () => {
         id: 1,
         email: 'test+special@example-domain.co.uk',
         fullName: 'José María Ñoño & López-García',
-        createdAt: '2023-01-01T00:00:00Z'
+        createdAt: '2023-01-01T00:00:00Z',
       };
 
       const response: ProfileResponse = {
         success: true,
         message: 'Usuario con caracteres especiales',
-        user: specialCharUser
+        user: specialCharUser,
       };
 
       const { profileApi } = await import('@/api/modules/profile.api');
@@ -294,13 +290,13 @@ describe('Profile Validation', () => {
         id: 0,
         email: '',
         fullName: '',
-        createdAt: ''
+        createdAt: '',
       };
 
       const response = {
         success: true,
         message: 'Usuario con campos vacíos',
-        user: emptyFieldsUser
+        user: emptyFieldsUser,
       };
 
       const { profileApi } = await import('@/api/modules/profile.api');
@@ -321,13 +317,13 @@ describe('Profile Validation', () => {
         id: '123', // string en lugar de number
         email: 123, // number en lugar de string
         fullName: null, // null en lugar de string
-        createdAt: undefined // undefined en lugar de string
+        createdAt: undefined, // undefined en lugar de string
       };
 
       const response = {
         success: true,
         message: 'Tipos incorrectos',
-        user: wrongTypesUser
+        user: wrongTypesUser,
       };
 
       const { profileApi } = await import('@/api/modules/profile.api');
@@ -351,8 +347,8 @@ describe('Profile Validation', () => {
           id: 1,
           email: 'test@example.com',
           fullName: 'Test User',
-          createdAt: '2023-01-01T00:00:00Z'
-        }
+          createdAt: '2023-01-01T00:00:00Z',
+        },
       };
 
       const { profileApi } = await import('@/api/modules/profile.api');
@@ -367,8 +363,9 @@ describe('Profile Validation', () => {
 
     it('debería aceptar mensaje largo', async () => {
       // Arrange
-      const longMessage = 'Este es un mensaje muy largo que podría contener información detallada sobre el estado del perfil del usuario y cualquier acción que se haya realizado recientemente.';
-      
+      const longMessage =
+        'Este es un mensaje muy largo que podría contener información detallada sobre el estado del perfil del usuario y cualquier acción que se haya realizado recientemente.';
+
       const response = {
         success: true,
         message: longMessage,
@@ -376,8 +373,8 @@ describe('Profile Validation', () => {
           id: 1,
           email: 'test@example.com',
           fullName: 'Test User',
-          createdAt: '2023-01-01T00:00:00Z'
-        }
+          createdAt: '2023-01-01T00:00:00Z',
+        },
       };
 
       const { profileApi } = await import('@/api/modules/profile.api');
@@ -395,15 +392,14 @@ describe('Profile Validation', () => {
       const response = {
         success: false,
         message: '',
-        user: null
+        user: null,
       };
 
       const { profileApi } = await import('@/api/modules/profile.api');
       (profileApi.getProfile as any).mockResolvedValue(response);
 
       // Act & Assert
-      await expect(ProfileService.getProfile())
-        .rejects.toThrow('Error al obtener el perfil');
+      await expect(ProfileService.getProfile()).rejects.toThrow('Error al obtener el perfil');
     });
   });
 
@@ -417,8 +413,8 @@ describe('Profile Validation', () => {
           id: 1,
           email: 'test@example.com',
           fullName: 'Test User',
-          createdAt: '2023-01-01T00:00:00Z'
-        }
+          createdAt: '2023-01-01T00:00:00Z',
+        },
       };
 
       const { profileApi } = await import('@/api/modules/profile.api');
@@ -433,15 +429,14 @@ describe('Profile Validation', () => {
       const response = {
         success: false,
         message: 'Error específico',
-        user: null
+        user: null,
       };
 
       const { profileApi } = await import('@/api/modules/profile.api');
       (profileApi.getProfile as any).mockResolvedValue(response);
 
       // Act & Assert
-      await expect(ProfileService.getProfile())
-        .rejects.toThrow('Error específico');
+      await expect(ProfileService.getProfile()).rejects.toThrow('Error específico');
     });
 
     it('debería tratar valores truthy como success', async () => {
@@ -456,8 +451,8 @@ describe('Profile Validation', () => {
             id: 1,
             email: 'test@example.com',
             fullName: 'Test User',
-            createdAt: '2023-01-01T00:00:00Z'
-          }
+            createdAt: '2023-01-01T00:00:00Z',
+          },
         };
 
         const { profileApi } = await import('@/api/modules/profile.api');
@@ -473,15 +468,14 @@ describe('Profile Validation', () => {
       const response = {
         success: false,
         message: 'Explicit false',
-        user: null
+        user: null,
       };
 
       const { profileApi } = await import('@/api/modules/profile.api');
       (profileApi.getProfile as any).mockResolvedValue(response);
 
       // Act & Assert
-      await expect(ProfileService.getProfile())
-        .rejects.toThrow('Explicit false');
+      await expect(ProfileService.getProfile()).rejects.toThrow('Explicit false');
     });
   });
 });

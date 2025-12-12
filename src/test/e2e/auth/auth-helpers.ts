@@ -4,58 +4,63 @@ import type { Page } from '@playwright/test';
  * Utilidades para tests E2E de autenticación
  */
 export class AuthE2EHelpers {
-  
   /**
    * Datos de prueba para tests de login
    */
   static readonly TEST_USERS = {
     valid: {
       email: 'user@demo.com',
-      password: 'demo123456' // 11 characters - válido para pasar la validación
+      password: 'demo123456', // 11 characters - válido para pasar la validación
     },
     invalid: {
       email: 'invalid@example.com',
-      password: 'wrongpassword'
+      password: 'wrongpassword',
     },
     invalidFormat: {
       email: 'email-sin-arroba',
-      password: 'password123'
-    }
+      password: 'password123',
+    },
   };
 
   /**
    * Intercepta llamadas a la API de login y devuelve respuesta mockeada
    */
-  static async mockLoginAPI(page: Page, success: boolean, options?: {
-    token?: string;
-    message?: string;
-    delay?: number;
-  }) {
+  static async mockLoginAPI(
+    page: Page,
+    success: boolean,
+    options?: {
+      token?: string;
+      message?: string;
+      delay?: number;
+    }
+  ) {
     const { token = 'fake-jwt-token', message, delay = 0 } = options || {};
-    
+
     await page.route('**/login', route => {
-      const responseBody = success ? {
-        success: true,
-        bearer: token,
-        message: message || 'Login exitoso'
-      } : {
-        success: false,
-        message: message || 'Credenciales inválidas'
-      };
+      const responseBody = success
+        ? {
+            success: true,
+            bearer: token,
+            message: message || 'Login exitoso',
+          }
+        : {
+            success: false,
+            message: message || 'Credenciales inválidas',
+          };
 
       if (delay > 0) {
         setTimeout(() => {
           route.fulfill({
             status: success ? 200 : 401,
             contentType: 'application/json',
-            body: JSON.stringify(responseBody)
+            body: JSON.stringify(responseBody),
           });
         }, delay);
       } else {
         route.fulfill({
           status: success ? 200 : 401,
           contentType: 'application/json',
-          body: JSON.stringify(responseBody)
+          body: JSON.stringify(responseBody),
         });
       }
     });
@@ -91,7 +96,7 @@ export class AuthE2EHelpers {
     const snackbar = page.locator('.v-snackbar');
     await snackbar.waitFor({ state: 'visible', timeout });
     await page.waitForFunction(
-      (message) => {
+      message => {
         const snackbarElement = document.querySelector('.v-snackbar');
         return snackbarElement?.textContent?.includes(message);
       },
@@ -106,12 +111,12 @@ export class AuthE2EHelpers {
   static async verifyLoginPageElements(page: Page) {
     // Verificar título
     await page.locator('h2:has-text("Haz login en la plataforma")').waitFor();
-    
+
     // Verificar campos del formulario
     await page.locator('input[type="email"]').waitFor();
     await page.locator('input[type="password"]').waitFor();
     await page.locator('button[type="submit"]').waitFor();
-    
+
     // Verificar enlace de registro
     await page.locator('text=¿No tienes cuenta? Regístrate').waitFor();
   }
@@ -127,7 +132,10 @@ export class AuthE2EHelpers {
   /**
    * Simula diferentes tipos de errores de red
    */
-  static async mockNetworkError(page: Page, errorType: 'timeout' | 'server-error' | 'network-failure') {
+  static async mockNetworkError(
+    page: Page,
+    errorType: 'timeout' | 'server-error' | 'network-failure'
+  ) {
     await page.route('**/login', route => {
       switch (errorType) {
         case 'timeout':
@@ -139,8 +147,8 @@ export class AuthE2EHelpers {
             contentType: 'application/json',
             body: JSON.stringify({
               success: false,
-              message: 'Error interno del servidor'
-            })
+              message: 'Error interno del servidor',
+            }),
           });
           break;
         case 'network-failure':
@@ -156,10 +164,10 @@ export class AuthE2EHelpers {
   static async verifyUserIsAuthenticated(page: Page) {
     // Esperar un poco para que la navegación se complete
     await page.waitForTimeout(500);
-    
+
     // Verificar que estamos en una ruta privada
     await page.waitForURL(/\/app\//, { timeout: 8000 });
-    
+
     // Verificar elementos de la UI privada - buscar el avatar del usuario o un elemento del layout privado
     try {
       await page.locator('.v-avatar').waitFor({ state: 'visible', timeout: 3000 });

@@ -1,9 +1,9 @@
 import { rentalApi } from '@/api/modules/rental.api';
 import { type RentalFilters, type RentalsResponse } from '@/types/Property';
-import { 
+import {
   formatAddress as baseFormatAddress,
   formatPropertyPrice,
-  getStatusConfig
+  getStatusConfig,
 } from '@/services/property.service';
 
 export const RentalService = {
@@ -13,7 +13,7 @@ export const RentalService = {
   async getRentals(rentalFilters?: RentalFilters): Promise<RentalsResponse> {
     try {
       const rentalsResponse = await rentalApi.getRentals(rentalFilters);
-      
+
       // La API ya devuelve los datos directamente
       return rentalsResponse;
     } catch (error) {
@@ -21,7 +21,7 @@ export const RentalService = {
       if (error instanceof Error) {
         throw error;
       }
-      
+
       throw new Error('Error desconocido al obtener los alquileres');
     }
   },
@@ -35,7 +35,7 @@ export const formatMonthlyPrice = (price: number): string => {
   if (typeof price !== 'number' || price < 0) {
     throw new Error('El precio mensual debe ser un número positivo');
   }
-  
+
   return formatPropertyPrice(price, 'rental');
 };
 
@@ -45,7 +45,7 @@ export const getRentalStatusLabel = (status: string): string => {
   if (typeof status !== 'string' || !status.trim()) {
     return 'Estado desconocido';
   }
-  
+
   return getStatusConfig(status, 'rental').label;
 };
 
@@ -53,6 +53,6 @@ export const getRentalStatusColor = (status: string): string => {
   if (typeof status !== 'string' || !status.trim()) {
     return 'grey';
   }
-  
+
   return getStatusConfig(status, 'rental').color;
 };

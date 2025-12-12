@@ -33,12 +33,7 @@
       </v-col>
 
       <v-col cols="12" md="4">
-        <v-card
-          class="navigation-card rental-card"
-          elevation="8"
-          hover
-          @click="navigateToRentals"
-        >
+        <v-card class="navigation-card rental-card" elevation="8" hover @click="navigateToRentals">
           <div class="card-gradient rental-gradient"></div>
           <v-card-text class="pa-6 text-center position-relative">
             <div class="icon-container mb-4">
@@ -232,12 +227,12 @@ export default defineComponent({
   .dashboard-view {
     padding: 16px;
   }
-  
+
   .navigation-card {
     height: 240px;
     margin-bottom: 16px;
   }
-  
+
   .dashboard-header h1 {
     font-size: 2rem;
   }
@@ -245,8 +240,13 @@ export default defineComponent({
 
 /* Animaciones sutiles */
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .main-icon {

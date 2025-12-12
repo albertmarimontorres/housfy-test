@@ -24,10 +24,10 @@ describe('Profile Service', () => {
             id: 123,
             email: 'test@example.com',
             fullName: 'Juan Pérez',
-            createdAt: '2023-01-01T00:00:00Z'
-          }
+            createdAt: '2023-01-01T00:00:00Z',
+          },
         };
-        
+
         mockProfileApi.getProfile.mockResolvedValue(mockResponse);
 
         // Act
@@ -49,10 +49,10 @@ describe('Profile Service', () => {
             id: 1,
             email: 'valid@test.com',
             fullName: 'Valid User',
-            createdAt: '2023-01-01T00:00:00Z'
-          }
+            createdAt: '2023-01-01T00:00:00Z',
+          },
         };
-        
+
         mockProfileApi.getProfile.mockResolvedValue(validResponse);
 
         // Act & Assert
@@ -68,10 +68,10 @@ describe('Profile Service', () => {
             id: 456,
             email: 'updated@test.com',
             fullName: 'Updated User',
-            createdAt: '2023-06-01T00:00:00Z'
-          }
+            createdAt: '2023-06-01T00:00:00Z',
+          },
         };
-        
+
         mockProfileApi.getProfile.mockResolvedValue(responseWithMessage);
 
         // Act
@@ -93,15 +93,14 @@ describe('Profile Service', () => {
             id: 0,
             email: '',
             fullName: '',
-            createdAt: ''
-          }
+            createdAt: '',
+          },
         };
-        
+
         mockProfileApi.getProfile.mockResolvedValue(failureResponse);
 
         // Act & Assert
-        await expect(ProfileService.getProfile())
-          .rejects.toThrow('Usuario no encontrado');
+        await expect(ProfileService.getProfile()).rejects.toThrow('Usuario no encontrado');
       });
 
       it('debería fallar si success es false sin mensaje', async () => {
@@ -113,15 +112,14 @@ describe('Profile Service', () => {
             id: 0,
             email: '',
             fullName: '',
-            createdAt: ''
-          }
+            createdAt: '',
+          },
         };
-        
+
         mockProfileApi.getProfile.mockResolvedValue(failureWithoutMessage);
 
         // Act & Assert
-        await expect(ProfileService.getProfile())
-          .rejects.toThrow('Error al obtener el perfil');
+        await expect(ProfileService.getProfile()).rejects.toThrow('Error al obtener el perfil');
       });
 
       it('debería fallar si la respuesta es null', async () => {
@@ -129,8 +127,7 @@ describe('Profile Service', () => {
         mockProfileApi.getProfile.mockResolvedValue(null);
 
         // Act & Assert
-        await expect(ProfileService.getProfile())
-          .rejects.toThrow('Respuesta del perfil inválida');
+        await expect(ProfileService.getProfile()).rejects.toThrow('Respuesta del perfil inválida');
       });
 
       it('debería fallar si la respuesta es undefined', async () => {
@@ -138,8 +135,7 @@ describe('Profile Service', () => {
         mockProfileApi.getProfile.mockResolvedValue(undefined);
 
         // Act & Assert
-        await expect(ProfileService.getProfile())
-          .rejects.toThrow('Respuesta del perfil inválida');
+        await expect(ProfileService.getProfile()).rejects.toThrow('Respuesta del perfil inválida');
       });
 
       it('debería fallar si la respuesta no es un objeto', async () => {
@@ -147,8 +143,7 @@ describe('Profile Service', () => {
         mockProfileApi.getProfile.mockResolvedValue('invalid response');
 
         // Act & Assert
-        await expect(ProfileService.getProfile())
-          .rejects.toThrow('Respuesta del perfil inválida');
+        await expect(ProfileService.getProfile()).rejects.toThrow('Respuesta del perfil inválida');
       });
 
       it('debería fallar si la respuesta es un array', async () => {
@@ -156,8 +151,7 @@ describe('Profile Service', () => {
         mockProfileApi.getProfile.mockResolvedValue([]);
 
         // Act & Assert
-        await expect(ProfileService.getProfile())
-          .rejects.toThrow('Respuesta del perfil inválida');
+        await expect(ProfileService.getProfile()).rejects.toThrow('Respuesta del perfil inválida');
       });
     });
 
@@ -168,8 +162,7 @@ describe('Profile Service', () => {
         mockProfileApi.getProfile.mockRejectedValue(apiError);
 
         // Act & Assert
-        await expect(ProfileService.getProfile())
-          .rejects.toThrow('Error de conexión');
+        await expect(ProfileService.getProfile()).rejects.toThrow('Error de conexión');
       });
 
       it('debería manejar errores HTTP específicos', async () => {
@@ -178,8 +171,7 @@ describe('Profile Service', () => {
         mockProfileApi.getProfile.mockRejectedValue(httpError);
 
         // Act & Assert
-        await expect(ProfileService.getProfile())
-          .rejects.toThrow('HTTP 404: Not Found');
+        await expect(ProfileService.getProfile()).rejects.toThrow('HTTP 404: Not Found');
       });
 
       it('debería manejar errores de red', async () => {
@@ -188,8 +180,7 @@ describe('Profile Service', () => {
         mockProfileApi.getProfile.mockRejectedValue(networkError);
 
         // Act & Assert
-        await expect(ProfileService.getProfile())
-          .rejects.toThrow('Network timeout');
+        await expect(ProfileService.getProfile()).rejects.toThrow('Network timeout');
       });
 
       it('debería manejar errores desconocidos', async () => {
@@ -197,8 +188,9 @@ describe('Profile Service', () => {
         mockProfileApi.getProfile.mockRejectedValue('Unknown error type');
 
         // Act & Assert
-        await expect(ProfileService.getProfile())
-          .rejects.toThrow('Error desconocido al obtener el perfil');
+        await expect(ProfileService.getProfile()).rejects.toThrow(
+          'Error desconocido al obtener el perfil'
+        );
       });
 
       it('debería manejar errores null', async () => {
@@ -206,8 +198,9 @@ describe('Profile Service', () => {
         mockProfileApi.getProfile.mockRejectedValue(null);
 
         // Act & Assert
-        await expect(ProfileService.getProfile())
-          .rejects.toThrow('Error desconocido al obtener el perfil');
+        await expect(ProfileService.getProfile()).rejects.toThrow(
+          'Error desconocido al obtener el perfil'
+        );
       });
 
       it('debería manejar errores undefined', async () => {
@@ -215,8 +208,9 @@ describe('Profile Service', () => {
         mockProfileApi.getProfile.mockRejectedValue(undefined);
 
         // Act & Assert
-        await expect(ProfileService.getProfile())
-          .rejects.toThrow('Error desconocido al obtener el perfil');
+        await expect(ProfileService.getProfile()).rejects.toThrow(
+          'Error desconocido al obtener el perfil'
+        );
       });
     });
 
@@ -230,12 +224,12 @@ describe('Profile Service', () => {
             id: 1,
             email: 'test@example.com',
             fullName: 'Test User',
-            createdAt: '2023-01-01T00:00:00Z'
+            createdAt: '2023-01-01T00:00:00Z',
           },
           extraField: 'should be ignored',
-          metadata: { version: '1.0' }
+          metadata: { version: '1.0' },
         };
-        
+
         mockProfileApi.getProfile.mockResolvedValue(responseWithExtra);
 
         // Act
@@ -255,19 +249,19 @@ describe('Profile Service', () => {
             id: 1,
             email: 'concurrent@test.com',
             fullName: 'Concurrent User',
-            createdAt: '2023-01-01T00:00:00Z'
-          }
+            createdAt: '2023-01-01T00:00:00Z',
+          },
         };
-        
+
         mockProfileApi.getProfile.mockResolvedValue(mockResponse);
 
         // Act
         const promises = [
           ProfileService.getProfile(),
           ProfileService.getProfile(),
-          ProfileService.getProfile()
+          ProfileService.getProfile(),
         ];
-        
+
         const results = await Promise.all(promises);
 
         // Assert
@@ -286,10 +280,10 @@ describe('Profile Service', () => {
             id: 1,
             email: 'test@example.com',
             fullName: 'Test User',
-            createdAt: '2023-01-01T00:00:00Z'
-          }
+            createdAt: '2023-01-01T00:00:00Z',
+          },
         };
-        
+
         mockProfileApi.getProfile.mockResolvedValue(responseWithStringSuccess);
 
         // Act
@@ -305,10 +299,10 @@ describe('Profile Service', () => {
         // Arrange
         const incompleteResponse = {
           // success missing
-          message: 'Some message'
+          message: 'Some message',
           // user missing
         };
-        
+
         mockProfileApi.getProfile.mockResolvedValue(incompleteResponse);
 
         // Act - El servicio acepta respuestas incompletas si success no es false
@@ -322,14 +316,13 @@ describe('Profile Service', () => {
         // Arrange
         const explicitFailure = {
           success: false,
-          message: 'Explicit failure'
+          message: 'Explicit failure',
         };
-        
+
         mockProfileApi.getProfile.mockResolvedValue(explicitFailure);
 
         // Act & Assert
-        await expect(ProfileService.getProfile())
-          .rejects.toThrow('Explicit failure');
+        await expect(ProfileService.getProfile()).rejects.toThrow('Explicit failure');
       });
     });
 
@@ -354,10 +347,10 @@ describe('Profile Service', () => {
           id: 1,
           email: 'test@example.com',
           fullName: 'Test User',
-          createdAt: '2023-01-01T00:00:00Z'
-        }
+          createdAt: '2023-01-01T00:00:00Z',
+        },
       };
-      
+
       mockProfileApi.getProfile.mockResolvedValue(validResponse);
 
       // Act & Assert - No debe lanzar error
@@ -369,14 +362,13 @@ describe('Profile Service', () => {
       const invalidResponse = {
         success: false,
         message: 'Custom error message',
-        user: null
+        user: null,
       };
-      
+
       mockProfileApi.getProfile.mockResolvedValue(invalidResponse);
 
       // Act & Assert
-      await expect(ProfileService.getProfile())
-        .rejects.toThrow('Custom error message');
+      await expect(ProfileService.getProfile()).rejects.toThrow('Custom error message');
     });
   });
 });

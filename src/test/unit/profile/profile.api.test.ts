@@ -7,7 +7,7 @@ import type { ProfileResponse } from '@/types/Profile';
 vi.mock('@/api/httpClient', () => ({
   default: {
     get: vi.fn(),
-  }
+  },
 }));
 
 describe('Profile API', () => {
@@ -32,10 +32,10 @@ describe('Profile API', () => {
             id: 123,
             email: 'test@example.com',
             fullName: 'Juan Pérez',
-            createdAt: '2023-01-01T00:00:00Z'
-          }
+            createdAt: '2023-01-01T00:00:00Z',
+          },
         };
-        
+
         mockHttp.get.mockResolvedValue({ data: mockProfileResponse });
 
         // Act
@@ -59,10 +59,10 @@ describe('Profile API', () => {
             id: 1,
             email: 'minimal@test.com',
             fullName: 'Min User',
-            createdAt: '2023-01-01T00:00:00Z'
-          }
+            createdAt: '2023-01-01T00:00:00Z',
+          },
         };
-        
+
         mockHttp.get.mockResolvedValue({ data: mockMinimalResponse });
 
         // Act
@@ -82,10 +82,10 @@ describe('Profile API', () => {
             id: 1,
             email: 'test@example.com',
             fullName: 'Test User',
-            createdAt: '2023-01-01T00:00:00Z'
-          }
+            createdAt: '2023-01-01T00:00:00Z',
+          },
         };
-        
+
         mockHttp.get.mockResolvedValue({ data: mockResponse });
 
         // Act
@@ -103,8 +103,8 @@ describe('Profile API', () => {
         const error = {
           response: {
             status: 401,
-            data: { message: 'Token expirado' }
-          }
+            data: { message: 'Token expirado' },
+          },
         };
         mockHttp.get.mockRejectedValue(error);
 
@@ -118,8 +118,8 @@ describe('Profile API', () => {
         const error = {
           response: {
             status: 404,
-            data: { message: 'Perfil no encontrado' }
-          }
+            data: { message: 'Perfil no encontrado' },
+          },
         };
         mockHttp.get.mockRejectedValue(error);
 
@@ -132,8 +132,8 @@ describe('Profile API', () => {
         const error = {
           response: {
             status: 500,
-            data: { message: 'Error interno del servidor' }
-          }
+            data: { message: 'Error interno del servidor' },
+          },
         };
         mockHttp.get.mockRejectedValue(error);
 
@@ -188,19 +188,19 @@ describe('Profile API', () => {
             id: 1,
             email: 'concurrent@test.com',
             fullName: 'Concurrent User',
-            createdAt: '2023-01-01T00:00:00Z'
-          }
+            createdAt: '2023-01-01T00:00:00Z',
+          },
         };
-        
+
         mockHttp.get.mockResolvedValue({ data: mockResponse });
 
         // Act
         const promises = [
           profileApi.getProfile(),
           profileApi.getProfile(),
-          profileApi.getProfile()
+          profileApi.getProfile(),
         ];
-        
+
         const results = await Promise.all(promises);
 
         // Assert
@@ -217,9 +217,9 @@ describe('Profile API', () => {
         const malformedResponse = {
           success: 'true', // string en lugar de boolean
           message: 123, // number en lugar de string
-          user: 'invalid' // string en lugar de objeto
+          user: 'invalid', // string en lugar de objeto
         };
-        
+
         mockHttp.get.mockResolvedValue({ data: malformedResponse });
 
         // Act
@@ -235,11 +235,11 @@ describe('Profile API', () => {
           success: true,
           message: 'OK',
           user: {
-            id: 1
+            id: 1,
             // email, fullName, createdAt faltantes
-          }
+          },
         };
-        
+
         mockHttp.get.mockResolvedValue({ data: incompleteResponse });
 
         // Act
@@ -268,10 +268,10 @@ describe('Profile API', () => {
           id: 1,
           email: 'test@example.com',
           fullName: 'Test User',
-          createdAt: '2023-01-01T00:00:00Z'
-        }
+          createdAt: '2023-01-01T00:00:00Z',
+        },
       };
-      
+
       mockHttp.get.mockResolvedValue({ data: mockResponse });
 
       // Act

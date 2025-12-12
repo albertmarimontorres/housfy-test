@@ -26,7 +26,7 @@ describe('Mortgage - Tests Simples', () => {
     it('debería crear store sin errores', () => {
       setActivePinia(createPinia());
       const store = useMortgageStore();
-      
+
       expect(store).toBeDefined();
       expect(store.mortgages).toEqual([]);
       expect(store.loading).toBe(false);
@@ -46,7 +46,7 @@ describe('Mortgage - Tests Simples', () => {
       const mockResponse: MortgagesResponse = {
         success: true,
         message: 'OK',
-        mortgages: []
+        mortgages: [],
       };
 
       mockMortgageApi.getMortgages.mockResolvedValue(mockResponse);
@@ -69,19 +69,21 @@ describe('Mortgage - Tests Simples', () => {
           getMortgages: vi.fn().mockResolvedValue({
             success: true,
             message: 'OK',
-            mortgages: [{
-              uuid: '123',
-              bank: 'Test Bank',
-              city: 'Test City',
-              loanAmountMinUnit: 20000000,
-              propertyValueMinUnit: 25000000,
-              ltv: 80,
-              status: 'Aprobado',
-              last_status_changed_at: '2023-01-15T10:30:00Z',
-              created_at: '2023-01-01T00:00:00Z'
-            }]
-          })
-        }
+            mortgages: [
+              {
+                uuid: '123',
+                bank: 'Test Bank',
+                city: 'Test City',
+                loanAmountMinUnit: 20000000,
+                propertyValueMinUnit: 25000000,
+                ltv: 80,
+                status: 'Aprobado',
+                last_status_changed_at: '2023-01-15T10:30:00Z',
+                created_at: '2023-01-01T00:00:00Z',
+              },
+            ],
+          }),
+        },
       }));
 
       // Act
@@ -105,7 +107,7 @@ describe('Mortgage - Tests Simples', () => {
         ltv: 80,
         status: 'Aprobado',
         last_status_changed_at: '2023-01-15T10:30:00Z',
-        created_at: '2023-01-01T00:00:00Z'
+        created_at: '2023-01-01T00:00:00Z',
       };
 
       // Act & Assert
@@ -123,7 +125,7 @@ describe('Mortgage - Tests Simples', () => {
       expect(mortgageService).toBeDefined();
       expect(mortgageApi).toBeDefined();
       expect(useMortgageStore).toBeDefined();
-      
+
       // Verificar que las funciones están exportadas
       expect(typeof mortgageService.getConfig).toBe('function');
       expect(typeof mortgageApi.getMortgages).toBe('function');
@@ -156,7 +158,7 @@ describe('Mortgage - Tests Simples', () => {
     it('debería inicializar store en estado limpio', () => {
       // Arrange
       setActivePinia(createPinia());
-      
+
       // Act
       const store = useMortgageStore();
 
@@ -185,7 +187,7 @@ describe('Mortgage - Tests Simples', () => {
       const minimalResponse: MortgagesResponse = {
         success: true,
         message: '',
-        mortgages: []
+        mortgages: [],
       };
 
       const mockMortgageApi = vi.mocked(mortgageApi);
@@ -212,7 +214,7 @@ describe('Mortgage - Tests Simples', () => {
         ltv: 80,
         status: 'Aprobado',
         last_status_changed_at: '2023-01-15T10:30:00Z',
-        created_at: '2023-01-01T00:00:00Z'
+        created_at: '2023-01-01T00:00:00Z',
       };
 
       // Act & Assert
@@ -233,7 +235,7 @@ describe('Mortgage - Tests Simples', () => {
         ltv: 150, // Inválido
         status: 'Estado Desconocido',
         last_status_changed_at: '',
-        created_at: ''
+        created_at: '',
       };
 
       // Act & Assert

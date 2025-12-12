@@ -20,9 +20,9 @@ describe('Chat Integration - Flujo Principal', () => {
       const httpResponse: ChatResponse = {
         success: true,
         message: 'Success',
-        output: 'Ofrecemos servicios inmobiliarios integrales...'
+        output: 'Ofrecemos servicios inmobiliarios integrales...',
       };
-      
+
       (mockHttp.post as any).mockResolvedValue({ data: httpResponse });
 
       // Act
@@ -30,7 +30,7 @@ describe('Chat Integration - Flujo Principal', () => {
 
       // Assert - Verificar llamada HTTP
       expect(mockHttp.post).toHaveBeenCalledWith('/ai-chat', { input: userInput });
-      
+
       // Assert - Verificar respuesta final
       expect(result.success).toBe(true);
       expect(result.output).toBe('Ofrecemos servicios inmobiliarios integrales...');
@@ -63,7 +63,7 @@ describe('Chat Integration - Flujo Principal', () => {
       expect(userMsg.content).toBe(userMessage);
       expect(assistantMsg.role).toBe('assistant');
       expect(assistantMsg.content).toBe(assistantResponse);
-      
+
       // Verificar que los IDs son únicos
       expect(userMsg.id).not.toBe(assistantMsg.id);
     });

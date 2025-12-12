@@ -5,51 +5,60 @@ Esta carpeta contiene tests end-to-end (E2E) para validar la funcionalidad compl
 ## 🎯 Tipos de Tests
 
 ### 🚀 Tests Básicos (Nuevos - Optimizados)
+
 Tests rápidos y enfocados en verificación de endpoints y estructura de datos:
 
 - ✅ **mortgage.basic.e2e.test.ts** - Tests básicos para hipotecas
-- ✅ **real-estate.basic.e2e.test.ts** - Tests básicos para propiedades  
+- ✅ **real-estate.basic.e2e.test.ts** - Tests básicos para propiedades
 - ✅ **rental.basic.e2e.test.ts** - Tests básicos para alquileres
 
 ### 🔐 Tests de Autenticación (Existentes)
+
 Tests completos para flujos de login y registro:
 
 - `auth/login.e2e.test.ts` - Tests de login
 - `auth/register.e2e.test.ts` - Tests de registro
 - `auth/login-advanced.e2e.test.ts` - Tests avanzados de login
-pnpm test:e2e:ui
+  pnpm test:e2e:ui
 
 # Ejecutar en modo debug
+
 pnpm test:e2e:debug
 
 # Ejecutar solo tests de auth
+
 npx playwright test src/test/e2e/auth/
 
 # Ejecutar en modo headful (ver navegador)
+
 npx playwright test --headed
 
 # Ejecutar en navegador específico
+
 npx playwright test --project=chromium
 npx playwright test --project=firefox
 npx playwright test --project=webkit
+
 ```
 
 ## Estructura de Tests E2E
 
 ```
+
 src/test/e2e/
 ├── auth/
-│   ├── login.e2e.test.ts          # Tests básicos de login
-│   ├── login-advanced.e2e.test.ts # Tests avanzados de login
-│   ├── register.e2e.test.ts       # Tests de registro
-│   └── auth-helpers.ts            # Utilidades para tests de auth
-├── mortgage/                      # Tests de hipotecas (TODO)
-├── profile/                       # Tests de perfil (TODO)
-├── realState/                     # Tests de inmobiliario (TODO)
-├── rental/                        # Tests de alquileres (TODO)
-├── e2e-helpers.ts                 # Utilidades globales
-└── README.md                      # Este archivo
-```
+│ ├── login.e2e.test.ts # Tests básicos de login
+│ ├── login-advanced.e2e.test.ts # Tests avanzados de login
+│ ├── register.e2e.test.ts # Tests de registro
+│ └── auth-helpers.ts # Utilidades para tests de auth
+├── mortgage/ # Tests de hipotecas (TODO)
+├── profile/ # Tests de perfil (TODO)
+├── realState/ # Tests de inmobiliario (TODO)
+├── rental/ # Tests de alquileres (TODO)
+├── e2e-helpers.ts # Utilidades globales
+└── README.md # Este archivo
+
+````
 
 ## Tests de Autenticación Implementados
 
@@ -120,24 +129,29 @@ await page.route('**/api/auth/login', route => {
     body: JSON.stringify({ success: true, bearer: 'token' })
   });
 });
-```
+````
 
 ### 2. Selectores Robustos
+
 Se priorizan selectores semánticos y estables:
+
 - Tipos de input: `input[type="email"]`
 - Texto visible: `text=¿No tienes cuenta?`
 - Data attributes: `[data-testid="user-menu"]` (recomendado)
 
 ### 3. Manejo de Estados Asíncronos
+
 - Uso de `waitFor()` para elementos dinámicos
 - Verificación de estados de carga
 - Timeouts apropiados para diferentes operaciones
 
 ### 4. Tests Responsivos
+
 - Configuración de viewports para diferentes dispositivos
 - Verificación de funcionalidad en móvil y desktop
 
 ### 5. Accesibilidad
+
 - Navegación por teclado
 - Verificación de focus management
 - Soporte para lectores de pantalla (futuro)
@@ -145,6 +159,7 @@ Se priorizan selectores semánticos y estables:
 ## Mejores Prácticas
 
 ### ✅ Hacer
+
 - Usar `test.beforeEach()` para setup común
 - Limpiar estado entre tests
 - Usar helpers para operaciones repetitivas
@@ -153,6 +168,7 @@ Se priorizan selectores semánticos y estables:
 - Incluir tests de accesibilidad
 
 ### ❌ Evitar
+
 - Tests que dependan de datos externos
 - Hardcodear timeouts muy largos
 - Selectores frágiles basados en posición
@@ -162,6 +178,7 @@ Se priorizan selectores semánticos y estables:
 ## Extensión Futura
 
 ### Tests Pendientes por Implementar
+
 1. **Mortgage E2E Tests**
    - Listado y filtrado de hipotecas
    - Detalles de hipoteca
@@ -188,6 +205,7 @@ Se priorizan selectores semánticos y estables:
    - Performance y carga
 
 ### Mejoras Técnicas
+
 - Integración con CI/CD
 - Tests visuales con screenshot comparison
 - Tests de rendimiento
@@ -218,6 +236,7 @@ Se priorizan selectores semánticos y estables:
    - Matar procesos que usen el puerto 5173
 
 ### Debugging
+
 ```bash
 # Ejecutar con debug interactivo
 npx playwright test --debug

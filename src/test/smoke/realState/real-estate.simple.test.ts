@@ -4,22 +4,22 @@ describe('Real Estate - Tests Básicos', () => {
   describe('módulos principales', () => {
     it('debería importar RealEstateService correctamente', async () => {
       const { RealEstateService } = await import('@/services/real-estate.service');
-      
+
       expect(RealEstateService).toBeDefined();
       expect(typeof RealEstateService.getProperties).toBe('function');
       expect(typeof RealEstateService.getPropertyById).toBe('function');
     });
 
     it('debería importar funciones exportadas del servicio', async () => {
-      const { 
-        getRealEstateProperties, 
+      const {
+        getRealEstateProperties,
         getRealEstateProperty,
         formatPrice,
         formatAddress,
         getStatusLabel,
-        getStatusColor
+        getStatusColor,
       } = await import('@/services/real-estate.service');
-      
+
       expect(getRealEstateProperties).toBeDefined();
       expect(getRealEstateProperty).toBeDefined();
       expect(formatPrice).toBeDefined();
@@ -37,14 +37,14 @@ describe('Real Estate - Tests Básicos', () => {
 
     it('debería importar realEstateApi correctamente', async () => {
       const { realEstateApi } = await import('@/api/modules/real-estate.api');
-      
+
       expect(realEstateApi).toBeDefined();
       expect(typeof realEstateApi.getProperties).toBe('function');
     });
 
     it('debería importar useRealEstateStore correctamente', async () => {
       const { useRealEstateStore } = await import('@/stores/real-estate.store');
-      
+
       expect(useRealEstateStore).toBeDefined();
       expect(typeof useRealEstateStore).toBe('function');
     });
@@ -53,7 +53,7 @@ describe('Real Estate - Tests Básicos', () => {
   describe('tipos TypeScript', () => {
     it('debería importar tipos de RealEstate correctamente', async () => {
       const realEstateTypes = await import('@/types/Property');
-      
+
       // Verificar que los tipos existen (en runtime serán undefined pero el import no debe fallar)
       expect(realEstateTypes).toBeDefined();
     });
@@ -68,7 +68,7 @@ describe('Real Estate - Tests Básicos', () => {
         status: 'Publicado',
         propertyPriceMinUnit: 250000,
         last_status_changed_at: '2023-01-15T10:30:00Z',
-        created_at: '2023-01-01T00:00:00Z'
+        created_at: '2023-01-01T00:00:00Z',
       };
 
       expect(mockProperty.uuid).toBe('123e4567-e89b-12d3-a456-426614174000');
@@ -95,9 +95,9 @@ describe('Real Estate - Tests Básicos', () => {
             status: 'Publicado',
             propertyPriceMinUnit: 100000,
             last_status_changed_at: '2023-01-01T00:00:00Z',
-            created_at: '2023-01-01T00:00:00Z'
-          }
-        ]
+            created_at: '2023-01-01T00:00:00Z',
+          },
+        ],
       };
 
       expect(mockResponse.success).toBe(true);
@@ -114,7 +114,7 @@ describe('Real Estate - Tests Básicos', () => {
         minPrice: 100000,
         maxPrice: 500000,
         propertyStreet: 'Calle Mayor',
-        propertyFloor: 2
+        propertyFloor: 2,
       };
 
       expect(mockFilters.status).toBe('Publicado');
@@ -128,21 +128,21 @@ describe('Real Estate - Tests Básicos', () => {
   describe('métodos básicos', () => {
     it('debería tener método getProperties en RealEstateService', async () => {
       const { RealEstateService } = await import('@/services/real-estate.service');
-      
+
       expect(RealEstateService).toHaveProperty('getProperties');
       expect(typeof RealEstateService.getProperties).toBe('function');
     });
 
     it('debería tener método getPropertyById en RealEstateService', async () => {
       const { RealEstateService } = await import('@/services/real-estate.service');
-      
+
       expect(RealEstateService).toHaveProperty('getPropertyById');
       expect(typeof RealEstateService.getPropertyById).toBe('function');
     });
 
     it('debería tener método getProperties en realEstateApi', async () => {
       const { realEstateApi } = await import('@/api/modules/real-estate.api');
-      
+
       expect(realEstateApi).toHaveProperty('getProperties');
       expect(typeof realEstateApi.getProperties).toBe('function');
     });
@@ -150,7 +150,7 @@ describe('Real Estate - Tests Básicos', () => {
     it('debería tener actions en el store', async () => {
       const { createPinia, setActivePinia } = await import('pinia');
       const { useRealEstateStore } = await import('@/stores/real-estate.store');
-      
+
       setActivePinia(createPinia());
       const store = useRealEstateStore();
 
@@ -167,7 +167,7 @@ describe('Real Estate - Tests Básicos', () => {
     it('debería tener estado inicial correcto', async () => {
       const { createPinia, setActivePinia } = await import('pinia');
       const { useRealEstateStore } = await import('@/stores/real-estate.store');
-      
+
       setActivePinia(createPinia());
       const store = useRealEstateStore();
 
@@ -181,7 +181,7 @@ describe('Real Estate - Tests Básicos', () => {
     it('debería tener getters con valores iniciales correctos', async () => {
       const { createPinia, setActivePinia } = await import('pinia');
       const { useRealEstateStore } = await import('@/stores/real-estate.store');
-      
+
       setActivePinia(createPinia());
       const store = useRealEstateStore();
 
@@ -194,7 +194,7 @@ describe('Real Estate - Tests Básicos', () => {
     it('debería tener propiedades reactivas', async () => {
       const { createPinia, setActivePinia } = await import('pinia');
       const { useRealEstateStore } = await import('@/stores/real-estate.store');
-      
+
       setActivePinia(createPinia());
       const store = useRealEstateStore();
 
@@ -210,7 +210,7 @@ describe('Real Estate - Tests Básicos', () => {
   describe('compatibilidad de exports', () => {
     it('debería exportar RealEstateService como objeto con métodos', async () => {
       const { RealEstateService } = await import('@/services/real-estate.service');
-      
+
       expect(RealEstateService).toBeTypeOf('object');
       expect(RealEstateService).not.toBe(null);
       expect(Object.keys(RealEstateService)).toContain('getProperties');
@@ -218,22 +218,25 @@ describe('Real Estate - Tests Básicos', () => {
     });
 
     it('debería exportar getRealEstateProperties como función independiente', async () => {
-      const { getRealEstateProperties, RealEstateService } = await import('@/services/real-estate.service');
-      
+      const { getRealEstateProperties, RealEstateService } =
+        await import('@/services/real-estate.service');
+
       expect(getRealEstateProperties).toBeTypeOf('function');
       expect(getRealEstateProperties).toBe(RealEstateService.getProperties);
     });
 
     it('debería exportar getRealEstateProperty como función independiente', async () => {
-      const { getRealEstateProperty, RealEstateService } = await import('@/services/real-estate.service');
-      
+      const { getRealEstateProperty, RealEstateService } =
+        await import('@/services/real-estate.service');
+
       expect(getRealEstateProperty).toBeTypeOf('function');
       expect(getRealEstateProperty).toBe(RealEstateService.getPropertyById);
     });
 
     it('debería exportar funciones helper', async () => {
-      const { formatPrice, formatAddress, getStatusLabel, getStatusColor } = await import('@/services/real-estate.service');
-      
+      const { formatPrice, formatAddress, getStatusLabel, getStatusColor } =
+        await import('@/services/real-estate.service');
+
       expect(formatPrice).toBeTypeOf('function');
       expect(formatAddress).toBeTypeOf('function');
       expect(getStatusLabel).toBeTypeOf('function');
@@ -242,14 +245,14 @@ describe('Real Estate - Tests Básicos', () => {
 
     it('debería exportar realEstateApi como objeto', async () => {
       const { realEstateApi } = await import('@/api/modules/real-estate.api');
-      
+
       expect(realEstateApi).toBeTypeOf('object');
       expect(realEstateApi).not.toBe(null);
     });
 
     it('debería exportar useRealEstateStore como función', async () => {
       const { useRealEstateStore } = await import('@/stores/real-estate.store');
-      
+
       expect(useRealEstateStore).toBeTypeOf('function');
     });
   });
@@ -257,16 +260,16 @@ describe('Real Estate - Tests Básicos', () => {
   describe('estructura de archivos', () => {
     it('debería poder importar desde las rutas correctas', async () => {
       // Test que verifica que las rutas de import son correctas
-      
+
       // Service
       await expect(import('@/services/real-estate.service')).resolves.toBeDefined();
-      
+
       // API
       await expect(import('@/api/modules/real-estate.api')).resolves.toBeDefined();
-      
+
       // Store
       await expect(import('@/stores/real-estate.store')).resolves.toBeDefined();
-      
+
       // Types
       await expect(import('@/types/Property')).resolves.toBeDefined();
     });
@@ -288,7 +291,7 @@ describe('Real Estate - Tests Básicos', () => {
   describe('dependencias externas', () => {
     it('debería poder importar Pinia sin errores', async () => {
       const pinia = await import('pinia');
-      
+
       expect(pinia.createPinia).toBeTypeOf('function');
       expect(pinia.setActivePinia).toBeTypeOf('function');
       expect(pinia.defineStore).toBeTypeOf('function');
@@ -297,7 +300,7 @@ describe('Real Estate - Tests Básicos', () => {
     it('debería poder usar httpClient en realEstateApi', async () => {
       // Verificar que realEstateApi puede importar el httpClient
       const { realEstateApi } = await import('@/api/modules/real-estate.api');
-      
+
       // Si la importación no falla, significa que httpClient está disponible
       expect(realEstateApi.getProperties).toBeTypeOf('function');
     });
@@ -306,7 +309,7 @@ describe('Real Estate - Tests Básicos', () => {
   describe('smoke tests básicos', () => {
     it('no debería lanzar errores al importar módulos principales', async () => {
       // Test que verifica que los módulos se pueden importar sin errores inmediatos
-      
+
       await expect(async () => {
         await import('@/services/real-estate.service');
         await import('@/api/modules/real-estate.api');
@@ -319,10 +322,10 @@ describe('Real Estate - Tests Básicos', () => {
       await expect(async () => {
         const { createPinia, setActivePinia } = await import('pinia');
         const { useRealEstateStore } = await import('@/stores/real-estate.store');
-        
+
         setActivePinia(createPinia());
         const store = useRealEstateStore();
-        
+
         // Acceder a propiedades básicas
         store.allProperties;
         store.filteredProperties;
@@ -335,7 +338,7 @@ describe('Real Estate - Tests Básicos', () => {
     it('debería tener métodos del store accesibles', async () => {
       const { createPinia, setActivePinia } = await import('pinia');
       const { useRealEstateStore } = await import('@/stores/real-estate.store');
-      
+
       setActivePinia(createPinia());
       const store = useRealEstateStore();
 
@@ -353,7 +356,7 @@ describe('Real Estate - Tests Básicos', () => {
     it('debería poder acceder a getters sin errores', async () => {
       const { createPinia, setActivePinia } = await import('pinia');
       const { useRealEstateStore } = await import('@/stores/real-estate.store');
-      
+
       setActivePinia(createPinia());
       const store = useRealEstateStore();
 
@@ -370,7 +373,7 @@ describe('Real Estate - Tests Básicos', () => {
   describe('validaciones básicas de funciones helper', () => {
     it('debería validar que las funciones helper están disponibles', async () => {
       const helpers = await import('@/services/real-estate.service');
-      
+
       expect(helpers.formatPrice).toBeDefined();
       expect(helpers.formatAddress).toBeDefined();
       expect(helpers.getStatusLabel).toBeDefined();
@@ -381,7 +384,7 @@ describe('Real Estate - Tests Básicos', () => {
   describe('estructura del API', () => {
     it('debería tener estructura correcta de realEstateApi', async () => {
       const { realEstateApi } = await import('@/api/modules/real-estate.api');
-      
+
       expect(realEstateApi).toBeDefined();
       expect(realEstateApi.getProperties).toBeDefined();
       expect(typeof realEstateApi).toBe('object');
@@ -390,8 +393,9 @@ describe('Real Estate - Tests Básicos', () => {
 
   describe('tests de compatibilidad', () => {
     it('debería mantener compatibilidad con exports legacy', async () => {
-      const { getRealEstateProperties, getRealEstateProperty } = await import('@/services/real-estate.service');
-      
+      const { getRealEstateProperties, getRealEstateProperty } =
+        await import('@/services/real-estate.service');
+
       // Estas funciones deben existir para compatibilidad hacia atrás
       expect(getRealEstateProperties).toBeDefined();
       expect(getRealEstateProperty).toBeDefined();

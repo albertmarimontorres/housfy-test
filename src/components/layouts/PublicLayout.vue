@@ -3,9 +3,9 @@
     <v-container fluid class="fill-height pa-0">
       <v-row no-gutters class="fill-height">
         <!-- Columna izquierda - Oculto en móvil -->
-        <v-col 
-          cols="12" 
-          md="6" 
+        <v-col
+          cols="12"
+          md="6"
           class="d-flex flex-column align-start justify-center left-col position-relative d-none d-md-flex"
         >
           <div class="bg-overlay"></div>
@@ -22,22 +22,23 @@
           <div class="text-center-vertical">
             <div class="slogan-text">
               <span>
-                Gestiona, compra, vende o alquila tu vivienda con la plataforma digital líder en España.
+                Gestiona, compra, vende o alquila tu vivienda con la plataforma digital líder en
+                España.
               </span>
             </div>
           </div>
         </v-col>
-        
+
         <!-- Columna derecha: login/register -->
-        <v-col 
-          cols="12" 
-          md="6" 
+        <v-col
+          cols="12"
+          md="6"
           class="d-flex align-center justify-center"
           :class="{ 'mobile-bg': $vuetify.display.mobile }"
         >
           <!-- Fondo móvil superpuesto -->
           <div v-if="$vuetify.display.mobile" class="mobile-bg-overlay"></div>
-          
+
           <!-- Contenedor del formulario con estilo móvil -->
           <div class="form-container" :class="{ 'mobile-form': $vuetify.display.mobile }">
             <router-view />
@@ -60,7 +61,8 @@ export default defineComponent({ name: 'PublicLayout' });
 
 .left-col {
   position: relative;
-  background: url('https://static0.housfy.com/prod/blog/images/2019/04/30155650/DSC04355.jpg') center center/cover no-repeat;
+  background: url('https://static0.housfy.com/prod/blog/images/2019/04/30155650/DSC04355.jpg')
+    center center/cover no-repeat;
   overflow: hidden;
 }
 
@@ -70,14 +72,15 @@ export default defineComponent({ name: 'PublicLayout' });
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.65);
+  background: rgba(0, 0, 0, 0.65);
   z-index: 1;
 }
 
 /* Móvil background */
 .mobile-bg {
   position: relative;
-  background: url('https://static0.housfy.com/prod/blog/images/2019/04/30155650/DSC04355.jpg') center center/cover no-repeat;
+  background: url('https://static0.housfy.com/prod/blog/images/2019/04/30155650/DSC04355.jpg')
+    center center/cover no-repeat;
   overflow: hidden;
   min-height: 100vh;
 }
@@ -100,7 +103,7 @@ export default defineComponent({ name: 'PublicLayout' });
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border-radius: 20px;
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.15),
     0 2px 16px rgba(0, 0, 0, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
@@ -163,9 +166,9 @@ export default defineComponent({ name: 'PublicLayout' });
   width: 100%;
   max-width: 400px;
   padding: 2rem;
-  background: rgba(255,255,255,0.95);
+  background: rgba(255, 255, 255, 0.95);
   border-radius: 12px;
-  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.08);
+  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.08);
 }
 
 .logo-top {
@@ -196,7 +199,7 @@ export default defineComponent({ name: 'PublicLayout' });
   font-size: 2.5rem;
   font-weight: 600;
   text-align: center;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   line-height: 1.2;
 }
 
@@ -205,7 +208,7 @@ export default defineComponent({ name: 'PublicLayout' });
   .slogan-text {
     font-size: 1.8rem;
   }
-  
+
   .mobile-form {
     max-width: 90vw;
   }

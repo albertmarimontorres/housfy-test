@@ -1,20 +1,20 @@
-import http from "@/api/httpClient";
-import type { RealEstateResponse, RealEstateFilters } from "@/types/Property";
+import http from '@/api/httpClient';
+import type { RealEstateResponse, RealEstateFilters } from '@/types/Property';
 
 /**
  * Construye la URL con parámetros de filtro
  */
 const buildFilteredUrl = (baseUrl: string, filters?: RealEstateFilters): string => {
   if (!filters) return baseUrl;
-  
+
   const params = new URLSearchParams();
-  
+
   Object.entries(filters).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== '') {
       params.append(key, value.toString());
     }
   });
-  
+
   const queryString = params.toString();
   return queryString ? `${baseUrl}?${queryString}` : baseUrl;
 };

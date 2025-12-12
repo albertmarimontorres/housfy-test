@@ -1,10 +1,10 @@
-import axios from "axios";
-import { tokenStorage } from "@/utils/tokenStorage";
+import axios from 'axios';
+import { tokenStorage } from '@/utils/tokenStorage';
 
 const http = axios.create({
-    baseURL: import.meta.env.VITE_HOUSFY_BASE_URL,
-    timeout: 8000,
-    withCredentials: false // No usamos cookies
+  baseURL: import.meta.env.VITE_HOUSFY_BASE_URL,
+  timeout: 8000,
+  withCredentials: false, // No usamos cookies
 });
 
 http.interceptors.request.use(
@@ -17,7 +17,7 @@ http.interceptors.request.use(
     }
 
     // Identificador para la prueba
-    config.headers["x-housfy-authorization"] = import.meta.env.VITE_HOUSFY_ID;
+    config.headers['x-housfy-authorization'] = import.meta.env.VITE_HOUSFY_ID;
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -35,8 +35,8 @@ http.interceptors.response.use(
     if (error?.response?.status === 401) {
       tokenStorage.clear();
       const current = window.location.pathname;
-      if (current !== "/login" && current !== "/register") {
-        window.location.href = "/login";
+      if (current !== '/login' && current !== '/register') {
+        window.location.href = '/login';
       }
     }
     return Promise.reject(error);

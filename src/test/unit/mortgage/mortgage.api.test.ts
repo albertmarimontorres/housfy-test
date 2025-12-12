@@ -27,9 +27,9 @@ describe('Mortgage API', () => {
             ltv: 80,
             status: 'Aprobado',
             last_status_changed_at: '2023-01-15T10:30:00Z',
-            created_at: '2023-01-01T00:00:00Z'
-          }
-        ]
+            created_at: '2023-01-01T00:00:00Z',
+          },
+        ],
       };
 
       vi.mocked(httpClient.get).mockResolvedValue({ data: mockResponse });
@@ -50,7 +50,7 @@ describe('Mortgage API', () => {
       const mockResponse: MortgagesResponse = {
         success: true,
         message: 'No hay hipotecas disponibles',
-        mortgages: []
+        mortgages: [],
       };
 
       vi.mocked(httpClient.get).mockResolvedValue({ data: mockResponse });
@@ -82,9 +82,9 @@ describe('Mortgage API', () => {
           data: {
             success: false,
             message: 'Error interno del servidor',
-            mortgages: []
-          }
-        }
+            mortgages: [],
+          },
+        },
       };
 
       vi.mocked(httpClient.get).mockRejectedValue(errorResponse);
@@ -98,7 +98,7 @@ describe('Mortgage API', () => {
       const mockResponse: MortgagesResponse = {
         success: true,
         message: 'OK',
-        mortgages: []
+        mortgages: [],
       };
 
       vi.mocked(httpClient.get).mockResolvedValue({ data: mockResponse });
@@ -126,7 +126,7 @@ describe('Mortgage API', () => {
             ltv: 75,
             status: 'Pendiente',
             last_status_changed_at: '2023-01-10T00:00:00Z',
-            created_at: '2023-01-01T00:00:00Z'
+            created_at: '2023-01-01T00:00:00Z',
           },
           {
             uuid: '456',
@@ -137,9 +137,9 @@ describe('Mortgage API', () => {
             ltv: 75,
             status: 'Aprobado',
             last_status_changed_at: '2023-01-12T00:00:00Z',
-            created_at: '2023-01-02T00:00:00Z'
-          }
-        ]
+            created_at: '2023-01-02T00:00:00Z',
+          },
+        ],
       };
 
       vi.mocked(httpClient.get).mockResolvedValue({ data: mockResponse });
@@ -164,13 +164,13 @@ describe('Mortgage API', () => {
         ltv: 80,
         status: 'Test Status',
         last_status_changed_at: '2023-01-15T10:30:00Z',
-        created_at: '2023-01-01T00:00:00Z'
+        created_at: '2023-01-01T00:00:00Z',
       };
 
       const mockResponse: MortgagesResponse = {
         success: true,
         message: 'Test',
-        mortgages: [mortgage]
+        mortgages: [mortgage],
       };
 
       vi.mocked(httpClient.get).mockResolvedValue({ data: mockResponse });

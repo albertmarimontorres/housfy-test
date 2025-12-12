@@ -13,26 +13,26 @@ vi.mock('@/api/modules/auth.api', () => ({
   authApi: {
     login: vi.fn(),
     register: vi.fn(),
-  }
+  },
 }));
 
 describe('Validation Functions (tested through AuthService)', () => {
   const mockAuthApi = authApi as any;
-  
+
   beforeEach(() => {
     // Configurar mocks para que resuelvan cuando las validaciones pasan
     mockAuthApi.login.mockResolvedValue({
       success: true,
       message: 'Login exitoso',
       userId: 123,
-      bearer: 'mock-token'
+      bearer: 'mock-token',
     });
-    
+
     mockAuthApi.register.mockResolvedValue({
       success: true,
-      message: 'Registro exitoso', 
+      message: 'Registro exitoso',
       userId: 456,
-      bearer: 'mock-token'
+      bearer: 'mock-token',
     });
   });
 
@@ -64,16 +64,16 @@ describe('Validation Functions (tested through AuthService)', () => {
       it('debería rechazar emails con formato inválido', async () => {
         // Arrange - Solo emails que realmente fallan con el regex actual
         const invalidEmails = [
-          'invalid',           // sin @
-          '@domain.com',       // empieza con @
-          'user@',             // termina con @
-          'user@domain',       // sin punto en dominio
+          'invalid', // sin @
+          '@domain.com', // empieza con @
+          'user@', // termina con @
+          'user@domain', // sin punto en dominio
           'user name@domain.com', // espacio en parte local
-          'user@domain .com',  // espacio en dominio
-          'user@@domain.com',  // doble @
-          'user@',             // sin dominio
-          '@',                 // solo @
-          'user@.com',         // dominio empieza con punto
+          'user@domain .com', // espacio en dominio
+          'user@@domain.com', // doble @
+          'user@', // sin dominio
+          '@', // solo @
+          'user@.com', // dominio empieza con punto
         ];
 
         // Act & Assert
@@ -100,7 +100,7 @@ describe('Validation Functions (tested through AuthService)', () => {
       it('debería validar passwords de longitud correcta', async () => {
         // Arrange
         const validPasswords = [
-          '12345678',  // mínimo 8 caracteres
+          '12345678', // mínimo 8 caracteres
           'password123',
           'superSecurePassword!@#',
           'a'.repeat(50), // password largo
@@ -113,7 +113,9 @@ describe('Validation Functions (tested through AuthService)', () => {
             await AuthService.login(credentials);
           } catch (error) {
             // Esperamos que falle por el mock, no por validación de password
-            expect((error as Error).message).not.toContain('Password debe tener al menos 8 caracteres');
+            expect((error as Error).message).not.toContain(
+              'Password debe tener al menos 8 caracteres'
+            );
           }
         }
       });
@@ -133,7 +135,9 @@ describe('Validation Functions (tested through AuthService)', () => {
         // Act & Assert
         for (const password of shortPasswords) {
           const credentials = { email: 'test@example.com', password };
-          await expect(AuthService.login(credentials)).rejects.toThrow('Password debe tener al menos 8 caracteres');
+          await expect(AuthService.login(credentials)).rejects.toThrow(
+            'Password debe tener al menos 8 caracteres'
+          );
         }
       });
 
@@ -174,13 +178,19 @@ describe('Validation Functions (tested through AuthService)', () => {
 
       it('debería manejar objetos vacíos', async () => {
         // Act & Assert
-        await expect(AuthService.login({} as AuthCredentials)).rejects.toThrow('Email es requerido');
+        await expect(AuthService.login({} as AuthCredentials)).rejects.toThrow(
+          'Email es requerido'
+        );
       });
 
       it('debería manejar objetos con propiedades faltantes', async () => {
         // Arrange & Act & Assert
-        await expect(AuthService.login({ email: 'test@test.com' } as AuthCredentials)).rejects.toThrow('Password es requerido');
-        await expect(AuthService.login({ password: 'password123' } as AuthCredentials)).rejects.toThrow('Email es requerido');
+        await expect(
+          AuthService.login({ email: 'test@test.com' } as AuthCredentials)
+        ).rejects.toThrow('Password es requerido');
+        await expect(
+          AuthService.login({ password: 'password123' } as AuthCredentials)
+        ).rejects.toThrow('Email es requerido');
       });
     });
   });
@@ -208,9 +218,9 @@ describe('Validation Functions (tested through AuthService)', () => {
           const payload = {
             email: 'test@example.com',
             password: 'password123',
-            fullName
+            fullName,
           };
-          
+
           try {
             await AuthService.register(payload);
           } catch (error) {
@@ -236,9 +246,9 @@ describe('Validation Functions (tested through AuthService)', () => {
           const payload = {
             email: 'test@example.com',
             password: 'password123',
-            fullName
+            fullName,
           };
-          
+
           await expect(AuthService.register(payload)).rejects.toThrow(/Nombre completo/);
         }
       });
@@ -246,13 +256,13 @@ describe('Validation Functions (tested through AuthService)', () => {
       it('debería rechazar nombres con caracteres no válidos', async () => {
         // Arrange
         const invalidNames = [
-          'Juan123',      // números
-          'María@test',   // @
+          'Juan123', // números
+          'María@test', // @
           'Pedro#García', // #
-          'Ana$López',    // $
-          'Luis%Martín',  // %
-          'Test<User>',   // < >
-          'User&Admin',   // &
+          'Ana$López', // $
+          'Luis%Martín', // %
+          'Test<User>', // < >
+          'User&Admin', // &
         ];
 
         // Act & Assert
@@ -260,12 +270,12 @@ describe('Validation Functions (tested through AuthService)', () => {
           const payload = {
             email: 'test@example.com',
             password: 'password123',
-            fullName
+            fullName,
           };
-          
-          await expect(AuthService.register(payload))
-            .rejects
-            .toThrow('Nombre completo contiene caracteres no válidos');
+
+          await expect(AuthService.register(payload)).rejects.toThrow(
+            'Nombre completo contiene caracteres no válidos'
+          );
         }
       });
 
@@ -283,10 +293,12 @@ describe('Validation Functions (tested through AuthService)', () => {
           const payload = {
             email: 'test@example.com',
             password: 'password123',
-            fullName
+            fullName,
           };
-          
-          await expect(AuthService.register(payload)).rejects.toThrow('Nombre completo es requerido');
+
+          await expect(AuthService.register(payload)).rejects.toThrow(
+            'Nombre completo es requerido'
+          );
         }
       });
 
@@ -296,17 +308,19 @@ describe('Validation Functions (tested through AuthService)', () => {
           {
             email: 'test@example.com',
             password: 'password123',
-            fullName: null as any
+            fullName: null as any,
           },
           {
             email: 'test@example.com',
             password: 'password123',
-            fullName: undefined as any
+            fullName: undefined as any,
           },
         ];
 
         for (const payload of invalidPayloads) {
-          await expect(AuthService.register(payload)).rejects.toThrow('Nombre completo es requerido');
+          await expect(AuthService.register(payload)).rejects.toThrow(
+            'Nombre completo es requerido'
+          );
         }
       });
     });
@@ -317,32 +331,40 @@ describe('Validation Functions (tested through AuthService)', () => {
         const basePayload = {
           email: 'test@example.com',
           password: 'password123',
-          fullName: 'Juan Pérez'
+          fullName: 'Juan Pérez',
         };
 
         // Test email inválido
-        await expect(AuthService.register({
-          ...basePayload,
-          email: 'invalid-email'
-        })).rejects.toThrow('Email no tiene un formato válido');
+        await expect(
+          AuthService.register({
+            ...basePayload,
+            email: 'invalid-email',
+          })
+        ).rejects.toThrow('Email no tiene un formato válido');
 
         // Test password corto
-        await expect(AuthService.register({
-          ...basePayload,
-          password: '1234567'
-        })).rejects.toThrow('Password debe tener al menos 8 caracteres');
+        await expect(
+          AuthService.register({
+            ...basePayload,
+            password: '1234567',
+          })
+        ).rejects.toThrow('Password debe tener al menos 8 caracteres');
 
         // Test email vacío
-        await expect(AuthService.register({
-          ...basePayload,
-          email: ''
-        })).rejects.toThrow('Email es requerido');
+        await expect(
+          AuthService.register({
+            ...basePayload,
+            email: '',
+          })
+        ).rejects.toThrow('Email es requerido');
 
         // Test password vacío
-        await expect(AuthService.register({
-          ...basePayload,
-          password: ''
-        })).rejects.toThrow('Password es requerido');
+        await expect(
+          AuthService.register({
+            ...basePayload,
+            password: '',
+          })
+        ).rejects.toThrow('Password es requerido');
       });
     });
 
@@ -355,25 +377,33 @@ describe('Validation Functions (tested through AuthService)', () => {
 
       it('debería manejar objetos vacíos', async () => {
         // Act & Assert
-        await expect(AuthService.register({} as RegisterPayload)).rejects.toThrow('Email es requerido');
+        await expect(AuthService.register({} as RegisterPayload)).rejects.toThrow(
+          'Email es requerido'
+        );
       });
 
       it('debería manejar objetos con propiedades faltantes', async () => {
         // Act & Assert
-        await expect(AuthService.register({
-          email: 'test@test.com',
-          password: 'password123'
-        } as RegisterPayload)).rejects.toThrow('Nombre completo es requerido');
-        
-        await expect(AuthService.register({
-          email: 'test@test.com',
-          fullName: 'Juan Pérez'
-        } as RegisterPayload)).rejects.toThrow('Password es requerido');
-        
-        await expect(AuthService.register({
-          password: 'password123',
-          fullName: 'Juan Pérez'
-        } as RegisterPayload)).rejects.toThrow('Email es requerido');
+        await expect(
+          AuthService.register({
+            email: 'test@test.com',
+            password: 'password123',
+          } as RegisterPayload)
+        ).rejects.toThrow('Nombre completo es requerido');
+
+        await expect(
+          AuthService.register({
+            email: 'test@test.com',
+            fullName: 'Juan Pérez',
+          } as RegisterPayload)
+        ).rejects.toThrow('Password es requerido');
+
+        await expect(
+          AuthService.register({
+            password: 'password123',
+            fullName: 'Juan Pérez',
+          } as RegisterPayload)
+        ).rejects.toThrow('Email es requerido');
       });
     });
   });
@@ -381,16 +411,16 @@ describe('Validation Functions (tested through AuthService)', () => {
   describe('valores límite', () => {
     it('debería manejar string extremadamente largos', async () => {
       // Arrange
-      const veryLongEmail = 'a'.repeat(50) + '@example.com'; // Email más realista
-      const veryLongPassword = 'password' + 'a'.repeat(100);
-      const veryLongName = 'Juan ' + 'A'.repeat(100); // Solo caracteres válidos
+      const veryLongEmail = `${'a'.repeat(50)  }@example.com`; // Email más realista
+      const veryLongPassword = `password${  'a'.repeat(100)}`;
+      const veryLongName = `Juan ${  'A'.repeat(100)}`; // Solo caracteres válidos
 
       // Act & Assert
       // Email largo pero válido debería pasar validación de formato
       try {
         await AuthService.login({
           email: veryLongEmail,
-          password: 'password123'
+          password: 'password123',
         });
       } catch (error) {
         // El error debe ser del mock de API, no de validación
@@ -401,7 +431,7 @@ describe('Validation Functions (tested through AuthService)', () => {
       try {
         await AuthService.login({
           email: 'test@example.com',
-          password: veryLongPassword
+          password: veryLongPassword,
         });
       } catch (error) {
         // El error debe ser del mock de API, no de validación
@@ -413,7 +443,7 @@ describe('Validation Functions (tested through AuthService)', () => {
         await AuthService.register({
           email: 'test@example.com',
           password: 'password123',
-          fullName: veryLongName
+          fullName: veryLongName,
         });
       } catch (error) {
         // El error debe ser del mock de API, no de validación
@@ -428,7 +458,7 @@ describe('Validation Functions (tested through AuthService)', () => {
       try {
         await AuthService.login({
           email: 'test@example.com',
-          password: '12345678' // exactamente 8
+          password: '12345678', // exactamente 8
         });
       } catch (error) {
         expect((error as Error).message).not.toContain('Password debe tener al menos 8 caracteres');
@@ -439,10 +469,12 @@ describe('Validation Functions (tested through AuthService)', () => {
         await AuthService.register({
           email: 'test@example.com',
           password: 'password123',
-          fullName: 'Jo' // exactamente 2
+          fullName: 'Jo', // exactamente 2
         });
       } catch (error) {
-        expect((error as Error).message).not.toContain('Nombre completo debe tener al menos 2 caracteres');
+        expect((error as Error).message).not.toContain(
+          'Nombre completo debe tener al menos 2 caracteres'
+        );
       }
     });
   });

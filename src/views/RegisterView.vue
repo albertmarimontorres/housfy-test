@@ -1,12 +1,17 @@
 <!-- src/views/RegisterView.vue -->
 <template>
-  <div 
-    class="register-container pa-8" 
-    :class="{ 'mobile-transparent': $vuetify.display.mobile, 'desktop-card': !$vuetify.display.mobile }"
+  <div
+    class="register-container pa-8"
+    :class="{
+      'mobile-transparent': $vuetify.display.mobile,
+      'desktop-card': !$vuetify.display.mobile,
+    }"
   >
     <div class="mb-6 text-center">
       <h2 class="text-h5 font-weight-bold mb-2">Crea tu cuenta</h2>
-      <div class="text-grey-darken-1 mb-2">Rellena los campos para registrarte en la plataforma</div>
+      <div class="text-grey-darken-1 mb-2">
+        Rellena los campos para registrarte en la plataforma
+      </div>
     </div>
     <v-form @submit.prevent="handleRegister" class="d-flex flex-column gap-6">
       <v-text-field
@@ -37,10 +42,17 @@
         hint="Mínimo 8 caracteres, una mayúscula, una minúscula, un número y un símbolo."
         persistent-hint
       />
-      <v-btn :loading="loading" :disabled="loading || !isFormValid" type="submit" color="primary" block class="mt-2">
-        {{ loading ? "Creando..." : "Registrarse" }}
+      <v-btn
+        :loading="loading"
+        :disabled="loading || !isFormValid"
+        type="submit"
+        color="primary"
+        block
+        class="mt-2"
+      >
+        {{ loading ? 'Creando...' : 'Registrarse' }}
       </v-btn>
-  <!-- Snackbar handled globally -->
+      <!-- Snackbar handled globally -->
     </v-form>
     <div class="mt-6 text-center">
       <router-link to="/login">¿Ya tienes cuenta? Inicia sesión</router-link>
@@ -49,17 +61,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { useAuthStore } from "@/stores/auth.store";
+import { defineComponent } from 'vue';
+import { useAuthStore } from '@/stores/auth.store';
 
 export default defineComponent({
-  name: "RegisterView",
+  name: 'RegisterView',
 
   data() {
     return {
-      fullName: "",
-      email: "",
-      password: "",
+      fullName: '',
+      email: '',
+      password: '',
     };
   },
 
@@ -76,20 +88,24 @@ export default defineComponent({
         this.validateEmail(this.email) === true &&
         this.validatePassword(this.password) === true
       );
-    }
+    },
   },
 
   methods: {
     // Validación de formato de email
     validateEmail(value: string) {
-      const re = /^(([^<>()\[\]\\.,;:\s@\"]+(\.[^<>()\[\]\\.,;:\s@\"]+)*)|(".+"))@(([^<>()[\]\\.,;:\s@\"]+\.)+[^<>()[\]\\.,;:\s@\"]{2,})$/i;
+      const re =
+        /^(([^<>()\[\]\\.,;:\s@\"]+(\.[^<>()\[\]\\.,;:\s@\"]+)*)|(".+"))@(([^<>()[\]\\.,;:\s@\"]+\.)+[^<>()[\]\\.,;:\s@\"]{2,})$/i;
       return re.test(value) || 'Introduce un email válido';
     },
     // Validación de seguridad de contraseña
     validatePassword(value: string) {
       // Al menos 8 caracteres, una mayúscula, una minúscula, un número y un símbolo
       const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
-      return re.test(value) || 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un símbolo.';
+      return (
+        re.test(value) ||
+        'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un símbolo.'
+      );
     },
     // Manejo del registro de nuevo usuario
     async handleRegister() {
@@ -102,13 +118,19 @@ export default defineComponent({
       });
 
       if (auth.isAuthenticated) {
-        window.dispatchEvent(new CustomEvent("show-snackbar", { detail: { text: "¡Registro exitoso!", color: "success" } }));
-        this.$router.push("/app/dashboard");
+        window.dispatchEvent(
+          new CustomEvent('show-snackbar', {
+            detail: { text: '¡Registro exitoso!', color: 'success' },
+          })
+        );
+        this.$router.push('/app/dashboard');
       } else if (auth.error) {
-        window.dispatchEvent(new CustomEvent("show-snackbar", { detail: { text: auth.error, color: "error" } }));
+        window.dispatchEvent(
+          new CustomEvent('show-snackbar', { detail: { text: auth.error, color: 'error' } })
+        );
       }
-    }
-  }
+    },
+  },
 });
 </script>
 
@@ -126,7 +148,7 @@ export default defineComponent({
 .desktop-card {
   background: white;
   border-radius: 12px;
-  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.08);
+  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.08);
 }
 
 /* Estilizado móvil - fondo transparente */
@@ -144,14 +166,14 @@ export default defineComponent({
     font-weight: 700 !important;
     font-size: 1.8rem !important;
   }
-  
+
   .mobile-transparent .text-grey-darken-1 {
     color: rgba(0, 0, 0, 0.85) !important;
     text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
     font-weight: 600 !important;
     font-size: 1rem !important;
   }
-  
+
   .mobile-transparent a {
     color: rgba(0, 0, 0, 0.9) !important;
     text-decoration: underline;
@@ -159,7 +181,7 @@ export default defineComponent({
     text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
     font-size: 0.95rem !important;
   }
-  
+
   .mobile-transparent a:hover {
     color: rgb(var(--v-theme-primary)) !important;
   }

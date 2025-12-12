@@ -4,13 +4,12 @@ import type { Page } from '@playwright/test';
  * Utilidades optimizadas para tests E2E básicos
  */
 export class BasicE2EHelpers {
-  
   /**
    * Datos de usuario de prueba
    */
   static readonly TEST_USER = {
     email: 'user@demo.com',
-    password: 'demo123456'
+    password: 'demo123456',
   };
 
   /**
@@ -24,8 +23,8 @@ export class BasicE2EHelpers {
         body: JSON.stringify({
           success: true,
           bearer: 'mock-jwt-token-e2e',
-          message: 'Login exitoso'
-        })
+          message: 'Login exitoso',
+        }),
       });
     });
   }
@@ -35,17 +34,17 @@ export class BasicE2EHelpers {
    */
   static async performLogin(page: Page): Promise<void> {
     await page.goto('/login');
-    
+
     // Rellenar formulario de forma más eficiente
     await Promise.all([
       page.fill('input[type="email"]', this.TEST_USER.email),
-      page.fill('input[type="password"]', this.TEST_USER.password)
+      page.fill('input[type="password"]', this.TEST_USER.password),
     ]);
-    
+
     // Hacer click y esperar navegación
     await Promise.all([
       page.click('button[type="submit"]'),
-      page.waitForURL(/.*\/app\/dashboard.*/)
+      page.waitForURL(/.*\/app\/dashboard.*/),
     ]);
   }
 
@@ -55,11 +54,13 @@ export class BasicE2EHelpers {
   static async verifyBasicPageLoad(page: Page, expectedUrl: string): Promise<void> {
     // Verificar URL
     await page.waitForURL(new RegExp(`.*${expectedUrl}.*`));
-    
+
     // Verificar que hay un título/encabezado
-    await page.waitForSelector('h1, h2, [data-testid*="title"], [data-testid*="heading"]', 
-      { state: 'visible', timeout: 5000 });
-    
+    await page.waitForSelector('h1, h2, [data-testid*="title"], [data-testid*="heading"]', {
+      state: 'visible',
+      timeout: 5000,
+    });
+
     // Verificar que la página terminó de cargar
     await page.waitForLoadState('networkidle');
   }
@@ -72,9 +73,9 @@ export class BasicE2EHelpers {
       '[data-testid*="error"]',
       '.error',
       '[class*="error"]',
-      '.v-alert--type-error'
+      '.v-alert--type-error',
     ];
-    
+
     for (const selector of errorSelectors) {
       const errorElements = page.locator(selector);
       const count = await errorElements.count();
@@ -98,7 +99,7 @@ export class BasicE2EHelpers {
     // Ir al dashboard y volver
     await page.goto('/app/dashboard');
     await page.waitForURL(/.*\/app\/dashboard.*/);
-    
+
     await page.goto(currentPath);
     await page.waitForURL(new RegExp(`.*${currentPath.replace('/', '\\/')}.*`));
   }
@@ -111,7 +112,7 @@ export class BasicE2EHelpers {
       'button:visible',
       'a[href]:visible',
       '[role="button"]:visible',
-      '.v-btn:visible'
+      '.v-btn:visible',
     ];
 
     let foundInteractive = false;
@@ -132,9 +133,9 @@ export class BasicE2EHelpers {
    * Configurar mocks de datos básicos para cualquier endpoint
    */
   static async setupDataMock(
-    page: Page, 
-    endpoint: string, 
-    dataKey: string, 
+    page: Page,
+    endpoint: string,
+    dataKey: string,
     mockData: any[]
   ): Promise<void> {
     await page.route(`**/${endpoint}**`, async route => {
@@ -144,8 +145,8 @@ export class BasicE2EHelpers {
         body: JSON.stringify({
           success: true,
           message: `${dataKey} obtenidos exitosamente`,
-          [dataKey]: mockData
-        })
+          [dataKey]: mockData,
+        }),
       });
     });
   }
@@ -156,13 +157,13 @@ export class BasicE2EHelpers {
   static async setupBasicE2ETest(page: Page, route: string): Promise<void> {
     // Setup auth mock
     await this.setupAuthMock(page);
-    
+
     // Hacer login
     await this.performLogin(page);
-    
+
     // Navegar a la ruta deseada
     await page.goto(route);
-    
+
     // Verificar carga básica
     await this.verifyBasicPageLoad(page, route);
   }
@@ -182,8 +183,8 @@ export const MockData = {
       ltv: 80,
       status: 'Aprobado',
       last_status_changed_at: '2024-01-15T10:30:00Z',
-      created_at: '2024-01-01T00:00:00Z'
-    }
+      created_at: '2024-01-01T00:00:00Z',
+    },
   ],
 
   properties: [
@@ -199,8 +200,8 @@ export const MockData = {
       bathrooms: 2,
       status: 'En venta',
       last_status_changed_at: '2024-01-15T10:30:00Z',
-      created_at: '2024-01-01T00:00:00Z'
-    }
+      created_at: '2024-01-01T00:00:00Z',
+    },
   ],
 
   rentals: [
@@ -213,7 +214,7 @@ export const MockData = {
       propertyPriceMinUnit: 1500,
       status: 'Disponible',
       last_status_changed_at: '2024-01-15T10:30:00Z',
-      created_at: '2024-01-01T00:00:00Z'
-    }
-  ]
+      created_at: '2024-01-01T00:00:00Z',
+    },
+  ],
 };

@@ -1,5 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { RentalService, getRentals, formatMonthlyPrice, getRentalStatusLabel, getRentalStatusColor } from '@/services/rental.service';
+import {
+  RentalService,
+  getRentals,
+  formatMonthlyPrice,
+  getRentalStatusLabel,
+  getRentalStatusColor,
+} from '@/services/rental.service';
 import { rentalApi } from '@/api/modules/rental.api';
 import { formatPropertyPrice, getStatusConfig } from '@/services/property.service';
 import type { RentalsResponse } from '@/types/Property';
@@ -19,12 +25,12 @@ describe('Rental Service', () => {
     mockRentalApi = vi.mocked(rentalApi);
     mockFormatPropertyPrice = vi.mocked(formatPropertyPrice);
     mockGetStatusConfig = vi.mocked(getStatusConfig);
-    
+
     // Configurar mocks por defecto
     mockFormatPropertyPrice.mockReturnValue('€1.200/mes');
     mockGetStatusConfig.mockReturnValue({
       label: 'Disponible',
-      color: 'green'
+      color: 'green',
     });
   });
 
@@ -43,9 +49,9 @@ describe('Rental Service', () => {
             status: 'Publicado',
             propertyPriceMinUnit: 1200,
             last_status_changed_at: '2023-01-15T10:30:00Z',
-            created_at: '2023-01-01T00:00:00Z'
-          }
-        ]
+            created_at: '2023-01-01T00:00:00Z',
+          },
+        ],
       };
 
       mockRentalApi.getRentals.mockResolvedValue(mockResponse);
@@ -74,7 +80,9 @@ describe('Rental Service', () => {
       mockRentalApi.getRentals.mockRejectedValue(unknownError);
 
       // Act & Assert
-      await expect(RentalService.getRentals()).rejects.toThrow('Error desconocido al obtener los alquileres');
+      await expect(RentalService.getRentals()).rejects.toThrow(
+        'Error desconocido al obtener los alquileres'
+      );
     });
 
     it('debería usar función alias getRentals', async () => {
@@ -82,7 +90,7 @@ describe('Rental Service', () => {
       const mockResponse: RentalsResponse = {
         success: true,
         message: 'OK',
-        properties: []
+        properties: [],
       };
 
       mockRentalApi.getRentals.mockResolvedValue(mockResponse);
@@ -101,7 +109,7 @@ describe('Rental Service', () => {
       it('debería validar precio positivo', () => {
         // Act
         const result = formatMonthlyPrice(1200);
-        
+
         // Assert
         expect(result).toBe('€1.200/mes');
         expect(mockFormatPropertyPrice).toHaveBeenCalledWith(1200, 'rental');
@@ -109,7 +117,9 @@ describe('Rental Service', () => {
 
       it('debería fallar con precio negativo', () => {
         // Act & Assert
-        expect(() => formatMonthlyPrice(-100)).toThrow('El precio mensual debe ser un número positivo');
+        expect(() => formatMonthlyPrice(-100)).toThrow(
+          'El precio mensual debe ser un número positivo'
+        );
       });
     });
 
@@ -117,7 +127,7 @@ describe('Rental Service', () => {
       it('debería manejar status válido', () => {
         // Act
         const result = getRentalStatusLabel('Publicado');
-        
+
         // Assert
         expect(result).toBe('Disponible');
         expect(mockGetStatusConfig).toHaveBeenCalledWith('Publicado', 'rental');
@@ -126,7 +136,7 @@ describe('Rental Service', () => {
       it('debería manejar status vacío', () => {
         // Act
         const result = getRentalStatusLabel('');
-        
+
         // Assert
         expect(result).toBe('Estado desconocido');
       });
@@ -136,7 +146,7 @@ describe('Rental Service', () => {
       it('debería manejar status válido', () => {
         // Act
         const result = getRentalStatusColor('Publicado');
-        
+
         // Assert
         expect(result).toBe('green');
         expect(mockGetStatusConfig).toHaveBeenCalledWith('Publicado', 'rental');
@@ -145,7 +155,7 @@ describe('Rental Service', () => {
       it('debería manejar status vacío', () => {
         // Act
         const result = getRentalStatusColor('');
-        
+
         // Assert
         expect(result).toBe('grey');
       });

@@ -8,11 +8,11 @@ const validateMessageInput = (input: string): void => {
   if (typeof input !== 'string') {
     throw new Error('El mensaje debe ser una cadena de texto');
   }
-  
+
   if (!input.trim()) {
     throw new Error('El mensaje no puede estar vacío');
   }
-  
+
   if (input.length > 1000) {
     throw new Error('El mensaje no puede exceder 1000 caracteres');
   }
@@ -25,7 +25,7 @@ const validateMessageContent = (content: string): void => {
   if (typeof content !== 'string') {
     throw new Error('El contenido del mensaje debe ser una cadena de texto');
   }
-  
+
   if (!content.trim()) {
     throw new Error('El contenido del mensaje no puede estar vacío');
   }
@@ -38,7 +38,7 @@ const validateTimestamp = (timestamp: Date): void => {
   if (!(timestamp instanceof Date)) {
     throw new Error('El timestamp debe ser una instancia de Date');
   }
-  
+
   if (isNaN(timestamp.getTime())) {
     throw new Error('El timestamp no es válido');
   }
@@ -51,9 +51,9 @@ export const chatService = {
   async sendMessage(messageInput: string): Promise<ChatResponse> {
     // Early return para validaciones
     validateMessageInput(messageInput);
-    
+
     const cleanInput = messageInput.trim();
-    
+
     try {
       return await chatApi.sendMessage(cleanInput);
     } catch (error) {
@@ -70,7 +70,7 @@ export const chatService = {
   generateMessageId(): string {
     const timestamp = Date.now();
     const randomString = Math.random().toString(36).substring(2, 11);
-    
+
     return `msg-${timestamp}-${randomString}`;
   },
 
@@ -80,10 +80,10 @@ export const chatService = {
   createUserMessage(messageContent: string): ChatMessage {
     // Early return para validaciones
     validateMessageContent(messageContent);
-    
+
     const currentTimestamp = new Date();
     const cleanContent = messageContent.trim();
-    
+
     return {
       id: this.generateMessageId(),
       role: 'user',
@@ -98,10 +98,10 @@ export const chatService = {
   createAssistantMessage(messageContent: string): ChatMessage {
     // Early return para validaciones
     validateMessageContent(messageContent);
-    
+
     const currentTimestamp = new Date();
     const cleanContent = messageContent.trim();
-    
+
     return {
       id: this.generateMessageId(),
       role: 'assistant',
@@ -116,15 +116,15 @@ export const chatService = {
   formatTime(messageTimestamp: Date): string {
     // Early return para validación
     validateTimestamp(messageTimestamp);
-    
+
     try {
       return messageTimestamp.toLocaleTimeString('es-ES', {
         hour: '2-digit',
-        minute: '2-digit'
+        minute: '2-digit',
       });
     } catch (error) {
       // Fallback si hay problema con la localización
       return messageTimestamp.toTimeString().substring(0, 5);
     }
-  }
+  },
 };

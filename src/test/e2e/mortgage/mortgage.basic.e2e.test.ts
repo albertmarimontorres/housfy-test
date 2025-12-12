@@ -5,7 +5,6 @@ import { test, expect } from '@playwright/test';
  * Optimizados para funcionar sin servidor de desarrollo
  */
 test.describe('Mortgage E2E - Tests Básicos', () => {
-  
   test('debe poder acceder a la ruta de mortgage con autenticación mock', async ({ page }) => {
     // Mock de JWT token en localStorage para simular usuario autenticado
     await page.addInitScript(() => {
@@ -31,23 +30,22 @@ test.describe('Mortgage E2E - Tests Básicos', () => {
               ltv: 80,
               status: 'Aprobado',
               last_status_changed_at: '2024-01-15T10:30:00Z',
-              created_at: '2024-01-01T00:00:00Z'
-            }
-          ]
-        })
+              created_at: '2024-01-01T00:00:00Z',
+            },
+          ],
+        }),
       });
     });
 
     try {
       // Intentar navegar directamente a la ruta de mortgage
       await page.goto('/app/mortgages');
-      
+
       // Verificar que la página se carga (aunque pueda redirigir por auth)
       await page.waitForLoadState('networkidle');
-      
+
       // Si la página carga correctamente, el test pasa
       expect(page.url()).toBeTruthy();
-      
     } catch (error) {
       // Si hay redirección por auth, verificar que al menos la app responde
       const currentUrl = page.url();
@@ -66,8 +64,8 @@ test.describe('Mortgage E2E - Tests Básicos', () => {
         body: JSON.stringify({
           success: true,
           message: 'Test endpoint response',
-          mortgages: []
-        })
+          mortgages: [],
+        }),
       });
     });
 
@@ -91,7 +89,7 @@ test.describe('Mortgage E2E - Tests Básicos', () => {
       loanAmountMinUnit: 20000000,
       propertyValueMinUnit: 25000000,
       ltv: 80,
-      status: 'Aprobado'
+      status: 'Aprobado',
     };
 
     // Verificar estructura de datos
@@ -114,9 +112,9 @@ test.describe('Mortgage E2E - Tests Básicos', () => {
           loanAmountMinUnit: 100000,
           propertyValueMinUnit: 200000,
           ltv: 50,
-          status: 'Test Status'
-        }
-      ]
+          status: 'Test Status',
+        },
+      ],
     };
 
     // Verificar estructura de respuesta

@@ -20,7 +20,7 @@ describe('Rental Store - Coverage Completo', () => {
       status: 'Publicado',
       propertyPriceMinUnit: 1000,
       last_status_changed_at: '2023-01-01T00:00:00Z',
-      created_at: '2023-01-01T00:00:00Z'
+      created_at: '2023-01-01T00:00:00Z',
     },
     {
       uuid: '2',
@@ -30,7 +30,7 @@ describe('Rental Store - Coverage Completo', () => {
       status: 'Solicitud recibida',
       propertyPriceMinUnit: 1200,
       last_status_changed_at: '2023-01-02T00:00:00Z',
-      created_at: '2023-01-02T00:00:00Z'
+      created_at: '2023-01-02T00:00:00Z',
     },
     {
       uuid: '3',
@@ -40,8 +40,8 @@ describe('Rental Store - Coverage Completo', () => {
       status: 'Publicado',
       propertyPriceMinUnit: 1500,
       last_status_changed_at: '2023-01-03T00:00:00Z',
-      created_at: '2023-01-03T00:00:00Z'
-    }
+      created_at: '2023-01-03T00:00:00Z',
+    },
   ];
 
   beforeEach(() => {
@@ -67,7 +67,7 @@ describe('Rental Store - Coverage Completo', () => {
       const mockResponse: RentalsResponse = {
         success: true,
         message: 'OK',
-        properties: mockRentals
+        properties: mockRentals,
       };
       mockGetRentals.mockResolvedValue(mockResponse);
 
@@ -86,7 +86,7 @@ describe('Rental Store - Coverage Completo', () => {
       const mockResponse = {
         success: false,
         message: 'Error del servidor',
-        properties: []
+        properties: [],
       };
       mockGetRentals.mockResolvedValue(mockResponse);
 
@@ -104,7 +104,7 @@ describe('Rental Store - Coverage Completo', () => {
       const mockResponse = {
         success: false,
         message: '',
-        properties: []
+        properties: [],
       };
       mockGetRentals.mockResolvedValue(mockResponse);
 
@@ -132,7 +132,7 @@ describe('Rental Store - Coverage Completo', () => {
       const mockResponse: RentalsResponse = {
         success: true,
         message: 'OK',
-        properties: mockRentals
+        properties: mockRentals,
       };
       mockGetRentals.mockResolvedValue(mockResponse);
 
@@ -160,7 +160,7 @@ describe('Rental Store - Coverage Completo', () => {
 
     it('debería filtrar activeRentals correctamente', () => {
       const activeRentals = rentalStore.activeRentals;
-      
+
       expect(activeRentals).toHaveLength(2);
       expect(activeRentals.every((rental: Rental) => rental.status === 'Publicado')).toBe(true);
     });
@@ -171,7 +171,7 @@ describe('Rental Store - Coverage Completo', () => {
 
     it('debería calcular hasRentals correctamente', () => {
       expect(rentalStore.hasRentals).toBe(true);
-      
+
       // Test con array vacío
       rentalStore.filteredRentals = [];
       expect(rentalStore.hasRentals).toBe(false);
@@ -179,7 +179,7 @@ describe('Rental Store - Coverage Completo', () => {
 
     it('debería agrupar rentalsByStatus correctamente', () => {
       const rentalsByStatus = rentalStore.rentalsByStatus;
-      
+
       expect(rentalsByStatus['Publicado']).toHaveLength(2);
       expect(rentalsByStatus['Solicitud recibida']).toHaveLength(1);
       expect(Object.keys(rentalsByStatus)).toHaveLength(2);
@@ -189,7 +189,7 @@ describe('Rental Store - Coverage Completo', () => {
       // Arrange
       const rentalWithoutStatus = {
         ...mockRentals[0],
-        status: undefined as any
+        status: undefined as any,
       };
       rentalStore.filteredRentals = [rentalWithoutStatus];
 
@@ -231,7 +231,9 @@ describe('Rental Store - Coverage Completo', () => {
 
       // Assert
       expect(rentalStore.filteredRentals).toHaveLength(2);
-      expect(rentalStore.filteredRentals.every((r: Rental) => r.propertyPriceMinUnit >= 1200)).toBe(true);
+      expect(rentalStore.filteredRentals.every((r: Rental) => r.propertyPriceMinUnit >= 1200)).toBe(
+        true
+      );
     });
 
     it('debería filtrar por precio máximo', () => {
@@ -240,7 +242,9 @@ describe('Rental Store - Coverage Completo', () => {
 
       // Assert
       expect(rentalStore.filteredRentals).toHaveLength(2);
-      expect(rentalStore.filteredRentals.every((r: Rental) => r.propertyPriceMinUnit <= 1200)).toBe(true);
+      expect(rentalStore.filteredRentals.every((r: Rental) => r.propertyPriceMinUnit <= 1200)).toBe(
+        true
+      );
     });
 
     it('debería manejar minPrice 0', () => {
@@ -264,7 +268,7 @@ describe('Rental Store - Coverage Completo', () => {
       rentalStore.applyFilters({
         status: 'Publicado',
         minPrice: 1400,
-        propertyStreet: 'central'
+        propertyStreet: 'central',
       });
 
       // Assert
@@ -287,7 +291,7 @@ describe('Rental Store - Coverage Completo', () => {
       const filters: RentalFilters = {
         status: 'Publicado',
         minPrice: 500,
-        maxPrice: 2000
+        maxPrice: 2000,
       };
 
       // Act
@@ -337,7 +341,7 @@ describe('Rental Store - Coverage Completo', () => {
 
       // Act
       const fetchPromise = rentalStore.fetchRentals();
-      
+
       // Assert - durante la carga
       expect(rentalStore.loading).toBe(true);
 
@@ -345,7 +349,7 @@ describe('Rental Store - Coverage Completo', () => {
       resolvePromise({
         success: true,
         message: 'OK',
-        properties: []
+        properties: [],
       });
       await fetchPromise;
 

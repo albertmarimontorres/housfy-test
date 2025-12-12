@@ -29,9 +29,9 @@ describe('Rental API', () => {
             status: 'Publicado',
             propertyPriceMinUnit: 1200,
             last_status_changed_at: '2023-01-15T10:30:00Z',
-            created_at: '2023-01-01T00:00:00Z'
-          }
-        ]
+            created_at: '2023-01-01T00:00:00Z',
+          },
+        ],
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
@@ -49,7 +49,7 @@ describe('Rental API', () => {
       const mockResponse: RentalsResponse = {
         success: true,
         message: 'No hay alquileres disponibles',
-        properties: []
+        properties: [],
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
@@ -77,7 +77,7 @@ describe('Rental API', () => {
       const mockResponse: RentalsResponse = {
         success: true,
         message: 'Alquileres filtrados',
-        properties: []
+        properties: [],
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
@@ -94,7 +94,7 @@ describe('Rental API', () => {
       const mockResponse: RentalsResponse = {
         success: true,
         message: 'Alquileres sin filtros',
-        properties: []
+        properties: [],
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
@@ -107,24 +107,26 @@ describe('Rental API', () => {
     });
 
     it('debería construir URL con múltiples filtros válidos', async () => {
-      // Arrange  
+      // Arrange
       const mockResponse: RentalsResponse = {
         success: true,
         message: 'Alquileres con filtros',
-        properties: []
+        properties: [],
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
 
       // Act - test para coverage de múltiples filtros
-      await rentalApi.getRentals({ 
-        status: 'Publicado', 
+      await rentalApi.getRentals({
+        status: 'Publicado',
         minPrice: 500,
-        maxPrice: 1500 
+        maxPrice: 1500,
       });
 
       // Assert - debe construir URL con todos los filtros
-      expect(mockHttp.get).toHaveBeenCalledWith('/rentals?status=Publicado&minPrice=500&maxPrice=1500');
+      expect(mockHttp.get).toHaveBeenCalledWith(
+        '/rentals?status=Publicado&minPrice=500&maxPrice=1500'
+      );
     });
   });
 });

@@ -5,7 +5,6 @@ import { test, expect } from '@playwright/test';
  * Optimizados para funcionar sin servidor de desarrollo
  */
 test.describe('Rental E2E - Tests Básicos', () => {
-  
   test('debe poder acceder a la ruta de rentals con autenticación mock', async ({ page }) => {
     // Mock de JWT token en localStorage para simular usuario autenticado
     await page.addInitScript(() => {
@@ -29,23 +28,22 @@ test.describe('Rental E2E - Tests Básicos', () => {
               propertyFloor: 2,
               propertyCity: 'Madrid',
               propertyPriceMinUnit: 1500,
-              status: 'Disponible'
-            }
-          ]
-        })
+              status: 'Disponible',
+            },
+          ],
+        }),
       });
     });
 
     try {
       // Intentar navegar directamente a la ruta de alquileres
       await page.goto('/app/rentals');
-      
+
       // Verificar que la página se carga (aunque pueda redirigir por auth)
       await page.waitForLoadState('networkidle');
-      
+
       // Si la página carga correctamente, el test pasa
       expect(page.url()).toBeTruthy();
-      
     } catch (error) {
       // Si hay redirección por auth, verificar que al menos la app responde
       const currentUrl = page.url();
@@ -64,8 +62,8 @@ test.describe('Rental E2E - Tests Básicos', () => {
         body: JSON.stringify({
           success: true,
           message: 'Test endpoint response',
-          rentals: []
-        })
+          rentals: [],
+        }),
       });
     });
 
@@ -89,7 +87,7 @@ test.describe('Rental E2E - Tests Básicos', () => {
       propertyFloor: 2,
       propertyCity: 'Madrid',
       propertyPriceMinUnit: 1500,
-      status: 'Disponible'
+      status: 'Disponible',
     };
 
     // Verificar estructura de datos
@@ -112,9 +110,9 @@ test.describe('Rental E2E - Tests Básicos', () => {
           propertyFloor: 2,
           propertyCity: 'Test City',
           propertyPriceMinUnit: 1200,
-          status: 'Disponible'
-        }
-      ]
+          status: 'Disponible',
+        },
+      ],
     };
 
     // Verificar estructura de respuesta
@@ -128,7 +126,7 @@ test.describe('Rental E2E - Tests Básicos', () => {
 
   test('debe validar rangos de precios de alquiler', async () => {
     const rentalPrices = [800, 1200, 1500, 2000, 2500];
-    
+
     rentalPrices.forEach(price => {
       expect(price).toBeGreaterThan(0);
       expect(price).toBeLessThan(10000); // Rango razonable para alquileres

@@ -18,7 +18,7 @@ describe('Profile Integration Tests', () => {
     // Crear nueva instancia de Pinia
     setActivePinia(createPinia());
     profileStore = useProfileStore();
-    
+
     // Limpiar todos los mocks
     vi.clearAllMocks();
   });
@@ -30,13 +30,13 @@ describe('Profile Integration Tests', () => {
         id: 123,
         email: 'integration@example.com',
         fullName: 'Usuario Integración',
-        createdAt: '2023-01-01T00:00:00Z'
+        createdAt: '2023-01-01T00:00:00Z',
       };
 
       const mockApiResponse: ProfileResponse = {
         success: true,
         message: 'Perfil obtenido correctamente',
-        user: mockUser
+        user: mockUser,
       };
 
       // Mock de la cadena: API → Service → Store
@@ -48,7 +48,7 @@ describe('Profile Integration Tests', () => {
 
       // Assert - Verificar llamadas en cadena
       expect(mockProfileService.getProfile).toHaveBeenCalledTimes(1);
-      
+
       // Assert - Verificar estado final del store
       expect(profileStore.user).toEqual(mockUser);
       expect(profileStore.loading).toBe(false);
@@ -58,7 +58,7 @@ describe('Profile Integration Tests', () => {
     it('debería propagar errores de API a través de Service hasta Store', async () => {
       // Arrange
       const apiError = new Error('API Error: 500 Internal Server Error');
-      
+
       // Mock error en toda la cadena
       mockProfileApi.getProfile.mockRejectedValue(apiError);
       mockProfileService.getProfile.mockRejectedValue(apiError);
@@ -78,7 +78,7 @@ describe('Profile Integration Tests', () => {
       const failureResponse = {
         success: false,
         message: 'Usuario no autorizado',
-        user: null
+        user: null,
       };
 
       const serviceError = new Error('Usuario no autorizado');
@@ -100,8 +100,8 @@ describe('Profile Integration Tests', () => {
   describe('integración con estados de loading', () => {
     it('debería manejar loading state durante toda la cadena', async () => {
       // Arrange
-      let loadingStates: boolean[] = [];
-      
+      const loadingStates: boolean[] = [];
+
       const mockResponse: ProfileResponse = {
         success: true,
         message: 'OK',
@@ -109,8 +109,8 @@ describe('Profile Integration Tests', () => {
           id: 1,
           email: 'test@example.com',
           fullName: 'Test User',
-          createdAt: '2023-01-01T00:00:00Z'
-        }
+          createdAt: '2023-01-01T00:00:00Z',
+        },
       };
 
       // Mock que simula delay y captura estados de loading
@@ -124,7 +124,7 @@ describe('Profile Integration Tests', () => {
       // Act
       const fetchPromise = profileStore.fetchProfile();
       loadingStates.push(profileStore.loading); // Inmediatamente después de llamar
-      
+
       await fetchPromise;
       loadingStates.push(profileStore.loading); // Después de completar
 
@@ -157,9 +157,9 @@ describe('Profile Integration Tests', () => {
       const networkError = {
         response: {
           data: {
-            message: 'Error de conexión'
-          }
-        }
+            message: 'Error de conexión',
+          },
+        },
       };
 
       mockProfileService.getProfile.mockRejectedValue(networkError);
@@ -194,8 +194,8 @@ describe('Profile Integration Tests', () => {
           id: 123,
           email: 'recovery@example.com',
           fullName: 'Recovery User',
-          createdAt: '2023-01-01T00:00:00Z'
-        }
+          createdAt: '2023-01-01T00:00:00Z',
+        },
       };
 
       // Act - Primera llamada con error
@@ -223,26 +223,26 @@ describe('Profile Integration Tests', () => {
         id: 1,
         email: 'user1@example.com',
         fullName: 'First User',
-        createdAt: '2023-01-01T00:00:00Z'
+        createdAt: '2023-01-01T00:00:00Z',
       };
 
       const user2: User = {
         id: 2,
         email: 'user2@example.com',
         fullName: 'Second User',
-        createdAt: '2023-02-01T00:00:00Z'
+        createdAt: '2023-02-01T00:00:00Z',
       };
 
       const response1: ProfileResponse = {
         success: true,
         message: 'First fetch',
-        user: user1
+        user: user1,
       };
 
       const response2: ProfileResponse = {
         success: true,
         message: 'Second fetch',
-        user: user2
+        user: user2,
       };
 
       // Act - Primera obtención
@@ -271,9 +271,36 @@ describe('Profile Integration Tests', () => {
     it('debería mantener independencia entre múltiples operaciones', async () => {
       // Arrange
       const responses = [
-        { success: true, message: 'Call 1', user: { id: 1, email: 'user1@test.com', fullName: 'User 1', createdAt: '2023-01-01T00:00:00Z' } },
-        { success: true, message: 'Call 2', user: { id: 2, email: 'user2@test.com', fullName: 'User 2', createdAt: '2023-01-02T00:00:00Z' } },
-        { success: true, message: 'Call 3', user: { id: 3, email: 'user3@test.com', fullName: 'User 3', createdAt: '2023-01-03T00:00:00Z' } }
+        {
+          success: true,
+          message: 'Call 1',
+          user: {
+            id: 1,
+            email: 'user1@test.com',
+            fullName: 'User 1',
+            createdAt: '2023-01-01T00:00:00Z',
+          },
+        },
+        {
+          success: true,
+          message: 'Call 2',
+          user: {
+            id: 2,
+            email: 'user2@test.com',
+            fullName: 'User 2',
+            createdAt: '2023-01-02T00:00:00Z',
+          },
+        },
+        {
+          success: true,
+          message: 'Call 3',
+          user: {
+            id: 3,
+            email: 'user3@test.com',
+            fullName: 'User 3',
+            createdAt: '2023-01-03T00:00:00Z',
+          },
+        },
       ];
 
       // Mock para devolver respuestas secuencialmente
@@ -310,8 +337,8 @@ describe('Profile Integration Tests', () => {
           id: 999,
           email: 'concurrent@example.com',
           fullName: 'Concurrent User',
-          createdAt: '2023-01-01T00:00:00Z'
-        }
+          createdAt: '2023-01-01T00:00:00Z',
+        },
       };
 
       mockProfileService.getProfile.mockResolvedValue(response);
@@ -320,7 +347,7 @@ describe('Profile Integration Tests', () => {
       const promises = [
         profileStore.fetchProfile(),
         profileStore.fetchProfile(),
-        profileStore.fetchProfile()
+        profileStore.fetchProfile(),
       ];
 
       await Promise.all(promises);
@@ -341,8 +368,8 @@ describe('Profile Integration Tests', () => {
           id: 456,
           email: 'success@example.com',
           fullName: 'Success User',
-          createdAt: '2023-01-01T00:00:00Z'
-        }
+          createdAt: '2023-01-01T00:00:00Z',
+        },
       };
 
       // Act & Assert - Error primero
@@ -367,8 +394,8 @@ describe('Profile Integration Tests', () => {
           id: 123,
           email: 'quick@example.com',
           fullName: 'Quick User',
-          createdAt: '2023-01-01T00:00:00Z'
-        }
+          createdAt: '2023-01-01T00:00:00Z',
+        },
       };
 
       // Mock sin delay para operación "instantánea"

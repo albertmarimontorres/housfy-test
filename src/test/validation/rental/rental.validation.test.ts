@@ -13,7 +13,7 @@ describe('Rental - Validaciones', () => {
         status: 'Publicado',
         propertyPriceMinUnit: 1200,
         last_status_changed_at: '2023-01-15T10:30:00Z',
-        created_at: '2023-01-01T00:00:00Z'
+        created_at: '2023-01-01T00:00:00Z',
       };
 
       // Assert
@@ -67,7 +67,7 @@ describe('Rental - Validaciones', () => {
       const filters: RentalFilters = {
         status: 'Publicado',
         minPrice: 500,
-        maxPrice: 2000
+        maxPrice: 2000,
       };
 
       // Act & Assert
@@ -89,7 +89,7 @@ describe('Rental - Validaciones', () => {
       const validRanges = [
         { min: 400, max: 800 },
         { min: 800, max: 1500 },
-        { min: 1500, max: 3000 }
+        { min: 1500, max: 3000 },
       ];
 
       // Act & Assert
@@ -107,7 +107,7 @@ describe('Rental - Validaciones', () => {
       const addresses = [
         { street: 'Calle Mayor', number: 123 },
         { street: 'Avenida Libertad', number: 456 },
-        { street: 'Plaza Central', number: 789 }
+        { street: 'Plaza Central', number: 789 },
       ];
 
       // Act & Assert

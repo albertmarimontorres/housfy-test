@@ -5,26 +5,29 @@ describe('tokenStorage Tests', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    
+
     // Mock localStorage
     const mockLocalStorage = {
       getItem: vi.fn(),
       setItem: vi.fn(),
       removeItem: vi.fn(),
-      clear: vi.fn()
+      clear: vi.fn(),
     };
-    
+
     vi.stubGlobal('localStorage', mockLocalStorage);
-    
+
     // Mock Date.now para tests deterministas
     vi.spyOn(Date, 'now').mockReturnValue(1000000); // timestamp fijo
-    
+
     // Mock btoa/atob con implementación simple
     vi.stubGlobal('btoa', (str: string) => {
       // Implementación simple para testing
-      return str.split('').map(c => c.charCodeAt(0).toString(16)).join('');
+      return str
+        .split('')
+        .map(c => c.charCodeAt(0).toString(16))
+        .join('');
     });
-    
+
     vi.stubGlobal('atob', (str: string) => {
       try {
         // Implementación simple para testing - reversa de btoa
@@ -50,14 +53,17 @@ describe('tokenStorage Tests', () => {
       // Arrange
       const testToken = 'test-jwt-token';
       const expectedExpiresAt = 1000000 + 3600 * 1000; // 1 hora después
-      const expectedEncoded = btoa('hf_' + testToken);
+      const expectedEncoded = btoa(`hf_${  testToken}`);
 
       // Act
       tokenStorage.set(testToken);
 
       // Assert
       expect(localStorage.setItem).toHaveBeenCalledWith('auth_token_v1', expectedEncoded);
-      expect(localStorage.setItem).toHaveBeenCalledWith('auth_expires_v1', expectedExpiresAt.toString());
+      expect(localStorage.setItem).toHaveBeenCalledWith(
+        'auth_expires_v1',
+        expectedExpiresAt.toString()
+      );
       expect(localStorage.setItem).toHaveBeenCalledTimes(2);
     });
 
@@ -66,20 +72,23 @@ describe('tokenStorage Tests', () => {
       const testToken = 'test-jwt-token';
       const customExpiry = 7200; // 2 horas
       const expectedExpiresAt = 1000000 + customExpiry * 1000;
-      const expectedEncoded = btoa('hf_' + testToken);
+      const expectedEncoded = btoa(`hf_${  testToken}`);
 
       // Act
       tokenStorage.set(testToken, customExpiry);
 
       // Assert
       expect(localStorage.setItem).toHaveBeenCalledWith('auth_token_v1', expectedEncoded);
-      expect(localStorage.setItem).toHaveBeenCalledWith('auth_expires_v1', expectedExpiresAt.toString());
+      expect(localStorage.setItem).toHaveBeenCalledWith(
+        'auth_expires_v1',
+        expectedExpiresAt.toString()
+      );
     });
 
     it('debería codificar el token con prefijo de obfuscación', () => {
       // Arrange
       const testToken = 'my-secret-token';
-      const expectedPrefixedToken = 'hf_' + testToken;
+      const expectedPrefixedToken = `hf_${  testToken}`;
       const expectedEncoded = btoa(expectedPrefixedToken);
 
       // Act
@@ -94,12 +103,12 @@ describe('tokenStorage Tests', () => {
     it('debería retornar token válido no expirado', () => {
       // Arrange
       const originalToken = 'valid-token';
-      const encodedToken = btoa('hf_' + originalToken);
+      const encodedToken = btoa(`hf_${  originalToken}`);
       const futureExpiry = (1000000 + 3600 * 1000).toString(); // 1 hora en el futuro
 
       (localStorage.getItem as any)
-        .mockReturnValueOnce(encodedToken)      // TOKEN_KEY
-        .mockReturnValueOnce(futureExpiry);     // EXPIRES_KEY
+        .mockReturnValueOnce(encodedToken) // TOKEN_KEY
+        .mockReturnValueOnce(futureExpiry); // EXPIRES_KEY
 
       // Act
       const result = tokenStorage.get();
@@ -125,8 +134,8 @@ describe('tokenStorage Tests', () => {
       // Arrange
       const encodedToken = btoa('hf_some-token');
       (localStorage.getItem as any)
-        .mockReturnValueOnce(encodedToken)      // TOKEN_KEY
-        .mockReturnValueOnce(null);             // EXPIRES_KEY
+        .mockReturnValueOnce(encodedToken) // TOKEN_KEY
+        .mockReturnValueOnce(null); // EXPIRES_KEY
 
       // Act
       const result = tokenStorage.get();
@@ -141,8 +150,8 @@ describe('tokenStorage Tests', () => {
       const pastExpiry = (1000000 - 3600 * 1000).toString(); // 1 hora en el pasado
 
       (localStorage.getItem as any)
-        .mockReturnValueOnce(encodedToken)      // TOKEN_KEY
-        .mockReturnValueOnce(pastExpiry);       // EXPIRES_KEY
+        .mockReturnValueOnce(encodedToken) // TOKEN_KEY
+        .mockReturnValueOnce(pastExpiry); // EXPIRES_KEY
 
       const clearSpy = vi.spyOn(tokenStorage, 'clear');
 
@@ -160,8 +169,8 @@ describe('tokenStorage Tests', () => {
       const futureExpiry = (1000000 + 3600 * 1000).toString();
 
       (localStorage.getItem as any)
-        .mockReturnValueOnce(invalidToken)      // TOKEN_KEY
-        .mockReturnValueOnce(futureExpiry);     // EXPIRES_KEY
+        .mockReturnValueOnce(invalidToken) // TOKEN_KEY
+        .mockReturnValueOnce(futureExpiry); // EXPIRES_KEY
 
       // Act
       const result = tokenStorage.get();
@@ -176,8 +185,8 @@ describe('tokenStorage Tests', () => {
       const futureExpiry = (1000000 + 3600 * 1000).toString();
 
       (localStorage.getItem as any)
-        .mockReturnValueOnce(malformedToken)    // TOKEN_KEY inválido
-        .mockReturnValueOnce(futureExpiry);     // EXPIRES_KEY
+        .mockReturnValueOnce(malformedToken) // TOKEN_KEY inválido
+        .mockReturnValueOnce(futureExpiry); // EXPIRES_KEY
 
       // Mock atob para lanzar error
       vi.stubGlobal('atob', () => {
@@ -197,8 +206,8 @@ describe('tokenStorage Tests', () => {
       const invalidExpiry = 'not-a-number';
 
       (localStorage.getItem as any)
-        .mockReturnValueOnce(encodedToken)      // TOKEN_KEY
-        .mockReturnValueOnce(invalidExpiry);    // EXPIRES_KEY inválido
+        .mockReturnValueOnce(encodedToken) // TOKEN_KEY
+        .mockReturnValueOnce(invalidExpiry); // EXPIRES_KEY inválido
 
       // Act
       const result = tokenStorage.get();
@@ -224,7 +233,7 @@ describe('tokenStorage Tests', () => {
     it('debería manejar ciclo completo: set -> get -> clear', () => {
       // Arrange
       const testToken = 'integration-test-token';
-      const encodedToken = btoa('hf_' + testToken);
+      const encodedToken = btoa(`hf_${  testToken}`);
       const futureExpiry = (1000000 + 3600 * 1000).toString();
 
       // Act 1: Set token
@@ -249,7 +258,7 @@ describe('tokenStorage Tests', () => {
     it('debería manejar tokens muy largos', () => {
       // Arrange
       const longToken = 'a'.repeat(1000); // Token de 1000 caracteres
-      const expectedEncoded = btoa('hf_' + longToken);
+      const expectedEncoded = btoa(`hf_${  longToken}`);
 
       // Act
       tokenStorage.set(longToken);
@@ -261,7 +270,7 @@ describe('tokenStorage Tests', () => {
     it('debería manejar caracteres especiales en tokens', () => {
       // Arrange
       const specialToken = 'token-with-special-chars!@#$%^&*()_+{}|:"<>?[]\\;\'.,/`~';
-      const expectedEncoded = btoa('hf_' + specialToken);
+      const expectedEncoded = btoa(`hf_${  specialToken}`);
 
       // Act
       tokenStorage.set(specialToken);
@@ -273,7 +282,7 @@ describe('tokenStorage Tests', () => {
     it('debería manejar expiración en el límite exacto', () => {
       // Arrange
       const testToken = 'boundary-test-token';
-      const encodedToken = btoa('hf_' + testToken);
+      const encodedToken = btoa(`hf_${  testToken}`);
       const exactExpiry = 1000000; // Mismo timestamp que Date.now()
 
       (localStorage.getItem as any)
@@ -290,7 +299,7 @@ describe('tokenStorage Tests', () => {
     it('debería considerar expirado cuando Date.now() > expiresAt', () => {
       // Arrange
       const testToken = 'expired-test-token';
-      const encodedToken = btoa('hf_' + testToken);
+      const encodedToken = btoa(`hf_${  testToken}`);
       const pastExpiry = 999999; // 1ms antes que Date.now() (1000000)
 
       (localStorage.getItem as any)
@@ -311,14 +320,8 @@ describe('tokenStorage Tests', () => {
       const testToken = 'constant-test';
       tokenStorage.set(testToken);
 
-      expect(localStorage.setItem).toHaveBeenCalledWith(
-        'auth_token_v1',
-        expect.any(String)
-      );
-      expect(localStorage.setItem).toHaveBeenCalledWith(
-        'auth_expires_v1',
-        expect.any(String)
-      );
+      expect(localStorage.setItem).toHaveBeenCalledWith('auth_token_v1', expect.any(String));
+      expect(localStorage.setItem).toHaveBeenCalledWith('auth_expires_v1', expect.any(String));
     });
   });
 });

@@ -9,52 +9,70 @@ export const useMortgageStore = defineStore('mortgage', {
     error: null as string | null,
     filters: {} as MortgageFilters,
   }),
-  
+
   getters: {
-    filteredMortgages: (state) => {
-      return state.mortgages.filter((mortgage) => {
+    filteredMortgages: state => {
+      return state.mortgages.filter(mortgage => {
         // Filtro por estado
         if (state.filters.status && mortgage.status !== state.filters.status) {
           return false;
         }
 
         // Filtro por importe mínimo del préstamo
-        if (state.filters.minLoanAmount && mortgage.loanAmountMinUnit < state.filters.minLoanAmount * 100) {
+        if (
+          state.filters.minLoanAmount &&
+          mortgage.loanAmountMinUnit < state.filters.minLoanAmount * 100
+        ) {
           return false;
         }
 
         // Filtro por importe máximo del préstamo
-        if (state.filters.maxLoanAmount && mortgage.loanAmountMinUnit > state.filters.maxLoanAmount * 100) {
+        if (
+          state.filters.maxLoanAmount &&
+          mortgage.loanAmountMinUnit > state.filters.maxLoanAmount * 100
+        ) {
           return false;
         }
 
         // Filtro por valor mínimo de la propiedad
-        if (state.filters.minPropertyValue && mortgage.propertyValueMinUnit < state.filters.minPropertyValue * 100) {
+        if (
+          state.filters.minPropertyValue &&
+          mortgage.propertyValueMinUnit < state.filters.minPropertyValue * 100
+        ) {
           return false;
         }
 
         // Filtro por valor máximo de la propiedad
-        if (state.filters.maxPropertyValue && mortgage.propertyValueMinUnit > state.filters.maxPropertyValue * 100) {
+        if (
+          state.filters.maxPropertyValue &&
+          mortgage.propertyValueMinUnit > state.filters.maxPropertyValue * 100
+        ) {
           return false;
         }
 
         // Filtro por ciudad
-        if (state.filters.city && !mortgage.city.toLowerCase().includes(state.filters.city.toLowerCase())) {
+        if (
+          state.filters.city &&
+          !mortgage.city.toLowerCase().includes(state.filters.city.toLowerCase())
+        ) {
           return false;
         }
 
         // Filtro por banco
-        if (state.filters.bank && !mortgage.bank.toLowerCase().includes(state.filters.bank.toLowerCase())) {
+        if (
+          state.filters.bank &&
+          !mortgage.bank.toLowerCase().includes(state.filters.bank.toLowerCase())
+        ) {
           return false;
         }
 
         return true;
       });
     },
-    isEmpty: (state) => state.mortgages.length === 0,
-    mortgagesCount: (state) => state.mortgages.length,
-    hasMortgages: (state) => state.mortgages.length > 0,
-    hasFiltersApplied: (state) => 
+    isEmpty: state => state.mortgages.length === 0,
+    mortgagesCount: state => state.mortgages.length,
+    hasMortgages: state => state.mortgages.length > 0,
+    hasFiltersApplied: state =>
       (state.filters.status && state.filters.status !== '') ||
       state.filters.minLoanAmount !== undefined ||
       state.filters.maxLoanAmount !== undefined ||
@@ -69,9 +87,9 @@ export const useMortgageStore = defineStore('mortgage', {
       try {
         this.loading = true;
         this.error = null;
-        
+
         const response = await mortgageApi.getMortgages();
-        
+
         if (response.success) {
           this.mortgages = response.mortgages || [];
         } else {

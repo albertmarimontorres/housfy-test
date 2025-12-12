@@ -1,10 +1,5 @@
 <template>
-  <v-card
-    class="property-card"
-    elevation="2"
-    :ripple="false"
-    @click="$emit('click', property)"
-  >
+  <v-card class="property-card" elevation="2" :ripple="false" @click="$emit('click', property)">
     <!-- Header con imagen y estado de la propiedad -->
     <div class="position-relative property-image-container">
       <!-- Imagen customizable slot -->
@@ -20,32 +15,28 @@
         >
           <template v-slot:placeholder>
             <div class="d-flex align-center justify-center fill-height bg-grey-lighten-3">
-              <v-progress-circular
-                indeterminate
-                color="primary"
-                size="32"
-              />
+              <v-progress-circular indeterminate color="primary" size="32" />
             </div>
           </template>
         </v-img>
       </slot>
-      
+
       <!-- Status chip -->
       <v-chip
         :color="statusConfig.color"
         size="small"
         class="position-absolute chip-with-shadow status-chip"
-        style="top: 12px; right: 12px; z-index: 2;"
+        style="top: 12px; right: 12px; z-index: 2"
       >
         {{ statusConfig.label }}
       </v-chip>
-      
+
       <!-- Badge propiedad -->
       <v-chip
         :color="config.color"
         size="small"
         class="position-absolute property-type-badge chip-with-shadow type-chip"
-        style="bottom: 12px; left: 12px; z-index: 2;"
+        style="bottom: 12px; left: 12px; z-index: 2"
       >
         <v-icon start size="small">{{ config.icon }}</v-icon>
         {{ config.label }}
@@ -54,7 +45,13 @@
 
     <!-- Property Info -->
     <v-card-title class="text-h6 pb-2">
-      {{ formatAddress(property.propertyStreet, property.propertyStreetNumber, property.propertyFloor) }}
+      {{
+        formatAddress(
+          property.propertyStreet,
+          property.propertyStreetNumber,
+          property.propertyFloor
+        )
+      }}
     </v-card-title>
 
     <v-card-subtitle class="text-body-2 text-grey-darken-1 pb-1">
@@ -67,7 +64,7 @@
       <div class="d-flex align-center mb-2">
         <v-icon size="small" class="mr-1">mdi-stairs</v-icon>
         <span class="text-body-2 mr-3">Piso {{ property.propertyFloor }}º</span>
-        
+
         <v-icon size="small" class="mr-1">mdi-calendar</v-icon>
         <span class="text-body-2">{{ formatDate(property.created_at) }}</span>
       </div>
@@ -83,11 +80,11 @@
       </slot>
 
       <!-- Precio y Acción -->
-      <div class="d-flex align-center justify-space-between	">
+      <div class="d-flex align-center justify-space-between">
         <span class="text-h6 font-weight-bold text-primary">
           {{ formatPropertyPrice(property.propertyPriceMinUnit, config.priceFormat) }}
         </span>
-        
+
         <!-- Acción personalizada slot -->
         <slot name="action" :property="property">
           <v-btn
@@ -107,14 +104,18 @@
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
 import type { BaseProperty, PropertyTypeConfig, PROPERTY_CONFIGS } from '@/types/Property';
-import { 
-  formatAddress, 
-  formatDate, 
-  formatPropertyPrice, 
-  getStatusConfig, 
-  getPropertyConfig 
+import {
+  formatAddress,
+  formatDate,
+  formatPropertyPrice,
+  getStatusConfig,
+  getPropertyConfig,
 } from '@/services/property.service';
-import { getPropertyImageByType, getDefaultPropertyImage, getTypedFallbackImage } from '@/utils/imageUtils';
+import {
+  getPropertyImageByType,
+  getDefaultPropertyImage,
+  getTypedFallbackImage,
+} from '@/utils/imageUtils';
 
 export default defineComponent({
   name: 'PropertyCard',
@@ -145,10 +146,13 @@ export default defineComponent({
       if (this.imageError) {
         return getDefaultPropertyImage({ width: 400, height: 200 });
       }
-      
+
       const propertyId = this.property.uuid || 'default';
-      const imageUrl = getPropertyImageByType(this.propertyType, propertyId, { width: 400, height: 200 });
-      
+      const imageUrl = getPropertyImageByType(this.propertyType, propertyId, {
+        width: 400,
+        height: 200,
+      });
+
       return imageUrl;
     },
   },
@@ -156,11 +160,11 @@ export default defineComponent({
     formatAddress,
     formatDate,
     formatPropertyPrice,
-    handleImageError() {      
+    handleImageError() {
       // Si ya estamos en modo error, usar SVG específico del tipo
       if (!this.imageError) {
         this.imageError = true;
-        
+
         // Intentar con fallback específico del tipo antes de usar el genérico
         setTimeout(() => {
           const fallbackUrl = this.getTypedFallback();
@@ -207,12 +211,16 @@ export default defineComponent({
 /* Mejorar contraste de los chips sobre la imagen */
 .chip-with-shadow {
   backdrop-filter: blur(8px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    0 1px 3px rgba(0, 0, 0, 0.4) !important;
 }
 
 .chip-with-shadow .v-chip__content {
   font-weight: 700 !important;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8), 0 0 5px rgba(0, 0, 0, 0.5) !important;
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.8),
+    0 0 5px rgba(0, 0, 0, 0.5) !important;
   color: white !important;
   letter-spacing: 0.5px;
 }
@@ -228,28 +236,28 @@ export default defineComponent({
 }
 
 /* Colores específicos para cada estado */
-.status-chip.v-chip[data-v-chip-color="success"],
+.status-chip.v-chip[data-v-chip-color='success'],
 .status-chip.v-chip.text-success,
 .status-chip.v-chip.v-chip--color.bg-success,
 .status-chip.v-chip.v-chip--variant-elevated.bg-success {
   background-color: rgba(46, 125, 50, 0.95) !important;
 }
 
-.status-chip.v-chip[data-v-chip-color="warning"],
+.status-chip.v-chip[data-v-chip-color='warning'],
 .status-chip.v-chip.text-warning,
 .status-chip.v-chip.v-chip--color.bg-warning,
 .status-chip.v-chip.v-chip--variant-elevated.bg-warning {
   background-color: rgba(245, 124, 0, 0.95) !important;
 }
 
-.status-chip.v-chip[data-v-chip-color="error"],
+.status-chip.v-chip[data-v-chip-color='error'],
 .status-chip.v-chip.text-error,
 .status-chip.v-chip.v-chip--color.bg-error,
 .status-chip.v-chip.v-chip--variant-elevated.bg-error {
   background-color: rgba(198, 40, 40, 0.95) !important;
 }
 
-.status-chip.v-chip[data-v-chip-color="info"],
+.status-chip.v-chip[data-v-chip-color='info'],
 .status-chip.v-chip.text-info,
 .status-chip.v-chip.v-chip--color.bg-info,
 .status-chip.v-chip.v-chip--variant-elevated.bg-info {
@@ -261,7 +269,7 @@ export default defineComponent({
   color: white !important;
 }
 
-/* Type chips específicos */  
+/* Type chips específicos */
 .type-chip.v-chip {
   background: rgba(0, 0, 0, 0.8) !important;
   color: white !important;

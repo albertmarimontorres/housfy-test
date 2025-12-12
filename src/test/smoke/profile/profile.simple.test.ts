@@ -4,28 +4,28 @@ describe('Profile - Tests Básicos', () => {
   describe('módulos principales', () => {
     it('debería importar ProfileService correctamente', async () => {
       const { ProfileService } = await import('@/services/profile.service');
-      
+
       expect(ProfileService).toBeDefined();
       expect(typeof ProfileService.getProfile).toBe('function');
     });
 
     it('debería importar función getProfile exportada', async () => {
       const { getProfile } = await import('@/services/profile.service');
-      
+
       expect(getProfile).toBeDefined();
       expect(typeof getProfile).toBe('function');
     });
 
     it('debería importar profileApi correctamente', async () => {
       const { profileApi } = await import('@/api/modules/profile.api');
-      
+
       expect(profileApi).toBeDefined();
       expect(typeof profileApi.getProfile).toBe('function');
     });
 
     it('debería importar useProfileStore correctamente', async () => {
       const { useProfileStore } = await import('@/stores/profile.store');
-      
+
       expect(useProfileStore).toBeDefined();
       expect(typeof useProfileStore).toBe('function');
     });
@@ -34,7 +34,7 @@ describe('Profile - Tests Básicos', () => {
   describe('tipos TypeScript', () => {
     it('debería importar tipos de Profile correctamente', async () => {
       const profileTypes = await import('@/types/Profile');
-      
+
       // Verificar que los tipos existen (en runtime serán undefined pero el import no debe fallar)
       expect(profileTypes).toBeDefined();
     });
@@ -45,7 +45,7 @@ describe('Profile - Tests Básicos', () => {
         id: 123,
         email: 'test@example.com',
         fullName: 'Test User',
-        createdAt: '2023-01-01T00:00:00Z'
+        createdAt: '2023-01-01T00:00:00Z',
       };
 
       expect(mockUser.id).toBe(123);
@@ -63,8 +63,8 @@ describe('Profile - Tests Básicos', () => {
           id: 1,
           email: 'test@example.com',
           fullName: 'Test User',
-          createdAt: '2023-01-01T00:00:00Z'
-        }
+          createdAt: '2023-01-01T00:00:00Z',
+        },
       };
 
       expect(mockResponse.success).toBe(true);
@@ -77,14 +77,14 @@ describe('Profile - Tests Básicos', () => {
   describe('métodos básicos', () => {
     it('debería tener método getProfile en ProfileService', async () => {
       const { ProfileService } = await import('@/services/profile.service');
-      
+
       expect(ProfileService).toHaveProperty('getProfile');
       expect(typeof ProfileService.getProfile).toBe('function');
     });
 
     it('debería tener método getProfile en profileApi', async () => {
       const { profileApi } = await import('@/api/modules/profile.api');
-      
+
       expect(profileApi).toHaveProperty('getProfile');
       expect(typeof profileApi.getProfile).toBe('function');
     });
@@ -92,7 +92,7 @@ describe('Profile - Tests Básicos', () => {
     it('debería tener actions en el store', async () => {
       const { createPinia, setActivePinia } = await import('pinia');
       const { useProfileStore } = await import('@/stores/profile.store');
-      
+
       setActivePinia(createPinia());
       const store = useProfileStore();
 
@@ -105,7 +105,7 @@ describe('Profile - Tests Básicos', () => {
     it('debería tener estado inicial correcto', async () => {
       const { createPinia, setActivePinia } = await import('pinia');
       const { useProfileStore } = await import('@/stores/profile.store');
-      
+
       setActivePinia(createPinia());
       const store = useProfileStore();
 
@@ -117,7 +117,7 @@ describe('Profile - Tests Básicos', () => {
     it('debería tener propiedades reactivas', async () => {
       const { createPinia, setActivePinia } = await import('pinia');
       const { useProfileStore } = await import('@/stores/profile.store');
-      
+
       setActivePinia(createPinia());
       const store = useProfileStore();
 
@@ -131,7 +131,7 @@ describe('Profile - Tests Básicos', () => {
   describe('compatibilidad de exports', () => {
     it('debería exportar ProfileService como objeto con métodos', async () => {
       const { ProfileService } = await import('@/services/profile.service');
-      
+
       expect(ProfileService).toBeTypeOf('object');
       expect(ProfileService).not.toBe(null);
       expect(Object.keys(ProfileService)).toContain('getProfile');
@@ -139,21 +139,21 @@ describe('Profile - Tests Básicos', () => {
 
     it('debería exportar getProfile como función independiente', async () => {
       const { getProfile, ProfileService } = await import('@/services/profile.service');
-      
+
       expect(getProfile).toBeTypeOf('function');
       expect(getProfile).toBe(ProfileService.getProfile);
     });
 
     it('debería exportar profileApi como objeto', async () => {
       const { profileApi } = await import('@/api/modules/profile.api');
-      
+
       expect(profileApi).toBeTypeOf('object');
       expect(profileApi).not.toBe(null);
     });
 
     it('debería exportar useProfileStore como función', async () => {
       const { useProfileStore } = await import('@/stores/profile.store');
-      
+
       expect(useProfileStore).toBeTypeOf('function');
     });
   });
@@ -161,16 +161,16 @@ describe('Profile - Tests Básicos', () => {
   describe('estructura de archivos', () => {
     it('debería poder importar desde las rutas correctas', async () => {
       // Test que verifica que las rutas de import son correctas
-      
+
       // Service
       await expect(import('@/services/profile.service')).resolves.toBeDefined();
-      
+
       // API
       await expect(import('@/api/modules/profile.api')).resolves.toBeDefined();
-      
+
       // Store
       await expect(import('@/stores/profile.store')).resolves.toBeDefined();
-      
+
       // Types
       await expect(import('@/types/Profile')).resolves.toBeDefined();
     });
@@ -192,7 +192,7 @@ describe('Profile - Tests Básicos', () => {
   describe('dependencias externas', () => {
     it('debería poder importar Pinia sin errores', async () => {
       const pinia = await import('pinia');
-      
+
       expect(pinia.createPinia).toBeTypeOf('function');
       expect(pinia.setActivePinia).toBeTypeOf('function');
       expect(pinia.defineStore).toBeTypeOf('function');
@@ -201,7 +201,7 @@ describe('Profile - Tests Básicos', () => {
     it('debería poder usar httpClient en profileApi', async () => {
       // Verificar que profileApi puede importar el httpClient
       const { profileApi } = await import('@/api/modules/profile.api');
-      
+
       // Si la importación no falla, significa que httpClient está disponible
       expect(profileApi.getProfile).toBeTypeOf('function');
     });
@@ -210,7 +210,7 @@ describe('Profile - Tests Básicos', () => {
   describe('smoke tests básicos', () => {
     it('no debería lanzar errores al importar módulos principales', async () => {
       // Test que verifica que los módulos se pueden importar sin errores inmediatos
-      
+
       await expect(async () => {
         await import('@/services/profile.service');
         await import('@/api/modules/profile.api');
@@ -223,10 +223,10 @@ describe('Profile - Tests Básicos', () => {
       await expect(async () => {
         const { createPinia, setActivePinia } = await import('pinia');
         const { useProfileStore } = await import('@/stores/profile.store');
-        
+
         setActivePinia(createPinia());
         const store = useProfileStore();
-        
+
         // Acceder a propiedades básicas
         store.user;
         store.loading;
@@ -237,7 +237,7 @@ describe('Profile - Tests Básicos', () => {
     it('debería tener métodos del store accesibles', async () => {
       const { createPinia, setActivePinia } = await import('pinia');
       const { useProfileStore } = await import('@/stores/profile.store');
-      
+
       setActivePinia(createPinia());
       const store = useProfileStore();
 

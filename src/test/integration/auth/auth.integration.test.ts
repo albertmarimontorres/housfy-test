@@ -8,7 +8,7 @@ import type { AuthCredentials, RegisterPayload, AuthResponse } from '@/types/Aut
 vi.mock('@/api/httpClient', () => ({
   default: {
     post: vi.fn(),
-  }
+  },
 }));
 
 vi.mock('@/api/modules/auth.api');
@@ -24,7 +24,7 @@ describe('Auth Integration Tests', () => {
       const { data } = await http.post<AuthResponse>('/login', credentials);
       return data;
     });
-    
+
     mockAuthApi.register.mockImplementation(async (payload: RegisterPayload) => {
       const { data } = await http.post<AuthResponse>('/register', payload);
       return data;
@@ -40,14 +40,14 @@ describe('Auth Integration Tests', () => {
       // Arrange
       const credentials = {
         email: 'test@example.com',
-        password: 'password123'
+        password: 'password123',
       };
-      
+
       const expectedResponse: AuthResponse = {
         success: true,
         message: 'Login exitoso',
         userId: 123,
-        bearer: 'auth-token-123'
+        bearer: 'auth-token-123',
       };
 
       mockHttp.post.mockResolvedValueOnce({ data: expectedResponse });
@@ -64,12 +64,12 @@ describe('Auth Integration Tests', () => {
       // Arrange
       const invalidCredentials = {
         email: 'invalid-email',
-        password: '123'
+        password: '123',
       };
 
       // Act & Assert
       await expect(AuthService.login(invalidCredentials)).rejects.toThrow();
-      
+
       // La API no debería haber sido llamada
       expect(mockHttp.post).not.toHaveBeenCalled();
     });
@@ -78,15 +78,15 @@ describe('Auth Integration Tests', () => {
       // Arrange
       const validCredentials = {
         email: 'test@example.com',
-        password: 'password123'
+        password: 'password123',
       };
-      
+
       const apiError = new Error('Credenciales inválidas');
       mockHttp.post.mockRejectedValueOnce(apiError);
 
       // Act & Assert
       await expect(AuthService.login(validCredentials)).rejects.toThrow('Credenciales inválidas');
-      
+
       // Verificar que llegó a la API
       expect(mockHttp.post).toHaveBeenCalledWith('/login', validCredentials);
     });
@@ -95,9 +95,9 @@ describe('Auth Integration Tests', () => {
       // Arrange
       const validCredentials = {
         email: 'test@example.com',
-        password: 'password123'
+        password: 'password123',
       };
-      
+
       // Respuesta sin data
       mockHttp.post.mockResolvedValueOnce({});
 
@@ -116,14 +116,14 @@ describe('Auth Integration Tests', () => {
       const payload = {
         email: 'newuser@example.com',
         password: 'password123',
-        fullName: 'Juan Pérez'
+        fullName: 'Juan Pérez',
       };
-      
+
       const expectedResponse: AuthResponse = {
         success: true,
         message: 'Registro exitoso',
         userId: 456,
-        bearer: 'auth-token-456'
+        bearer: 'auth-token-456',
       };
 
       mockHttp.post.mockResolvedValueOnce({ data: expectedResponse });
@@ -141,12 +141,14 @@ describe('Auth Integration Tests', () => {
       const invalidPayload = {
         email: 'invalid-email',
         password: 'password123',
-        fullName: 'Juan Pérez'
+        fullName: 'Juan Pérez',
       };
 
       // Act & Assert
-      await expect(AuthService.register(invalidPayload)).rejects.toThrow('Email no tiene un formato válido');
-      
+      await expect(AuthService.register(invalidPayload)).rejects.toThrow(
+        'Email no tiene un formato válido'
+      );
+
       // La API no debería haber sido llamada
       expect(mockHttp.post).not.toHaveBeenCalled();
     });
@@ -156,12 +158,14 @@ describe('Auth Integration Tests', () => {
       const invalidPayload = {
         email: 'test@example.com',
         password: '123',
-        fullName: 'Juan Pérez'
+        fullName: 'Juan Pérez',
       };
 
       // Act & Assert
-      await expect(AuthService.register(invalidPayload)).rejects.toThrow('Password debe tener al menos 8 caracteres');
-      
+      await expect(AuthService.register(invalidPayload)).rejects.toThrow(
+        'Password debe tener al menos 8 caracteres'
+      );
+
       // La API no debería haber sido llamada
       expect(mockHttp.post).not.toHaveBeenCalled();
     });
@@ -171,12 +175,14 @@ describe('Auth Integration Tests', () => {
       const invalidPayload = {
         email: 'test@example.com',
         password: 'password123',
-        fullName: 'A'
+        fullName: 'A',
       };
 
       // Act & Assert
-      await expect(AuthService.register(invalidPayload)).rejects.toThrow('Nombre completo debe tener al menos 2 caracteres');
-      
+      await expect(AuthService.register(invalidPayload)).rejects.toThrow(
+        'Nombre completo debe tener al menos 2 caracteres'
+      );
+
       // La API no debería haber sido llamada
       expect(mockHttp.post).not.toHaveBeenCalled();
     });
@@ -186,15 +192,15 @@ describe('Auth Integration Tests', () => {
       const validPayload = {
         email: 'existing@example.com',
         password: 'password123',
-        fullName: 'Juan Pérez'
+        fullName: 'Juan Pérez',
       };
-      
+
       const apiError = new Error('Email ya está registrado');
       mockHttp.post.mockRejectedValueOnce(apiError);
 
       // Act & Assert
       await expect(AuthService.register(validPayload)).rejects.toThrow('Email ya está registrado');
-      
+
       // Verificar que llegó a la API
       expect(mockHttp.post).toHaveBeenCalledWith('/register', validPayload);
     });
@@ -205,9 +211,9 @@ describe('Auth Integration Tests', () => {
       // Arrange
       const validCredentials = {
         email: 'test@example.com',
-        password: 'password123'
+        password: 'password123',
       };
-      
+
       const networkError = new Error('Network Error');
       networkError.name = 'NetworkError';
       mockHttp.post.mockRejectedValueOnce(networkError);
@@ -221,9 +227,9 @@ describe('Auth Integration Tests', () => {
       const validPayload = {
         email: 'test@example.com',
         password: 'password123',
-        fullName: 'Juan Pérez'
+        fullName: 'Juan Pérez',
       };
-      
+
       const timeoutError = new Error('Request timeout');
       (timeoutError as any).code = 'ECONNABORTED';
       mockHttp.post.mockRejectedValueOnce(timeoutError);
@@ -236,9 +242,9 @@ describe('Auth Integration Tests', () => {
       // Arrange
       const validCredentials = {
         email: 'test@example.com',
-        password: 'password123'
+        password: 'password123',
       };
-      
+
       const serverError = new Error('Internal Server Error');
       (serverError as any).response = { status: 500 };
       mockHttp.post.mockRejectedValueOnce(serverError);
@@ -252,9 +258,9 @@ describe('Auth Integration Tests', () => {
       const validPayload = {
         email: 'test@example.com',
         password: 'password123',
-        fullName: 'Juan Pérez'
+        fullName: 'Juan Pérez',
       };
-      
+
       const clientError = new Error('Bad Request');
       (clientError as any).response = { status: 400 };
       mockHttp.post.mockRejectedValueOnce(clientError);
@@ -269,17 +275,17 @@ describe('Auth Integration Tests', () => {
       // Arrange
       const extremePayload = {
         email: 'test@example.com',
-        password: 'password123' + 'x'.repeat(1000), // password muy largo
-        fullName: 'Juan ' + 'Pérez '.repeat(100) // nombre muy largo
+        password: `password123${  'x'.repeat(1000)}`, // password muy largo
+        fullName: `Juan ${  'Pérez '.repeat(100)}`, // nombre muy largo
       };
-      
+
       const response: AuthResponse = {
         success: true,
         message: 'Registro exitoso',
         userId: 789,
-        bearer: 'token-789'
+        bearer: 'token-789',
       };
-      
+
       mockHttp.post.mockResolvedValueOnce({ data: response });
 
       // Act
@@ -295,16 +301,16 @@ describe('Auth Integration Tests', () => {
       const specialNamePayload = {
         email: 'test@example.com',
         password: 'password123',
-        fullName: "María José O'Connor-García"
+        fullName: "María José O'Connor-García",
       };
-      
+
       const response: AuthResponse = {
         success: true,
         message: 'Registro exitoso',
         userId: 999,
-        bearer: 'token-999'
+        bearer: 'token-999',
       };
-      
+
       mockHttp.post.mockResolvedValueOnce({ data: response });
 
       // Act
@@ -319,9 +325,9 @@ describe('Auth Integration Tests', () => {
       // Arrange
       const validCredentials = {
         email: 'test@example.com',
-        password: 'password123'
+        password: 'password123',
       };
-      
+
       const extendedResponse = {
         data: {
           success: true,
@@ -331,10 +337,10 @@ describe('Auth Integration Tests', () => {
           // Campos adicionales que no están en el tipo
           extra: 'data',
           timestamp: '2023-01-01T00:00:00Z',
-          permissions: ['read', 'write']
-        }
+          permissions: ['read', 'write'],
+        },
       };
-      
+
       mockHttp.post.mockResolvedValueOnce(extendedResponse);
 
       // Act
@@ -350,16 +356,16 @@ describe('Auth Integration Tests', () => {
       // Arrange
       const validCredentials = {
         email: 'test@example.com',
-        password: 'password123'
+        password: 'password123',
       };
-      
+
       const response: AuthResponse = {
         success: true,
         message: 'Login exitoso',
         userId: 123,
-        bearer: 'auth-token'
+        bearer: 'auth-token',
       };
-      
+
       mockHttp.post.mockResolvedValueOnce({ data: response });
 
       // Act
@@ -380,9 +386,9 @@ describe('Auth Integration Tests', () => {
       // Arrange
       const originalCredentials = {
         email: '  test@example.com  ', // con espacios
-        password: 'password123'
+        password: 'password123',
       };
-      
+
       mockHttp.post.mockResolvedValueOnce({ data: {} });
 
       // Act
@@ -398,9 +404,9 @@ describe('Auth Integration Tests', () => {
       const originalPayload = {
         email: '  test@example.com  ', // con espacios
         password: 'password123',
-        fullName: '  Juan Pérez  ' // con espacios
+        fullName: '  Juan Pérez  ', // con espacios
       };
-      
+
       mockHttp.post.mockResolvedValueOnce({ data: {} });
 
       // Act

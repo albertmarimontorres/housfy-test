@@ -21,7 +21,7 @@ describe('Mortgage Store', () => {
       ltv: 80,
       status: 'Aprobado',
       last_status_changed_at: '2023-01-15T10:30:00Z',
-      created_at: '2023-01-01T00:00:00Z'
+      created_at: '2023-01-01T00:00:00Z',
     },
     {
       uuid: '456',
@@ -32,7 +32,7 @@ describe('Mortgage Store', () => {
       ltv: 75,
       status: 'Pendiente',
       last_status_changed_at: '2023-01-10T08:00:00Z',
-      created_at: '2023-01-02T00:00:00Z'
+      created_at: '2023-01-02T00:00:00Z',
     },
     {
       uuid: '789',
@@ -43,8 +43,8 @@ describe('Mortgage Store', () => {
       ltv: 75,
       status: 'Rechazado',
       last_status_changed_at: '2023-01-12T14:00:00Z',
-      created_at: '2023-01-03T00:00:00Z'
-    }
+      created_at: '2023-01-03T00:00:00Z',
+    },
   ];
 
   beforeEach(() => {
@@ -69,7 +69,7 @@ describe('Mortgage Store', () => {
       const mockResponse: MortgagesResponse = {
         success: true,
         message: 'OK',
-        mortgages: mockMortgages
+        mortgages: mockMortgages,
       };
       mockMortgageApi.getMortgages.mockResolvedValue(mockResponse);
 
@@ -87,7 +87,7 @@ describe('Mortgage Store', () => {
       const mockResponse: MortgagesResponse = {
         success: false,
         message: 'Error del servidor',
-        mortgages: []
+        mortgages: [],
       };
       mockMortgageApi.getMortgages.mockResolvedValue(mockResponse);
 
@@ -118,7 +118,7 @@ describe('Mortgage Store', () => {
       const mockResponse = {
         success: true,
         message: 'OK',
-        mortgages: null as any
+        mortgages: null as any,
       };
       mockMortgageApi.getMortgages.mockResolvedValue(mockResponse);
 
@@ -150,7 +150,7 @@ describe('Mortgage Store', () => {
 
       // Act
       const fetchPromise = mortgageStore.fetchMortgages();
-      
+
       // Assert - durante la carga
       expect(mortgageStore.loading).toBe(true);
 
@@ -158,7 +158,7 @@ describe('Mortgage Store', () => {
       resolvePromise({
         success: true,
         message: 'OK',
-        mortgages: []
+        mortgages: [],
       });
       await fetchPromise;
 
@@ -175,7 +175,7 @@ describe('Mortgage Store', () => {
     it('debería calcular isEmpty correctamente', () => {
       // Con datos
       expect(mortgageStore.isEmpty).toBe(false);
-      
+
       // Sin datos
       mortgageStore.mortgages = [];
       expect(mortgageStore.isEmpty).toBe(true);
@@ -183,14 +183,14 @@ describe('Mortgage Store', () => {
 
     it('debería calcular mortgagesCount correctamente', () => {
       expect(mortgageStore.mortgagesCount).toBe(3);
-      
+
       mortgageStore.mortgages = [];
       expect(mortgageStore.mortgagesCount).toBe(0);
     });
 
     it('debería calcular hasMortgages correctamente', () => {
       expect(mortgageStore.hasMortgages).toBe(true);
-      
+
       mortgageStore.mortgages = [];
       expect(mortgageStore.hasMortgages).toBe(false);
     });
@@ -198,22 +198,22 @@ describe('Mortgage Store', () => {
     it('debería detectar hasFiltersApplied correctamente', () => {
       // Inicializar filtros primero
       mortgageStore.clearFilters(); // Esto inicializa las propiedades
-      
+
       // Sin filtros - el getter puede devolver '' o false
       expect(mortgageStore.hasFiltersApplied).toBeFalsy();
-      
+
       // Con filtro de status
       mortgageStore.filters = { status: 'Aprobado' };
       expect(mortgageStore.hasFiltersApplied).toBeTruthy();
-      
+
       // Con filtro de ciudad
       mortgageStore.filters = { city: 'Madrid' };
       expect(mortgageStore.hasFiltersApplied).toBeTruthy();
-      
+
       // Con filtro de banco
       mortgageStore.filters = { bank: 'BBVA' };
       expect(mortgageStore.hasFiltersApplied).toBeTruthy();
-      
+
       // Con filtros de precio
       mortgageStore.filters = { minLoanAmount: 100000 };
       expect(mortgageStore.hasFiltersApplied).toBeTruthy();
@@ -223,7 +223,7 @@ describe('Mortgage Store', () => {
       it('debería retornar todas las hipotecas sin filtros', () => {
         // Act
         const filtered = mortgageStore.filteredMortgages;
-        
+
         // Assert
         expect(filtered).toEqual(mockMortgages);
       });
@@ -231,10 +231,10 @@ describe('Mortgage Store', () => {
       it('debería filtrar por status', () => {
         // Arrange
         mortgageStore.filters = { status: 'Aprobado' };
-        
+
         // Act
         const filtered = mortgageStore.filteredMortgages;
-        
+
         // Assert
         expect(filtered).toHaveLength(1);
         expect(filtered[0]!.status).toBe('Aprobado');
@@ -243,10 +243,10 @@ describe('Mortgage Store', () => {
       it('debería filtrar por importe mínimo del préstamo', () => {
         // Arrange
         mortgageStore.filters = { minLoanAmount: 200000 }; // 200,000 EUR
-        
+
         // Act
         const filtered = mortgageStore.filteredMortgages;
-        
+
         // Assert
         expect(filtered).toHaveLength(2);
         expect(filtered.every((m: Mortgage) => m.loanAmountMinUnit >= 20000000)).toBe(true);
@@ -255,10 +255,10 @@ describe('Mortgage Store', () => {
       it('debería filtrar por importe máximo del préstamo', () => {
         // Arrange
         mortgageStore.filters = { maxLoanAmount: 200000 }; // 200,000 EUR
-        
+
         // Act
         const filtered = mortgageStore.filteredMortgages;
-        
+
         // Assert
         expect(filtered).toHaveLength(2);
         expect(filtered.every((m: Mortgage) => m.loanAmountMinUnit <= 20000000)).toBe(true);
@@ -267,10 +267,10 @@ describe('Mortgage Store', () => {
       it('debería filtrar por valor mínimo de propiedad', () => {
         // Arrange
         mortgageStore.filters = { minPropertyValue: 300000 }; // 300,000 EUR
-        
+
         // Act
         const filtered = mortgageStore.filteredMortgages;
-        
+
         // Assert
         expect(filtered).toHaveLength(1);
         expect(filtered[0]!.uuid).toBe('789');
@@ -279,10 +279,10 @@ describe('Mortgage Store', () => {
       it('debería filtrar por valor máximo de propiedad', () => {
         // Arrange
         mortgageStore.filters = { maxPropertyValue: 250000 }; // 250,000 EUR
-        
+
         // Act
         const filtered = mortgageStore.filteredMortgages;
-        
+
         // Assert
         expect(filtered).toHaveLength(2);
         expect(filtered.every((m: Mortgage) => m.propertyValueMinUnit <= 25000000)).toBe(true);
@@ -291,10 +291,10 @@ describe('Mortgage Store', () => {
       it('debería filtrar por ciudad (case insensitive)', () => {
         // Arrange
         mortgageStore.filters = { city: 'madrid' }; // lowercase
-        
+
         // Act
         const filtered = mortgageStore.filteredMortgages;
-        
+
         // Assert
         expect(filtered).toHaveLength(1);
         expect(filtered[0]!.city).toBe('Madrid');
@@ -303,10 +303,10 @@ describe('Mortgage Store', () => {
       it('debería filtrar por banco (case insensitive)', () => {
         // Arrange
         mortgageStore.filters = { bank: 'bbva' }; // lowercase
-        
+
         // Act
         const filtered = mortgageStore.filteredMortgages;
-        
+
         // Assert
         expect(filtered).toHaveLength(1);
         expect(filtered[0]!.bank).toBe('BBVA');
@@ -317,12 +317,12 @@ describe('Mortgage Store', () => {
         mortgageStore.filters = {
           status: 'Aprobado',
           city: 'madrid',
-          minLoanAmount: 150000
+          minLoanAmount: 150000,
         };
-        
+
         // Act
         const filtered = mortgageStore.filteredMortgages;
-        
+
         // Assert
         expect(filtered).toHaveLength(1);
         expect(filtered[0]!.uuid).toBe('123');
@@ -331,10 +331,10 @@ describe('Mortgage Store', () => {
       it('debería retornar array vacío sin coincidencias', () => {
         // Arrange
         mortgageStore.filters = { status: 'No Existe' };
-        
+
         // Act
         const filtered = mortgageStore.filteredMortgages;
-        
+
         // Assert
         expect(filtered).toEqual([]);
       });
@@ -345,24 +345,24 @@ describe('Mortgage Store', () => {
     it('debería actualizar filtros parcialmente', () => {
       // Arrange
       mortgageStore.filters = { status: 'Aprobado' };
-      
+
       // Act
       mortgageStore.updateFilters({ city: 'Madrid' });
-      
+
       // Assert
       expect(mortgageStore.filters).toEqual({
         status: 'Aprobado',
-        city: 'Madrid'
+        city: 'Madrid',
       });
     });
 
     it('debería sobrescribir filtros existentes', () => {
       // Arrange
       mortgageStore.filters = { status: 'Pendiente' };
-      
+
       // Act
       mortgageStore.updateFilters({ status: 'Aprobado' });
-      
+
       // Assert
       expect(mortgageStore.filters.status).toBe('Aprobado');
     });
@@ -370,7 +370,7 @@ describe('Mortgage Store', () => {
     it('debería manejar filtros vacíos', () => {
       // Act
       mortgageStore.updateFilters({});
-      
+
       // Assert
       expect(mortgageStore.filters).toEqual({});
     });
@@ -383,12 +383,12 @@ describe('Mortgage Store', () => {
         status: 'Aprobado',
         city: 'Madrid',
         bank: 'BBVA',
-        minLoanAmount: 100000
+        minLoanAmount: 100000,
       };
-      
+
       // Act
       mortgageStore.clearFilters();
-      
+
       // Assert
       expect(mortgageStore.filters).toEqual({
         status: '',
@@ -410,7 +410,7 @@ describe('Mortgage Store', () => {
     it('debería encontrar hipoteca por UUID', () => {
       // Act
       const mortgage = mortgageStore.getMortgageById('123');
-      
+
       // Assert
       expect(mortgage).toBeDefined();
       expect(mortgage!.uuid).toBe('123');
@@ -420,7 +420,7 @@ describe('Mortgage Store', () => {
     it('debería retornar undefined si no encuentra', () => {
       // Act
       const mortgage = mortgageStore.getMortgageById('no-existe');
-      
+
       // Assert
       expect(mortgage).toBeUndefined();
     });
@@ -428,7 +428,7 @@ describe('Mortgage Store', () => {
     it('debería manejar string vacío', () => {
       // Act
       const mortgage = mortgageStore.getMortgageById('');
-      
+
       // Assert
       expect(mortgage).toBeUndefined();
     });
@@ -441,10 +441,10 @@ describe('Mortgage Store', () => {
       mortgageStore.loading = true;
       mortgageStore.error = 'Error test';
       mortgageStore.filters = { status: 'Aprobado' };
-      
+
       // Act
       mortgageStore.$reset();
-      
+
       // Assert
       expect(mortgageStore.mortgages).toEqual([]);
       expect(mortgageStore.loading).toBe(false);

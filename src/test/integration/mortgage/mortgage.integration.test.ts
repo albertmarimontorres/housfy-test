@@ -10,7 +10,7 @@ import type { Mortgage, MortgagesResponse } from '@/types/Mortgage';
 vi.mock('@/api/httpClient');
 vi.mock('@/services/property.service', () => ({
   formatPrice: vi.fn((amount: number) => `€${amount.toLocaleString('es-ES')}`),
-  formatDate: vi.fn((dateStr: string) => new Date(dateStr).toLocaleDateString('es-ES'))
+  formatDate: vi.fn((dateStr: string) => new Date(dateStr).toLocaleDateString('es-ES')),
 }));
 
 describe('Mortgage - Integración E2E', () => {
@@ -27,7 +27,7 @@ describe('Mortgage - Integración E2E', () => {
       ltv: 80,
       status: 'Aprobado',
       last_status_changed_at: '2023-01-15T10:30:00Z',
-      created_at: '2023-01-01T00:00:00Z'
+      created_at: '2023-01-01T00:00:00Z',
     },
     {
       uuid: '456',
@@ -38,8 +38,8 @@ describe('Mortgage - Integración E2E', () => {
       ltv: 75,
       status: 'Pendiente',
       last_status_changed_at: '2023-01-10T08:00:00Z',
-      created_at: '2023-01-02T00:00:00Z'
-    }
+      created_at: '2023-01-02T00:00:00Z',
+    },
   ];
 
   beforeEach(() => {
@@ -55,7 +55,7 @@ describe('Mortgage - Integración E2E', () => {
       const mockResponse: MortgagesResponse = {
         success: true,
         message: 'Hipotecas obtenidas correctamente',
-        mortgages: mockMortgages
+        mortgages: mockMortgages,
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
@@ -89,7 +89,7 @@ describe('Mortgage - Integración E2E', () => {
       const mockResponse: MortgagesResponse = {
         success: true,
         message: 'Test response',
-        mortgages: []
+        mortgages: [],
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
@@ -124,7 +124,7 @@ describe('Mortgage - Integración E2E', () => {
       const mockResponse: MortgagesResponse = {
         success: true,
         message: 'OK',
-        mortgages: mockMortgages
+        mortgages: mockMortgages,
       };
       mockHttp.get.mockResolvedValue({ data: mockResponse });
       await mortgageStore.fetchMortgages();
@@ -145,7 +145,7 @@ describe('Mortgage - Integración E2E', () => {
       // Act
       mortgageStore.updateFilters({
         status: 'Pendiente',
-        city: 'Barcelona'
+        city: 'Barcelona',
       });
 
       // Assert
@@ -175,8 +175,8 @@ describe('Mortgage - Integración E2E', () => {
         data: {
           success: true,
           message: 'OK',
-          mortgages: 'not an array' // Tipo incorrecto
-        }
+          mortgages: 'not an array', // Tipo incorrecto
+        },
       };
 
       mockHttp.get.mockResolvedValue(malformedResponse);
@@ -206,8 +206,8 @@ describe('Mortgage - Integración E2E', () => {
       const serverError = {
         response: {
           status: 500,
-          data: { message: 'Internal Server Error' }
-        }
+          data: { message: 'Internal Server Error' },
+        },
       };
       mockHttp.get.mockRejectedValue(serverError);
 
@@ -233,7 +233,7 @@ describe('Mortgage - Integración E2E', () => {
           ltv: 80,
           status: 'Aprobado',
           last_status_changed_at: '2023-01-15T10:30:00Z',
-          created_at: '2023-01-01T00:00:00Z'
+          created_at: '2023-01-01T00:00:00Z',
         },
         {
           uuid: '456',
@@ -244,7 +244,7 @@ describe('Mortgage - Integración E2E', () => {
           ltv: 75,
           status: 'Pendiente',
           last_status_changed_at: '2023-01-10T08:00:00Z',
-          created_at: '2023-01-02T00:00:00Z'
+          created_at: '2023-01-02T00:00:00Z',
         },
         {
           uuid: '789',
@@ -255,14 +255,14 @@ describe('Mortgage - Integración E2E', () => {
           ltv: 75,
           status: 'Rechazado',
           last_status_changed_at: '2023-01-12T14:00:00Z',
-          created_at: '2023-01-03T00:00:00Z'
-        }
+          created_at: '2023-01-03T00:00:00Z',
+        },
       ];
 
       const mockResponse: MortgagesResponse = {
         success: true,
         message: 'Múltiples hipotecas',
-        mortgages: multipleRentals
+        mortgages: multipleRentals,
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
@@ -290,19 +290,19 @@ describe('Mortgage - Integración E2E', () => {
       // Arrange - Primero un error
       mockHttp.get.mockRejectedValue(new Error('Error inicial'));
       await mortgageStore.fetchMortgages();
-      
+
       expect(mortgageStore.error).toBeTruthy();
 
       // Act - Reset y recarga exitosa
       mortgageStore.$reset();
-      
+
       const successResponse: MortgagesResponse = {
         success: true,
         message: 'OK',
-        mortgages: [mockMortgages[0]!]
+        mortgages: [mockMortgages[0]!],
       };
       mockHttp.get.mockResolvedValue({ data: successResponse });
-      
+
       await mortgageStore.fetchMortgages();
 
       // Assert
@@ -316,7 +316,7 @@ describe('Mortgage - Integración E2E', () => {
       const mockResponse: MortgagesResponse = {
         success: true,
         message: 'OK',
-        mortgages: mockMortgages
+        mortgages: mockMortgages,
       };
       mockHttp.get.mockResolvedValue({ data: mockResponse });
 
@@ -327,7 +327,9 @@ describe('Mortgage - Integración E2E', () => {
       expect(mortgageStore.mortgagesCount).toBe(mortgageStore.mortgages.length);
       expect(mortgageStore.hasMortgages).toBe(mortgageStore.mortgages.length > 0);
       expect(mortgageStore.isEmpty).toBe(mortgageStore.mortgages.length === 0);
-      expect(mortgageStore.filteredMortgages.length).toBeLessThanOrEqual(mortgageStore.mortgages.length);
+      expect(mortgageStore.filteredMortgages.length).toBeLessThanOrEqual(
+        mortgageStore.mortgages.length
+      );
     });
   });
 
@@ -347,7 +349,7 @@ describe('Mortgage - Integración E2E', () => {
         location: mortgageService.formatLocation(testMortgage),
         description: mortgageService.generateDescription(testMortgage),
         lastChanged: mortgageService.formatLastStatusChanged(testMortgage),
-        createdAt: mortgageService.formatCreatedAt(testMortgage)
+        createdAt: mortgageService.formatCreatedAt(testMortgage),
       };
 
       // Assert

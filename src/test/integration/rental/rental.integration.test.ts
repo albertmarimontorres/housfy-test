@@ -33,14 +33,14 @@ describe('Rental - Integración E2E', () => {
           status: 'Publicado',
           propertyPriceMinUnit: 1200,
           last_status_changed_at: '2023-01-15T10:30:00Z',
-          created_at: '2023-01-01T00:00:00Z'
-        }
+          created_at: '2023-01-01T00:00:00Z',
+        },
       ];
 
       const httpResponse: RentalsResponse = {
         success: true,
         message: 'Alquileres obtenidos',
-        properties: mockRentals
+        properties: mockRentals,
       };
 
       mockHttp.get.mockResolvedValue({ data: httpResponse });
@@ -59,7 +59,7 @@ describe('Rental - Integración E2E', () => {
       // Arrange
       const httpError = new Error('Error de conexión');
       mockHttp.get.mockRejectedValue(httpError);
-      
+
       // Spy en console.error para verificar que se logee el error
       const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
@@ -70,7 +70,7 @@ describe('Rental - Integración E2E', () => {
       expect(rentalStore.error).toBe('Error al obtener los alquileres');
       expect(rentalStore.allRentals).toEqual([]);
       expect(consoleErrorSpy).toHaveBeenCalledWith('Error fetching rentals:', httpError);
-      
+
       // Cleanup
       consoleErrorSpy.mockRestore();
     });
@@ -82,7 +82,7 @@ describe('Rental - Integración E2E', () => {
       const mockResponse: RentalsResponse = {
         success: true,
         message: 'Test response',
-        properties: []
+        properties: [],
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
@@ -102,7 +102,7 @@ describe('Rental - Integración E2E', () => {
       const mockResponse: RentalsResponse = {
         success: true,
         message: 'OK',
-        properties: []
+        properties: [],
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
@@ -119,7 +119,7 @@ describe('Rental - Integración E2E', () => {
       const mockResponse: RentalsResponse = {
         success: true,
         message: 'Filtered',
-        properties: []
+        properties: [],
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
@@ -149,7 +149,7 @@ describe('Rental - Integración E2E', () => {
       // Arrange
       const timeoutError = new Error('Network timeout');
       mockHttp.get.mockRejectedValue(timeoutError);
-      
+
       // Spy en console.error para verificar que se logee el error
       const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
@@ -160,7 +160,7 @@ describe('Rental - Integración E2E', () => {
       expect(rentalStore.error).toBe('Error al obtener los alquileres');
       expect(rentalStore.loading).toBe(false);
       expect(consoleErrorSpy).toHaveBeenCalledWith('Error fetching rentals:', timeoutError);
-      
+
       // Cleanup
       consoleErrorSpy.mockRestore();
     });
@@ -178,7 +178,7 @@ describe('Rental - Integración E2E', () => {
           status: 'Publicado',
           propertyPriceMinUnit: 800,
           last_status_changed_at: '2023-01-01T00:00:00Z',
-          created_at: '2023-01-01T00:00:00Z'
+          created_at: '2023-01-01T00:00:00Z',
         },
         {
           uuid: '456',
@@ -188,14 +188,14 @@ describe('Rental - Integración E2E', () => {
           status: 'Solicitud recibida',
           propertyPriceMinUnit: 1200,
           last_status_changed_at: '2023-01-02T00:00:00Z',
-          created_at: '2023-01-02T00:00:00Z'
-        }
+          created_at: '2023-01-02T00:00:00Z',
+        },
       ];
 
       const httpResponse: RentalsResponse = {
         success: true,
         message: 'Multiple rentals',
-        properties: multipleRentals
+        properties: multipleRentals,
       };
 
       mockHttp.get.mockResolvedValue({ data: httpResponse });

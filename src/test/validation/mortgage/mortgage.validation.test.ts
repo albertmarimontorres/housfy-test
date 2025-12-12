@@ -14,7 +14,7 @@ describe('Mortgage - Validaciones', () => {
         ltv: 80,
         status: 'Aprobado',
         last_status_changed_at: '2023-01-15T10:30:00Z',
-        created_at: '2023-01-01T00:00:00Z'
+        created_at: '2023-01-01T00:00:00Z',
       };
 
       // Assert
@@ -54,7 +54,14 @@ describe('Mortgage - Validaciones', () => {
 
     it('debería validar estados de hipoteca válidos', () => {
       // Arrange
-      const validStatuses = ['Aprobado', 'Pendiente', 'Rechazado', 'En Proceso', 'Publicado', 'Documentacion recibida'];
+      const validStatuses = [
+        'Aprobado',
+        'Pendiente',
+        'Rechazado',
+        'En Proceso',
+        'Publicado',
+        'Documentacion recibida',
+      ];
 
       // Act & Assert
       validStatuses.forEach(status => {
@@ -110,7 +117,7 @@ describe('Mortgage - Validaciones', () => {
         minLoanAmount: 150000,
         maxLoanAmount: 300000,
         city: 'Madrid',
-        bank: 'BBVA'
+        bank: 'BBVA',
       };
 
       // Act & Assert
@@ -134,7 +141,7 @@ describe('Mortgage - Validaciones', () => {
       const validRanges = [
         { min: 100000, max: 200000 },
         { min: 200000, max: 400000 },
-        { min: 300000, max: 600000 }
+        { min: 300000, max: 600000 },
       ];
 
       // Act & Assert
@@ -150,7 +157,7 @@ describe('Mortgage - Validaciones', () => {
       const validPropertyValues = [
         { min: 150000, max: 300000 },
         { min: 300000, max: 500000 },
-        { min: 500000, max: 1000000 }
+        { min: 500000, max: 1000000 },
       ];
 
       // Act & Assert
@@ -168,7 +175,7 @@ describe('Mortgage - Validaciones', () => {
       const testCases = [
         { loan: 20000000, property: 25000000, expectedLTV: 80 }, // 200k/250k = 80%
         { loan: 15000000, property: 20000000, expectedLTV: 75 }, // 150k/200k = 75%
-        { loan: 30000000, property: 40000000, expectedLTV: 75 }  // 300k/400k = 75%
+        { loan: 30000000, property: 40000000, expectedLTV: 75 }, // 300k/400k = 75%
       ];
 
       // Act & Assert
@@ -183,7 +190,7 @@ describe('Mortgage - Validaciones', () => {
       const centavosToEuros = [
         { centavos: 10000000, euros: 100000 },
         { centavos: 20000000, euros: 200000 },
-        { centavos: 50000000, euros: 500000 }
+        { centavos: 50000000, euros: 500000 },
       ];
 
       // Act & Assert
@@ -204,16 +211,16 @@ describe('Mortgage - Validaciones', () => {
         ltv: 80,
         status: 'Aprobado',
         last_status_changed_at: '2023-01-01T00:00:00Z',
-        created_at: '2023-01-01T00:00:00Z'
+        created_at: '2023-01-01T00:00:00Z',
       };
 
       // Act & Assert
       // LTV no debe ser mayor a 100%
       expect(mortgage.ltv).toBeLessThanOrEqual(100);
-      
+
       // El préstamo no debe ser mayor al valor de la propiedad
       expect(mortgage.loanAmountMinUnit).toBeLessThanOrEqual(mortgage.propertyValueMinUnit);
-      
+
       // Importes deben ser positivos
       expect(mortgage.loanAmountMinUnit).toBeGreaterThan(0);
       expect(mortgage.propertyValueMinUnit).toBeGreaterThan(0);
@@ -224,10 +231,10 @@ describe('Mortgage - Validaciones', () => {
     it('debería manejar importes típicos del mercado español', () => {
       // Arrange - rangos típicos en España
       const typicalRanges = {
-        minLoan: 5000000,    // 50k EUR mínimo
-        maxLoan: 100000000,  // 1M EUR máximo típico
+        minLoan: 5000000, // 50k EUR mínimo
+        maxLoan: 100000000, // 1M EUR máximo típico
         minProperty: 10000000, // 100k EUR mínimo
-        maxProperty: 200000000 // 2M EUR máximo típico
+        maxProperty: 200000000, // 2M EUR máximo típico
       };
 
       // Act & Assert
@@ -240,9 +247,9 @@ describe('Mortgage - Validaciones', () => {
     it('debería validar LTV máximos regulatorios', () => {
       // Arrange - LTV máximos según regulación española
       const regulatoryLimits = {
-        primaryResidence: 80,   // Vivienda habitual
+        primaryResidence: 80, // Vivienda habitual
         secondaryResidence: 70, // Segunda vivienda
-        investment: 60          // Inversión
+        investment: 60, // Inversión
       };
 
       // Act & Assert

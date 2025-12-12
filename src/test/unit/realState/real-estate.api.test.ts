@@ -7,7 +7,7 @@ import type { RealEstateResponse, RealEstateFilters } from '@/types/Property';
 vi.mock('@/api/httpClient', () => ({
   default: {
     get: vi.fn(),
-  }
+  },
 }));
 
 describe('Real Estate API', () => {
@@ -37,11 +37,11 @@ describe('Real Estate API', () => {
               status: 'Publicado',
               propertyPriceMinUnit: 250000,
               last_status_changed_at: '2023-01-15T10:30:00Z',
-              created_at: '2023-01-01T00:00:00Z'
-            }
-          ]
+              created_at: '2023-01-01T00:00:00Z',
+            },
+          ],
         };
-        
+
         mockHttp.get.mockResolvedValue({ data: mockResponse });
 
         // Act
@@ -58,15 +58,15 @@ describe('Real Estate API', () => {
         const filters: RealEstateFilters = {
           status: 'Publicado',
           minPrice: 200000,
-          maxPrice: 500000
+          maxPrice: 500000,
         };
 
         const mockResponse: RealEstateResponse = {
           success: true,
           message: 'Propiedades filtradas obtenidas',
-          properties: []
+          properties: [],
         };
-        
+
         mockHttp.get.mockResolvedValue({ data: mockResponse });
 
         // Act
@@ -74,7 +74,9 @@ describe('Real Estate API', () => {
 
         // Assert
         expect(result).toEqual(mockResponse);
-        expect(mockHttp.get).toHaveBeenCalledWith('/real-estate?status=Publicado&minPrice=200000&maxPrice=500000');
+        expect(mockHttp.get).toHaveBeenCalledWith(
+          '/real-estate?status=Publicado&minPrice=200000&maxPrice=500000'
+        );
         expect(mockHttp.get).toHaveBeenCalledTimes(1);
       });
 
@@ -92,7 +94,7 @@ describe('Real Estate API', () => {
               status: 'Publicado',
               propertyPriceMinUnit: 180000,
               last_status_changed_at: '2023-02-01T14:20:00Z',
-              created_at: '2023-01-15T00:00:00Z'
+              created_at: '2023-01-15T00:00:00Z',
             },
             {
               uuid: '123e4567-e89b-12d3-a456-426614174002',
@@ -102,11 +104,11 @@ describe('Real Estate API', () => {
               status: 'Con visitas',
               propertyPriceMinUnit: 320000,
               last_status_changed_at: '2023-02-10T16:45:00Z',
-              created_at: '2023-01-20T00:00:00Z'
-            }
-          ]
+              created_at: '2023-01-20T00:00:00Z',
+            },
+          ],
         };
-        
+
         mockHttp.get.mockResolvedValue({ data: mockResponse });
 
         // Act
@@ -124,9 +126,9 @@ describe('Real Estate API', () => {
         const mockResponse: RealEstateResponse = {
           success: true,
           message: 'No hay propiedades disponibles',
-          properties: []
+          properties: [],
         };
-        
+
         mockHttp.get.mockResolvedValue({ data: mockResponse });
 
         // Act
@@ -144,8 +146,8 @@ describe('Real Estate API', () => {
         const error = {
           response: {
             status: 404,
-            data: { message: 'Endpoint no encontrado' }
-          }
+            data: { message: 'Endpoint no encontrado' },
+          },
         };
         mockHttp.get.mockRejectedValue(error);
 
@@ -159,8 +161,8 @@ describe('Real Estate API', () => {
         const error = {
           response: {
             status: 500,
-            data: { message: 'Error interno del servidor' }
-          }
+            data: { message: 'Error interno del servidor' },
+          },
         };
         mockHttp.get.mockRejectedValue(error);
 
@@ -193,7 +195,7 @@ describe('Real Estate API', () => {
         const mockResponse: RealEstateResponse = {
           success: true,
           message: 'OK',
-          properties: []
+          properties: [],
         };
         mockHttp.get.mockResolvedValue({ data: mockResponse });
 
@@ -210,13 +212,13 @@ describe('Real Estate API', () => {
           status: 'Publicado',
           minPrice: 100000,
           propertyStreet: 'Calle Test',
-          propertyFloor: 2
+          propertyFloor: 2,
         };
-        
+
         const mockResponse: RealEstateResponse = {
           success: true,
           message: 'OK',
-          properties: []
+          properties: [],
         };
         mockHttp.get.mockResolvedValue({ data: mockResponse });
 
@@ -224,7 +226,9 @@ describe('Real Estate API', () => {
         await realEstateApi.getProperties(filters);
 
         // Assert
-        expect(mockHttp.get).toHaveBeenCalledWith('/real-estate?status=Publicado&minPrice=100000&propertyStreet=Calle+Test&propertyFloor=2');
+        expect(mockHttp.get).toHaveBeenCalledWith(
+          '/real-estate?status=Publicado&minPrice=100000&propertyStreet=Calle+Test&propertyFloor=2'
+        );
       });
 
       it('debería filtrar valores undefined, null y vacíos', async () => {
@@ -234,13 +238,13 @@ describe('Real Estate API', () => {
           minPrice: undefined,
           maxPrice: null as any,
           propertyStreet: '',
-          propertyFloor: 3
+          propertyFloor: 3,
         };
-        
+
         const mockResponse: RealEstateResponse = {
           success: true,
           message: 'OK',
-          properties: []
+          properties: [],
         };
         mockHttp.get.mockResolvedValue({ data: mockResponse });
 
@@ -255,13 +259,13 @@ describe('Real Estate API', () => {
         // Arrange
         const filters: RealEstateFilters = {
           propertyStreet: 'Calle España & García',
-          status: 'Oferta recibida'
+          status: 'Oferta recibida',
         };
-        
+
         const mockResponse: RealEstateResponse = {
           success: true,
           message: 'OK',
-          properties: []
+          properties: [],
         };
         mockHttp.get.mockResolvedValue({ data: mockResponse });
 
@@ -269,17 +273,19 @@ describe('Real Estate API', () => {
         await realEstateApi.getProperties(filters);
 
         // Assert
-        expect(mockHttp.get).toHaveBeenCalledWith('/real-estate?propertyStreet=Calle+Espa%C3%B1a+%26+Garc%C3%ADa&status=Oferta+recibida');
+        expect(mockHttp.get).toHaveBeenCalledWith(
+          '/real-estate?propertyStreet=Calle+Espa%C3%B1a+%26+Garc%C3%ADa&status=Oferta+recibida'
+        );
       });
 
       it('debería manejar objeto de filtros vacío', async () => {
         // Arrange
         const filters: RealEstateFilters = {};
-        
+
         const mockResponse: RealEstateResponse = {
           success: true,
           message: 'OK',
-          properties: []
+          properties: [],
         };
         mockHttp.get.mockResolvedValue({ data: mockResponse });
 
@@ -319,7 +325,7 @@ describe('Real Estate API', () => {
         const mockResponse: RealEstateResponse = {
           success: true,
           message: 'OK',
-          properties: []
+          properties: [],
         };
         mockHttp.get.mockResolvedValue({ data: mockResponse });
 
@@ -327,7 +333,7 @@ describe('Real Estate API', () => {
         const promises = [
           realEstateApi.getProperties(),
           realEstateApi.getProperties({ status: 'Publicado' }),
-          realEstateApi.getProperties({ minPrice: 100000 })
+          realEstateApi.getProperties({ minPrice: 100000 }),
         ];
 
         const results = await Promise.all(promises);
@@ -348,7 +354,7 @@ describe('Real Estate API', () => {
       const mockResponse: RealEstateResponse = {
         success: true,
         message: 'OK',
-        properties: []
+        properties: [],
       };
       mockHttp.get.mockResolvedValue({ data: mockResponse });
 
@@ -362,13 +368,13 @@ describe('Real Estate API', () => {
     it('debería codificar correctamente parámetros de URL', async () => {
       // Arrange
       const filters: RealEstateFilters = {
-        propertyStreet: 'Calle & Avenida #1'
+        propertyStreet: 'Calle & Avenida #1',
       };
-      
+
       const mockResponse: RealEstateResponse = {
         success: true,
         message: 'OK',
-        properties: []
+        properties: [],
       };
       mockHttp.get.mockResolvedValue({ data: mockResponse });
 
@@ -376,7 +382,9 @@ describe('Real Estate API', () => {
       await realEstateApi.getProperties(filters);
 
       // Assert
-      expect(mockHttp.get).toHaveBeenCalledWith('/real-estate?propertyStreet=Calle+%26+Avenida+%231');
+      expect(mockHttp.get).toHaveBeenCalledWith(
+        '/real-estate?propertyStreet=Calle+%26+Avenida+%231'
+      );
     });
   });
 
@@ -386,7 +394,7 @@ describe('Real Estate API', () => {
       const mockResponse: RealEstateResponse = {
         success: true,
         message: 'OK',
-        properties: []
+        properties: [],
       };
       mockHttp.get.mockResolvedValue({ data: mockResponse });
 
@@ -403,7 +411,7 @@ describe('Real Estate API', () => {
       const mockResponse: RealEstateResponse = {
         success: true,
         message: 'OK',
-        properties: []
+        properties: [],
       };
       mockHttp.get.mockResolvedValue({ data: mockResponse });
 

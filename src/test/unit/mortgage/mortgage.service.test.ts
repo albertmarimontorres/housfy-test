@@ -5,7 +5,7 @@ import type { Mortgage } from '@/types/Mortgage';
 // Mock de property.service
 vi.mock('@/services/property.service', () => ({
   formatPrice: vi.fn((amount: number) => `€${amount.toLocaleString('es-ES')}`),
-  formatDate: vi.fn((dateStr: string) => new Date(dateStr).toLocaleDateString('es-ES'))
+  formatDate: vi.fn((dateStr: string) => new Date(dateStr).toLocaleDateString('es-ES')),
 }));
 
 describe('Mortgage Service', () => {
@@ -18,7 +18,7 @@ describe('Mortgage Service', () => {
     ltv: 80,
     status: 'Aprobado',
     last_status_changed_at: '2023-01-15T10:30:00Z',
-    created_at: '2023-01-01T00:00:00Z'
+    created_at: '2023-01-01T00:00:00Z',
   };
 
   beforeEach(() => {
@@ -96,9 +96,15 @@ describe('Mortgage Service', () => {
 
     it('debería lanzar error con hipoteca inválida', () => {
       // Act & Assert
-      expect(() => mortgageService.formatLoanAmount(null as any)).toThrow('La hipoteca debe ser un objeto válido');
-      expect(() => mortgageService.formatLoanAmount(undefined as any)).toThrow('La hipoteca debe ser un objeto válido');
-      expect(() => mortgageService.formatLoanAmount('invalid' as any)).toThrow('La hipoteca debe ser un objeto válido');
+      expect(() => mortgageService.formatLoanAmount(null as any)).toThrow(
+        'La hipoteca debe ser un objeto válido'
+      );
+      expect(() => mortgageService.formatLoanAmount(undefined as any)).toThrow(
+        'La hipoteca debe ser un objeto válido'
+      );
+      expect(() => mortgageService.formatLoanAmount('invalid' as any)).toThrow(
+        'La hipoteca debe ser un objeto válido'
+      );
     });
   });
 
@@ -135,9 +141,15 @@ describe('Mortgage Service', () => {
 
     it('debería lanzar error con hipoteca inválida', () => {
       // Act & Assert
-      expect(() => mortgageService.formatPropertyValue(null as any)).toThrow('La hipoteca debe ser un objeto válido');
-      expect(() => mortgageService.formatPropertyValue(undefined as any)).toThrow('La hipoteca debe ser un objeto válido');
-      expect(() => mortgageService.formatPropertyValue('invalid' as any)).toThrow('La hipoteca debe ser un objeto válido');
+      expect(() => mortgageService.formatPropertyValue(null as any)).toThrow(
+        'La hipoteca debe ser un objeto válido'
+      );
+      expect(() => mortgageService.formatPropertyValue(undefined as any)).toThrow(
+        'La hipoteca debe ser un objeto válido'
+      );
+      expect(() => mortgageService.formatPropertyValue('invalid' as any)).toThrow(
+        'La hipoteca debe ser un objeto válido'
+      );
     });
   });
 
@@ -210,8 +222,12 @@ describe('Mortgage Service', () => {
     it('debería lanzar error con estado inválido', () => {
       // Act & Assert
       expect(() => mortgageService.getStatusColor('')).toThrow('El estado no puede estar vacío');
-      expect(() => mortgageService.getStatusColor(null as any)).toThrow('El estado debe ser una cadena de texto');
-      expect(() => mortgageService.getStatusColor(123 as any)).toThrow('El estado debe ser una cadena de texto');
+      expect(() => mortgageService.getStatusColor(null as any)).toThrow(
+        'El estado debe ser una cadena de texto'
+      );
+      expect(() => mortgageService.getStatusColor(123 as any)).toThrow(
+        'El estado debe ser una cadena de texto'
+      );
     });
 
     it('debería manejar espacios en el estado', () => {
@@ -242,7 +258,9 @@ describe('Mortgage Service', () => {
     it('debería lanzar error con estado inválido', () => {
       // Act & Assert
       expect(() => mortgageService.getStatusLabel('')).toThrow('El estado no puede estar vacío');
-      expect(() => mortgageService.getStatusLabel(undefined as any)).toThrow('El estado debe ser una cadena de texto');
+      expect(() => mortgageService.getStatusLabel(undefined as any)).toThrow(
+        'El estado debe ser una cadena de texto'
+      );
     });
   });
 
@@ -356,7 +374,10 @@ describe('Mortgage Service', () => {
 
     it('debería manejar fecha undefined', () => {
       // Arrange
-      const mortgageWithUndefinedDate = { ...mockMortgage, last_status_changed_at: undefined as any };
+      const mortgageWithUndefinedDate = {
+        ...mockMortgage,
+        last_status_changed_at: undefined as any,
+      };
 
       // Act
       const result = mortgageService.formatLastStatusChanged(mortgageWithUndefinedDate);

@@ -7,7 +7,7 @@ import type { AuthCredentials, RegisterPayload } from '@/types/Auth';
 vi.mock('@/api/httpClient', () => ({
   default: {
     post: vi.fn(),
-  }
+  },
 }));
 
 describe('authApi', () => {
@@ -24,7 +24,7 @@ describe('authApi', () => {
   describe('login', () => {
     const validCredentials: AuthCredentials = {
       email: 'test@example.com',
-      password: 'password123'
+      password: 'password123',
     };
 
     const mockApiResponse = {
@@ -32,8 +32,8 @@ describe('authApi', () => {
         success: true,
         message: 'Login exitoso',
         userId: 123,
-        bearer: 'mock-token-123'
-      }
+        bearer: 'mock-token-123',
+      },
     };
 
     describe('casos de éxito', () => {
@@ -53,7 +53,7 @@ describe('authApi', () => {
         // Arrange
         const credentialsWithExtraSpaces = {
           email: '  test@example.com  ',
-          password: 'password123'
+          password: 'password123',
         };
         mockHttp.post.mockResolvedValueOnce(mockApiResponse);
 
@@ -138,7 +138,7 @@ describe('authApi', () => {
     const validRegisterPayload: RegisterPayload = {
       email: 'newuser@example.com',
       password: 'password123',
-      fullName: 'Juan Pérez'
+      fullName: 'Juan Pérez',
     };
 
     const mockRegisterResponse = {
@@ -146,8 +146,8 @@ describe('authApi', () => {
         success: true,
         message: 'Registro exitoso',
         userId: 456,
-        bearer: 'mock-token-456'
-      }
+        bearer: 'mock-token-456',
+      },
     };
 
     describe('casos de éxito', () => {
@@ -167,7 +167,7 @@ describe('authApi', () => {
         // Arrange
         const payloadWithExtraFields = {
           ...validRegisterPayload,
-          extraField: 'should be sent to API'
+          extraField: 'should be sent to API',
         };
         mockHttp.post.mockResolvedValueOnce(mockRegisterResponse);
 
@@ -197,7 +197,9 @@ describe('authApi', () => {
         mockHttp.post.mockRejectedValueOnce(conflictError);
 
         // Act & Assert
-        await expect(authApi.register(validRegisterPayload)).rejects.toThrow('Email already exists');
+        await expect(authApi.register(validRegisterPayload)).rejects.toThrow(
+          'Email already exists'
+        );
       });
 
       it('debería propagar errores 400 de validación', async () => {
@@ -273,7 +275,7 @@ describe('authApi', () => {
       // Arrange
       const credentials = { email: 'test@test.com', password: 'password123' };
       const payload = { ...credentials, fullName: 'Test User' };
-      
+
       mockHttp.post.mockResolvedValue({ data: {} });
 
       // Act
@@ -290,7 +292,7 @@ describe('authApi', () => {
       // Arrange
       const credentials = { email: 'test@test.com', password: 'password123' };
       const payload = { ...credentials, fullName: 'Test User' };
-      
+
       mockHttp.post.mockResolvedValue({ data: {} });
 
       // Act

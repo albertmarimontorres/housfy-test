@@ -9,7 +9,7 @@ import type { RealEstateResponse, RealEstateFilters } from '@/types/Property';
 vi.mock('@/api/httpClient', () => ({
   default: {
     get: vi.fn(),
-  }
+  },
 }));
 
 describe('Real Estate - Tests de Integración', () => {
@@ -48,7 +48,7 @@ describe('Real Estate - Tests de Integración', () => {
             status: 'Publicado',
             propertyPriceMinUnit: 250000,
             last_status_changed_at: '2023-01-15T10:30:00Z',
-            created_at: '2023-01-01T00:00:00Z'
+            created_at: '2023-01-01T00:00:00Z',
           },
           {
             uuid: '987fcdeb-51a2-43d1-9c72-534261847b12',
@@ -58,9 +58,9 @@ describe('Real Estate - Tests de Integración', () => {
             status: 'Con visitas',
             propertyPriceMinUnit: 180000,
             last_status_changed_at: '2023-02-01T14:20:00Z',
-            created_at: '2023-01-15T00:00:00Z'
-          }
-        ]
+            created_at: '2023-01-15T00:00:00Z',
+          },
+        ],
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
@@ -85,7 +85,7 @@ describe('Real Estate - Tests de Integración', () => {
       const store = useRealEstateStore();
       const filters: RealEstateFilters = {
         status: 'Publicado',
-        minPrice: 200000
+        minPrice: 200000,
       };
 
       const mockResponse: RealEstateResponse = {
@@ -100,7 +100,7 @@ describe('Real Estate - Tests de Integración', () => {
             status: 'Publicado',
             propertyPriceMinUnit: 250000,
             last_status_changed_at: '2023-01-01T00:00:00Z',
-            created_at: '2023-01-01T00:00:00Z'
+            created_at: '2023-01-01T00:00:00Z',
           },
           {
             uuid: '2',
@@ -110,9 +110,9 @@ describe('Real Estate - Tests de Integración', () => {
             status: 'Reservado',
             propertyPriceMinUnit: 150000,
             last_status_changed_at: '2023-01-01T00:00:00Z',
-            created_at: '2023-01-01T00:00:00Z'
-          }
-        ]
+            created_at: '2023-01-01T00:00:00Z',
+          },
+        ],
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
@@ -134,8 +134,8 @@ describe('Real Estate - Tests de Integración', () => {
       // Simular estructura de error de Axios
       (httpError as any).response = {
         data: {
-          message: 'Error de servidor'
-        }
+          message: 'Error de servidor',
+        },
       };
 
       mockHttp.get.mockRejectedValue(httpError);
@@ -148,7 +148,10 @@ describe('Real Estate - Tests de Integración', () => {
       expect(store.filteredProperties).toEqual([]);
       expect(store.error).toBe('Error de servidor');
       expect(store.loading).toBe(false);
-      expect(console.error).toHaveBeenCalledWith('Error fetching real estate properties:', httpError);
+      expect(console.error).toHaveBeenCalledWith(
+        'Error fetching real estate properties:',
+        httpError
+      );
     });
   });
 
@@ -167,9 +170,9 @@ describe('Real Estate - Tests de Integración', () => {
             status: 'Publicado',
             propertyPriceMinUnit: 300000,
             last_status_changed_at: '2023-01-01T00:00:00Z',
-            created_at: '2023-01-01T00:00:00Z'
-          }
-        ]
+            created_at: '2023-01-01T00:00:00Z',
+          },
+        ],
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
@@ -188,13 +191,13 @@ describe('Real Estate - Tests de Integración', () => {
       // Arrange
       const filters: RealEstateFilters = {
         status: 'Con visitas',
-        propertyStreet: 'Test'
+        propertyStreet: 'Test',
       };
 
       const mockResponse: RealEstateResponse = {
         success: true,
         message: 'Filtered response',
-        properties: []
+        properties: [],
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
@@ -203,7 +206,9 @@ describe('Real Estate - Tests de Integración', () => {
       const result = await RealEstateService.getProperties(filters);
 
       // Assert - verificar que los filtros se pasan correctamente
-      expect(mockHttp.get).toHaveBeenCalledWith('/real-estate?status=Con+visitas&propertyStreet=Test');
+      expect(mockHttp.get).toHaveBeenCalledWith(
+        '/real-estate?status=Con+visitas&propertyStreet=Test'
+      );
       expect(result).toEqual(mockResponse);
     });
   });
@@ -216,13 +221,13 @@ describe('Real Estate - Tests de Integración', () => {
         minPrice: 100000,
         maxPrice: 500000,
         propertyStreet: 'Calle España & García',
-        propertyFloor: 3
+        propertyFloor: 3,
       };
 
       const mockResponse: RealEstateResponse = {
         success: true,
         message: 'Complex filter test',
-        properties: []
+        properties: [],
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
@@ -231,20 +236,21 @@ describe('Real Estate - Tests de Integración', () => {
       await realEstateApi.getProperties(complexFilters);
 
       // Assert - verificar encoding correcto de parámetros
-      const expectedUrl = '/real-estate?status=Oferta+recibida&minPrice=100000&maxPrice=500000&propertyStreet=Calle+Espa%C3%B1a+%26+Garc%C3%ADa&propertyFloor=3';
+      const expectedUrl =
+        '/real-estate?status=Oferta+recibida&minPrice=100000&maxPrice=500000&propertyStreet=Calle+Espa%C3%B1a+%26+Garc%C3%ADa&propertyFloor=3';
       expect(mockHttp.get).toHaveBeenCalledWith(expectedUrl);
     });
 
     it('debería manejar caracteres especiales en filtros', async () => {
       // Arrange
       const specialFilters: RealEstateFilters = {
-        propertyStreet: 'Calle & Avenida #1 (Centro)'
+        propertyStreet: 'Calle & Avenida #1 (Centro)',
       };
 
       const mockResponse: RealEstateResponse = {
         success: true,
         message: 'Special chars test',
-        properties: []
+        properties: [],
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
@@ -253,7 +259,9 @@ describe('Real Estate - Tests de Integración', () => {
       await realEstateApi.getProperties(specialFilters);
 
       // Assert
-      expect(mockHttp.get).toHaveBeenCalledWith('/real-estate?propertyStreet=Calle+%26+Avenida+%231+%28Centro%29');
+      expect(mockHttp.get).toHaveBeenCalledWith(
+        '/real-estate?propertyStreet=Calle+%26+Avenida+%231+%28Centro%29'
+      );
     });
   });
 
@@ -300,7 +308,10 @@ describe('Real Estate - Tests de Integración', () => {
 
       // Assert
       expect(store.error).toBe('Error al obtener las propiedades');
-      expect(console.error).toHaveBeenCalledWith('Error fetching real estate properties:', serviceError);
+      expect(console.error).toHaveBeenCalledWith(
+        'Error fetching real estate properties:',
+        serviceError
+      );
     });
   });
 
@@ -322,9 +333,9 @@ describe('Real Estate - Tests de Integración', () => {
             status: 'Publicado',
             propertyPriceMinUnit: 100000,
             last_status_changed_at: '2023-01-01T00:00:00Z',
-            created_at: '2023-01-01T00:00:00Z'
-          }
-        ]
+            created_at: '2023-01-01T00:00:00Z',
+          },
+        ],
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
@@ -332,7 +343,7 @@ describe('Real Estate - Tests de Integración', () => {
       // Act - operaciones concurrentes
       await Promise.all([
         store1.fetchProperties(),
-        store2.fetchProperties({ status: 'Publicado' })
+        store2.fetchProperties({ status: 'Publicado' }),
       ]);
 
       // Assert - ambas operaciones deben completarse
@@ -349,22 +360,40 @@ describe('Real Estate - Tests de Integración', () => {
         success: true,
         message: 'First load',
         properties: [
-          { uuid: '1', propertyStreet: 'Street 1', propertyStreetNumber: 1, propertyFloor: 1, status: 'Publicado', propertyPriceMinUnit: 100000, last_status_changed_at: '2023-01-01T00:00:00Z', created_at: '2023-01-01T00:00:00Z' }
-        ]
+          {
+            uuid: '1',
+            propertyStreet: 'Street 1',
+            propertyStreetNumber: 1,
+            propertyFloor: 1,
+            status: 'Publicado',
+            propertyPriceMinUnit: 100000,
+            last_status_changed_at: '2023-01-01T00:00:00Z',
+            created_at: '2023-01-01T00:00:00Z',
+          },
+        ],
       };
 
       const mockResponse2: RealEstateResponse = {
         success: true,
         message: 'Second load',
         properties: [
-          { uuid: '2', propertyStreet: 'Street 2', propertyStreetNumber: 2, propertyFloor: 2, status: 'Reservado', propertyPriceMinUnit: 200000, last_status_changed_at: '2023-01-01T00:00:00Z', created_at: '2023-01-01T00:00:00Z' }
-        ]
+          {
+            uuid: '2',
+            propertyStreet: 'Street 2',
+            propertyStreetNumber: 2,
+            propertyFloor: 2,
+            status: 'Reservado',
+            propertyPriceMinUnit: 200000,
+            last_status_changed_at: '2023-01-01T00:00:00Z',
+            created_at: '2023-01-01T00:00:00Z',
+          },
+        ],
       };
 
       // Act - operaciones secuenciales
       mockHttp.get.mockResolvedValueOnce({ data: mockResponse1 });
       await store.fetchProperties();
-      
+
       expect(store.allProperties).toHaveLength(1);
       expect(store.allProperties[0]?.uuid).toBe('1');
 
@@ -383,7 +412,7 @@ describe('Real Estate - Tests de Integración', () => {
       // Arrange
       const store = useRealEstateStore();
       const targetUuid = 'target-uuid-123';
-      
+
       const mockResponse: RealEstateResponse = {
         success: true,
         message: 'Properties with target',
@@ -396,7 +425,7 @@ describe('Real Estate - Tests de Integración', () => {
             status: 'Publicado',
             propertyPriceMinUnit: 250000,
             last_status_changed_at: '2023-01-01T00:00:00Z',
-            created_at: '2023-01-01T00:00:00Z'
+            created_at: '2023-01-01T00:00:00Z',
           },
           {
             uuid: 'other-uuid',
@@ -406,9 +435,9 @@ describe('Real Estate - Tests de Integración', () => {
             status: 'Reservado',
             propertyPriceMinUnit: 180000,
             last_status_changed_at: '2023-01-01T00:00:00Z',
-            created_at: '2023-01-01T00:00:00Z'
-          }
-        ]
+            created_at: '2023-01-01T00:00:00Z',
+          },
+        ],
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
@@ -426,15 +455,42 @@ describe('Real Estate - Tests de Integración', () => {
     it('debería integrar filtros complejos con datos reales', async () => {
       // Arrange
       const store = useRealEstateStore();
-      
+
       const mockResponse: RealEstateResponse = {
         success: true,
         message: 'Complex filter integration',
         properties: [
-          { uuid: '1', propertyStreet: 'Calle Mayor', propertyStreetNumber: 1, propertyFloor: 1, status: 'Publicado', propertyPriceMinUnit: 150000, last_status_changed_at: '2023-01-01T00:00:00Z', created_at: '2023-01-01T00:00:00Z' },
-          { uuid: '2', propertyStreet: 'Avenida Mayor', propertyStreetNumber: 2, propertyFloor: 2, status: 'Publicado', propertyPriceMinUnit: 250000, last_status_changed_at: '2023-01-01T00:00:00Z', created_at: '2023-01-01T00:00:00Z' },
-          { uuid: '3', propertyStreet: 'Calle Menor', propertyStreetNumber: 3, propertyFloor: 1, status: 'Reservado', propertyPriceMinUnit: 200000, last_status_changed_at: '2023-01-01T00:00:00Z', created_at: '2023-01-01T00:00:00Z' }
-        ]
+          {
+            uuid: '1',
+            propertyStreet: 'Calle Mayor',
+            propertyStreetNumber: 1,
+            propertyFloor: 1,
+            status: 'Publicado',
+            propertyPriceMinUnit: 150000,
+            last_status_changed_at: '2023-01-01T00:00:00Z',
+            created_at: '2023-01-01T00:00:00Z',
+          },
+          {
+            uuid: '2',
+            propertyStreet: 'Avenida Mayor',
+            propertyStreetNumber: 2,
+            propertyFloor: 2,
+            status: 'Publicado',
+            propertyPriceMinUnit: 250000,
+            last_status_changed_at: '2023-01-01T00:00:00Z',
+            created_at: '2023-01-01T00:00:00Z',
+          },
+          {
+            uuid: '3',
+            propertyStreet: 'Calle Menor',
+            propertyStreetNumber: 3,
+            propertyFloor: 1,
+            status: 'Reservado',
+            propertyPriceMinUnit: 200000,
+            last_status_changed_at: '2023-01-01T00:00:00Z',
+            created_at: '2023-01-01T00:00:00Z',
+          },
+        ],
       };
 
       mockHttp.get.mockResolvedValue({ data: mockResponse });
@@ -442,7 +498,7 @@ describe('Real Estate - Tests de Integración', () => {
       const complexFilters: RealEstateFilters = {
         status: 'Publicado',
         minPrice: 200000,
-        propertyStreet: 'mayor'
+        propertyStreet: 'mayor',
       };
 
       // Act

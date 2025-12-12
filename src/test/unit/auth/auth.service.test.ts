@@ -8,12 +8,12 @@ vi.mock('@/api/modules/auth.api', () => ({
   authApi: {
     login: vi.fn(),
     register: vi.fn(),
-  }
+  },
 }));
 
 describe('AuthService', () => {
   const mockAuthApi = authApi as any;
-  
+
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -25,14 +25,14 @@ describe('AuthService', () => {
   describe('login', () => {
     const validCredentials: AuthCredentials = {
       email: 'test@example.com',
-      password: 'password123'
+      password: 'password123',
     };
 
     const mockAuthResponse: AuthResponse = {
       success: true,
       message: 'Login exitoso',
       userId: 123,
-      bearer: 'mock-token-123'
+      bearer: 'mock-token-123',
     };
 
     describe('casos de éxito', () => {
@@ -52,7 +52,7 @@ describe('AuthService', () => {
         // Arrange
         const credentialsWithSpaces = {
           email: '  test@example.com  ',
-          password: 'password123'
+          password: 'password123',
         };
         mockAuthApi.login.mockResolvedValueOnce(mockAuthResponse);
 
@@ -68,7 +68,7 @@ describe('AuthService', () => {
         // Arrange
         const minPasswordCredentials = {
           email: 'test@example.com',
-          password: '12345678' // exactamente 8 caracteres
+          password: '12345678', // exactamente 8 caracteres
         };
         mockAuthApi.login.mockResolvedValueOnce(mockAuthResponse);
 
@@ -104,7 +104,9 @@ describe('AuthService', () => {
         const invalidCredentials = { email: 'test@example.com', password: '' };
 
         // Act & Assert
-        await expect(AuthService.login(invalidCredentials)).rejects.toThrow('Password es requerido');
+        await expect(AuthService.login(invalidCredentials)).rejects.toThrow(
+          'Password es requerido'
+        );
         expect(mockAuthApi.login).not.toHaveBeenCalled();
       });
 
@@ -113,17 +115,19 @@ describe('AuthService', () => {
         const invalidCredentials = { email: 'test@example.com', password: '   ' };
 
         // Act & Assert
-        await expect(AuthService.login(invalidCredentials)).rejects.toThrow('Password es requerido');
+        await expect(AuthService.login(invalidCredentials)).rejects.toThrow(
+          'Password es requerido'
+        );
         expect(mockAuthApi.login).not.toHaveBeenCalled();
       });
 
       it('debería lanzar error si email tiene formato inválido', async () => {
         // Arrange
         const invalidEmails = [
-          'invalid-email',     // sin @
-          'test@',             // sin dominio
-          '@example.com',      // sin parte local
-          'test@example',      // sin punto en dominio
+          'invalid-email', // sin @
+          'test@', // sin dominio
+          '@example.com', // sin parte local
+          'test@example', // sin punto en dominio
           'test @example.com', // espacio en parte local
           'test@ex ample.com', // espacio en dominio
           'test@@example.com', // doble @
@@ -132,7 +136,9 @@ describe('AuthService', () => {
         // Act & Assert
         for (const email of invalidEmails) {
           const credentials = { email, password: 'password123' };
-          await expect(AuthService.login(credentials)).rejects.toThrow('Email no tiene un formato válido');
+          await expect(AuthService.login(credentials)).rejects.toThrow(
+            'Email no tiene un formato válido'
+          );
           expect(mockAuthApi.login).not.toHaveBeenCalled();
         }
       });
@@ -144,7 +150,9 @@ describe('AuthService', () => {
         // Act & Assert
         for (const password of shortPasswords) {
           const credentials = { email: 'test@example.com', password };
-          await expect(AuthService.login(credentials)).rejects.toThrow('Password debe tener al menos 8 caracteres');
+          await expect(AuthService.login(credentials)).rejects.toThrow(
+            'Password debe tener al menos 8 caracteres'
+          );
         }
         expect(mockAuthApi.login).not.toHaveBeenCalled();
       });
@@ -177,7 +185,9 @@ describe('AuthService', () => {
         const invalidCredentials = { email: 'test@example.com', password: null as any };
 
         // Act & Assert
-        await expect(AuthService.login(invalidCredentials)).rejects.toThrow('Password es requerido');
+        await expect(AuthService.login(invalidCredentials)).rejects.toThrow(
+          'Password es requerido'
+        );
         expect(mockAuthApi.login).not.toHaveBeenCalled();
       });
 
@@ -186,7 +196,7 @@ describe('AuthService', () => {
         const extendedCredentials = {
           ...validCredentials,
           extraField: 'should be ignored',
-          anotherField: 123
+          anotherField: 123,
         };
         mockAuthApi.login.mockResolvedValueOnce(mockAuthResponse);
 
@@ -214,7 +224,9 @@ describe('AuthService', () => {
         mockAuthApi.login.mockRejectedValueOnce('Unknown error');
 
         // Act & Assert
-        await expect(AuthService.login(validCredentials)).rejects.toThrow('Error desconocido durante el login');
+        await expect(AuthService.login(validCredentials)).rejects.toThrow(
+          'Error desconocido durante el login'
+        );
       });
 
       it('debería manejar cuando la API lanza null', async () => {
@@ -222,7 +234,9 @@ describe('AuthService', () => {
         mockAuthApi.login.mockRejectedValueOnce(null);
 
         // Act & Assert
-        await expect(AuthService.login(validCredentials)).rejects.toThrow('Error desconocido durante el login');
+        await expect(AuthService.login(validCredentials)).rejects.toThrow(
+          'Error desconocido durante el login'
+        );
       });
 
       it('debería manejar cuando la API lanza undefined', async () => {
@@ -230,7 +244,9 @@ describe('AuthService', () => {
         mockAuthApi.login.mockRejectedValueOnce(undefined);
 
         // Act & Assert
-        await expect(AuthService.login(validCredentials)).rejects.toThrow('Error desconocido durante el login');
+        await expect(AuthService.login(validCredentials)).rejects.toThrow(
+          'Error desconocido durante el login'
+        );
       });
     });
   });
@@ -239,14 +255,14 @@ describe('AuthService', () => {
     const validRegisterPayload: RegisterPayload = {
       email: 'newuser@example.com',
       password: 'password123',
-      fullName: 'Juan Pérez'
+      fullName: 'Juan Pérez',
     };
 
     const mockRegisterResponse: AuthResponse = {
       success: true,
       message: 'Registro exitoso',
       userId: 456,
-      bearer: 'mock-token-456'
+      bearer: 'mock-token-456',
     };
 
     describe('casos de éxito', () => {
@@ -266,7 +282,7 @@ describe('AuthService', () => {
         // Arrange
         const validPayload = {
           ...validRegisterPayload,
-          fullName: 'María José Rodríguez-García'
+          fullName: 'María José Rodríguez-García',
         };
         mockAuthApi.register.mockResolvedValueOnce(mockRegisterResponse);
 
@@ -281,7 +297,7 @@ describe('AuthService', () => {
         // Arrange
         const validPayload = {
           ...validRegisterPayload,
-          fullName: 'Niño Muñoz'
+          fullName: 'Niño Muñoz',
         };
         mockAuthApi.register.mockResolvedValueOnce(mockRegisterResponse);
 
@@ -296,7 +312,7 @@ describe('AuthService', () => {
         // Arrange
         const validPayload = {
           ...validRegisterPayload,
-          fullName: 'Jo' // exactamente 2 caracteres
+          fullName: 'Jo', // exactamente 2 caracteres
         };
         mockAuthApi.register.mockResolvedValueOnce(mockRegisterResponse);
 
@@ -323,7 +339,9 @@ describe('AuthService', () => {
         const invalidPayload = { ...validRegisterPayload, password: '1234567' };
 
         // Act & Assert
-        await expect(AuthService.register(invalidPayload)).rejects.toThrow('Password debe tener al menos 8 caracteres');
+        await expect(AuthService.register(invalidPayload)).rejects.toThrow(
+          'Password debe tener al menos 8 caracteres'
+        );
         expect(mockAuthApi.register).not.toHaveBeenCalled();
       });
 
@@ -332,7 +350,9 @@ describe('AuthService', () => {
         const invalidPayload = { ...validRegisterPayload, email: 'invalid-email' };
 
         // Act & Assert
-        await expect(AuthService.register(invalidPayload)).rejects.toThrow('Email no tiene un formato válido');
+        await expect(AuthService.register(invalidPayload)).rejects.toThrow(
+          'Email no tiene un formato válido'
+        );
         expect(mockAuthApi.register).not.toHaveBeenCalled();
       });
     });
@@ -343,7 +363,9 @@ describe('AuthService', () => {
         const invalidPayload = { ...validRegisterPayload, fullName: '' };
 
         // Act & Assert
-        await expect(AuthService.register(invalidPayload)).rejects.toThrow('Nombre completo es requerido');
+        await expect(AuthService.register(invalidPayload)).rejects.toThrow(
+          'Nombre completo es requerido'
+        );
         expect(mockAuthApi.register).not.toHaveBeenCalled();
       });
 
@@ -352,7 +374,9 @@ describe('AuthService', () => {
         const invalidPayload = { ...validRegisterPayload, fullName: '   ' };
 
         // Act & Assert
-        await expect(AuthService.register(invalidPayload)).rejects.toThrow('Nombre completo es requerido');
+        await expect(AuthService.register(invalidPayload)).rejects.toThrow(
+          'Nombre completo es requerido'
+        );
         expect(mockAuthApi.register).not.toHaveBeenCalled();
       });
 
@@ -379,13 +403,15 @@ describe('AuthService', () => {
           'Test<script>',
           'User&Admin',
           'Test123',
-          'Name*Invalid'
+          'Name*Invalid',
         ];
 
         // Act & Assert
         for (const fullName of invalidNames) {
           const payload = { ...validRegisterPayload, fullName };
-          await expect(AuthService.register(payload)).rejects.toThrow('Nombre completo contiene caracteres no válidos');
+          await expect(AuthService.register(payload)).rejects.toThrow(
+            'Nombre completo contiene caracteres no válidos'
+          );
         }
         expect(mockAuthApi.register).not.toHaveBeenCalled();
       });
@@ -409,7 +435,9 @@ describe('AuthService', () => {
         const invalidPayload = { ...validRegisterPayload, fullName: null as any };
 
         // Act & Assert
-        await expect(AuthService.register(invalidPayload)).rejects.toThrow('Nombre completo es requerido');
+        await expect(AuthService.register(invalidPayload)).rejects.toThrow(
+          'Nombre completo es requerido'
+        );
         expect(mockAuthApi.register).not.toHaveBeenCalled();
       });
 
@@ -418,7 +446,9 @@ describe('AuthService', () => {
         const invalidPayload = { ...validRegisterPayload, fullName: undefined as any };
 
         // Act & Assert
-        await expect(AuthService.register(invalidPayload)).rejects.toThrow('Nombre completo es requerido');
+        await expect(AuthService.register(invalidPayload)).rejects.toThrow(
+          'Nombre completo es requerido'
+        );
         expect(mockAuthApi.register).not.toHaveBeenCalled();
       });
 
@@ -427,7 +457,7 @@ describe('AuthService', () => {
         const extendedPayload = {
           ...validRegisterPayload,
           extraField: 'should be ignored',
-          terms: true
+          terms: true,
         };
         mockAuthApi.register.mockResolvedValueOnce(mockRegisterResponse);
 
@@ -447,7 +477,9 @@ describe('AuthService', () => {
         mockAuthApi.register.mockRejectedValueOnce(apiError);
 
         // Act & Assert
-        await expect(AuthService.register(validRegisterPayload)).rejects.toThrow('Email ya está registrado');
+        await expect(AuthService.register(validRegisterPayload)).rejects.toThrow(
+          'Email ya está registrado'
+        );
       });
 
       it('debería manejar errores desconocidos de la API', async () => {
@@ -455,7 +487,9 @@ describe('AuthService', () => {
         mockAuthApi.register.mockRejectedValueOnce('Unknown error');
 
         // Act & Assert
-        await expect(AuthService.register(validRegisterPayload)).rejects.toThrow('Error desconocido durante el registro');
+        await expect(AuthService.register(validRegisterPayload)).rejects.toThrow(
+          'Error desconocido durante el registro'
+        );
       });
 
       it('debería manejar cuando la API lanza null', async () => {
@@ -463,7 +497,9 @@ describe('AuthService', () => {
         mockAuthApi.register.mockRejectedValueOnce(null);
 
         // Act & Assert
-        await expect(AuthService.register(validRegisterPayload)).rejects.toThrow('Error desconocido durante el registro');
+        await expect(AuthService.register(validRegisterPayload)).rejects.toThrow(
+          'Error desconocido durante el registro'
+        );
       });
 
       it('debería manejar cuando la API lanza undefined', async () => {
@@ -471,7 +507,9 @@ describe('AuthService', () => {
         mockAuthApi.register.mockRejectedValueOnce(undefined);
 
         // Act & Assert
-        await expect(AuthService.register(validRegisterPayload)).rejects.toThrow('Error desconocido durante el registro');
+        await expect(AuthService.register(validRegisterPayload)).rejects.toThrow(
+          'Error desconocido durante el registro'
+        );
       });
     });
   });

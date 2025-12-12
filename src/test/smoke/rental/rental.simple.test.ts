@@ -24,7 +24,7 @@ describe('Rental - Tests Simples', () => {
     it('debería crear store sin errores', () => {
       setActivePinia(createPinia());
       const store = useRentalStore();
-      
+
       expect(store).toBeDefined();
       expect(store.allRentals).toEqual([]);
       expect(store.loading).toBe(false);
@@ -44,7 +44,7 @@ describe('Rental - Tests Simples', () => {
       const mockResponse: RentalsResponse = {
         success: true,
         message: 'OK',
-        properties: []
+        properties: [],
       };
 
       mockRentalApi.getRentals.mockResolvedValue(mockResponse);
@@ -66,17 +66,19 @@ describe('Rental - Tests Simples', () => {
         getRentals: vi.fn().mockResolvedValue({
           success: true,
           message: 'OK',
-          properties: [{
-            uuid: '123',
-            propertyStreet: 'Test Street',
-            propertyStreetNumber: 1,
-            propertyFloor: 1,
-            status: 'Publicado',
-            propertyPriceMinUnit: 1000,
-            last_status_changed_at: '2023-01-01T00:00:00Z',
-            created_at: '2023-01-01T00:00:00Z'
-          }]
-        })
+          properties: [
+            {
+              uuid: '123',
+              propertyStreet: 'Test Street',
+              propertyStreetNumber: 1,
+              propertyFloor: 1,
+              status: 'Publicado',
+              propertyPriceMinUnit: 1000,
+              last_status_changed_at: '2023-01-01T00:00:00Z',
+              created_at: '2023-01-01T00:00:00Z',
+            },
+          ],
+        }),
       }));
 
       // Act
@@ -99,7 +101,7 @@ describe('Rental - Tests Simples', () => {
         status: 'Publicado',
         propertyPriceMinUnit: 1200,
         last_status_changed_at: '2023-01-15T10:30:00Z',
-        created_at: '2023-01-01T00:00:00Z'
+        created_at: '2023-01-01T00:00:00Z',
       };
 
       // Act & Assert
@@ -116,7 +118,7 @@ describe('Rental - Tests Simples', () => {
       expect(RentalService).toBeDefined();
       expect(rentalApi).toBeDefined();
       expect(useRentalStore).toBeDefined();
-      
+
       // Verificar que las funciones están exportadas
       expect(typeof RentalService.getRentals).toBe('function');
       expect(typeof rentalApi.getRentals).toBe('function');
@@ -137,7 +139,7 @@ describe('Rental - Tests Simples', () => {
     it('debería inicializar store en estado limpio', () => {
       // Arrange
       setActivePinia(createPinia());
-      
+
       // Act
       const store = useRentalStore();
 
@@ -161,7 +163,7 @@ describe('Rental - Tests Simples', () => {
       const minimalResponse: RentalsResponse = {
         success: true,
         message: '',
-        properties: []
+        properties: [],
       };
 
       const mockRentalApi = vi.mocked(rentalApi);

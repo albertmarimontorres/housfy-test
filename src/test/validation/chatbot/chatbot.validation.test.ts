@@ -13,12 +13,16 @@ describe('Chat Validation - Flujo Principal', () => {
     it('debería rechazar mensaje vacío', async () => {
       // Act & Assert
       await expect(chatService.sendMessage('')).rejects.toThrow('El mensaje no puede estar vacío');
-      expect(() => chatService.createUserMessage('')).toThrow('El contenido del mensaje no puede estar vacío');
+      expect(() => chatService.createUserMessage('')).toThrow(
+        'El contenido del mensaje no puede estar vacío'
+      );
     });
 
     it('debería rechazar mensaje solo con espacios', async () => {
       // Act & Assert
-      await expect(chatService.sendMessage('   ')).rejects.toThrow('El mensaje no puede estar vacío');
+      await expect(chatService.sendMessage('   ')).rejects.toThrow(
+        'El mensaje no puede estar vacío'
+      );
     });
 
     it('debería rechazar mensaje demasiado largo', async () => {
@@ -26,7 +30,9 @@ describe('Chat Validation - Flujo Principal', () => {
       const longMessage = 'a'.repeat(1001);
 
       // Act & Assert
-      await expect(chatService.sendMessage(longMessage)).rejects.toThrow('El mensaje no puede exceder 1000 caracteres');
+      await expect(chatService.sendMessage(longMessage)).rejects.toThrow(
+        'El mensaje no puede exceder 1000 caracteres'
+      );
     });
 
     it('debería aceptar mensaje en el límite de caracteres', async () => {
@@ -74,7 +80,7 @@ describe('Chat Validation - Flujo Principal', () => {
       expect(id1).not.toBe(id2);
       expect(id2).not.toBe(id3);
       expect(id1).not.toBe(id3);
-      
+
       // Verificar formato
       expect(id1).toMatch(/^msg-\d+-[a-z0-9]+$/);
     });

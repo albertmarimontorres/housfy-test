@@ -13,7 +13,7 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
         status: 'Publicado',
         propertyPriceMinUnit: 250000,
         last_status_changed_at: '2023-01-15T10:30:00Z',
-        created_at: '2023-01-01T00:00:00Z'
+        created_at: '2023-01-01T00:00:00Z',
       };
 
       // Assert
@@ -32,7 +32,7 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
       const response: RealEstateResponse = {
         success: true,
         message: 'Propiedades obtenidas correctamente',
-        properties: []
+        properties: [],
       };
 
       // Assert
@@ -48,7 +48,7 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
         minPrice: 100000,
         maxPrice: 500000,
         propertyStreet: 'Calle Mayor',
-        propertyFloor: 2
+        propertyFloor: 2,
       };
 
       // Assert
@@ -60,7 +60,7 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
 
       // Arrange & Act - filtros parciales
       const partialFilters: RealEstateFilters = {
-        status: 'Reservado'
+        status: 'Reservado',
       };
 
       // Assert
@@ -83,7 +83,7 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
         status: 'Publicado',
         propertyPriceMinUnit: 250000,
         last_status_changed_at: '2023-01-15T10:30:00Z',
-        created_at: '2023-01-01T00:00:00Z'
+        created_at: '2023-01-01T00:00:00Z',
       };
 
       // Assert - validar tipos
@@ -108,10 +108,10 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
           propertyStreet: 'Test Street',
           propertyStreetNumber: 1,
           propertyFloor: 1,
-          status: status,
+          status,
           propertyPriceMinUnit: 100000,
           last_status_changed_at: '2023-01-01T00:00:00Z',
-          created_at: '2023-01-01T00:00:00Z'
+          created_at: '2023-01-01T00:00:00Z',
         };
 
         // Assert
@@ -130,7 +130,7 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
         status: 'Estado personalizado',
         propertyPriceMinUnit: 100000,
         last_status_changed_at: '2023-01-01T00:00:00Z',
-        created_at: '2023-01-01T00:00:00Z'
+        created_at: '2023-01-01T00:00:00Z',
       };
 
       // Assert
@@ -148,27 +148,27 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
         status: 'Publicado',
         propertyPriceMinUnit: 100000,
         last_status_changed_at: '2023-01-15T10:30:00Z',
-        created_at: '2023-01-01T00:00:00Z'
+        created_at: '2023-01-01T00:00:00Z',
       };
 
       // Act & Assert
       expect(() => new Date(property.last_status_changed_at)).not.toThrow();
       expect(() => new Date(property.created_at)).not.toThrow();
-      
+
       // Validar que las fechas son válidas (no null ni Invalid Date)
       const statusDate = new Date(property.last_status_changed_at);
       const createdDate = new Date(property.created_at);
-      
+
       expect(statusDate.getTime()).not.toBeNaN();
       expect(createdDate.getTime()).not.toBeNaN();
-      
+
       // Validar que mantienen el formato ISO básico (año, mes, día)
       expect(statusDate.getFullYear()).toBeGreaterThanOrEqual(2020); // Año razonable
       expect(statusDate.getMonth()).toBe(0); // Enero = 0
       expect(statusDate.getDate()).toBe(15);
-      
+
       expect(createdDate.getFullYear()).toBeGreaterThanOrEqual(2020);
-      expect(createdDate.getMonth()).toBe(0); // Enero = 0  
+      expect(createdDate.getMonth()).toBe(0); // Enero = 0
       expect(createdDate.getDate()).toBe(1);
     });
 
@@ -182,7 +182,7 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
         status: 'Publicado',
         propertyPriceMinUnit: 250000,
         last_status_changed_at: '2023-01-15T10:30:00Z',
-        created_at: '2023-01-01T00:00:00Z'
+        created_at: '2023-01-01T00:00:00Z',
       };
 
       // Assert
@@ -207,9 +207,9 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
             status: 'Publicado',
             propertyPriceMinUnit: 100000,
             last_status_changed_at: '2023-01-01T00:00:00Z',
-            created_at: '2023-01-01T00:00:00Z'
-          }
-        ]
+            created_at: '2023-01-01T00:00:00Z',
+          },
+        ],
       };
 
       // Assert
@@ -224,7 +224,7 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
       const response: RealEstateResponse = {
         success: false,
         message: 'Error en la operación',
-        properties: []
+        properties: [],
       };
 
       // Assert
@@ -239,7 +239,7 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
       const response: RealEstateResponse = {
         success: true,
         message: 'No hay propiedades disponibles',
-        properties: []
+        properties: [],
       };
 
       // Assert
@@ -262,7 +262,7 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
             status: 'Publicado',
             propertyPriceMinUnit: 100000,
             last_status_changed_at: '2023-01-01T00:00:00Z',
-            created_at: '2023-01-01T00:00:00Z'
+            created_at: '2023-01-01T00:00:00Z',
           },
           {
             uuid: 'uuid-2',
@@ -272,9 +272,9 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
             status: 'Reservado',
             propertyPriceMinUnit: 200000,
             last_status_changed_at: '2023-01-02T00:00:00Z',
-            created_at: '2023-01-02T00:00:00Z'
-          }
-        ]
+            created_at: '2023-01-02T00:00:00Z',
+          },
+        ],
       };
 
       // Assert
@@ -307,7 +307,7 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
         minPrice: 100000,
         maxPrice: 500000,
         propertyStreet: 'Calle Mayor',
-        propertyFloor: 2
+        propertyFloor: 2,
       };
 
       // Assert
@@ -322,7 +322,7 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
       // Arrange & Act
       const filters: RealEstateFilters = {
         minPrice: 50000,
-        maxPrice: 1000000
+        maxPrice: 1000000,
       };
 
       // Assert
@@ -334,7 +334,7 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
     it('debería validar filtro de piso', () => {
       // Arrange & Act
       const filters: RealEstateFilters = {
-        propertyFloor: 0 // Planta baja
+        propertyFloor: 0, // Planta baja
       };
 
       // Assert
@@ -346,7 +346,7 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
       // Arrange & Act
       const filters: RealEstateFilters = {
         status: 'Con visitas',
-        propertyStreet: 'Avenida de la Constitución'
+        propertyStreet: 'Avenida de la Constitución',
       };
 
       // Assert
@@ -363,20 +363,20 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
       const uuids = [
         '123e4567-e89b-12d3-a456-426614174000',
         'A1B2C3D4-E5F6-1234-8901-ABCDEF123456',
-        '00000000-0000-1000-8000-000000000000'
+        '00000000-0000-1000-8000-000000000000',
       ];
 
       uuids.forEach(uuid => {
         // Act
         const property: RealEstateProperty = {
-          uuid: uuid,
+          uuid,
           propertyStreet: 'Test Street',
           propertyStreetNumber: 1,
           propertyFloor: 1,
           status: 'Publicado',
           propertyPriceMinUnit: 100000,
           last_status_changed_at: '2023-01-01T00:00:00Z',
-          created_at: '2023-01-01T00:00:00Z'
+          created_at: '2023-01-01T00:00:00Z',
         };
 
         // Assert
@@ -395,7 +395,7 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
         status: 'Publicado',
         propertyPriceMinUnit: 1,
         last_status_changed_at: '2023-01-01T00:00:00Z',
-        created_at: '2023-01-01T00:00:00Z'
+        created_at: '2023-01-01T00:00:00Z',
       };
 
       // Arrange & Act - precio muy alto
@@ -407,7 +407,7 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
         status: 'Publicado',
         propertyPriceMinUnit: 50000000,
         last_status_changed_at: '2023-01-01T00:00:00Z',
-        created_at: '2023-01-01T00:00:00Z'
+        created_at: '2023-01-01T00:00:00Z',
       };
 
       // Assert
@@ -431,7 +431,7 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
         status: longStatus,
         propertyPriceMinUnit: 100000,
         last_status_changed_at: '2023-01-01T00:00:00Z',
-        created_at: '2023-01-01T00:00:00Z'
+        created_at: '2023-01-01T00:00:00Z',
       };
 
       // Assert
@@ -450,7 +450,7 @@ describe('Real Estate - Validación de Tipos y Estructura', () => {
         status: 'Publicado € & $',
         propertyPriceMinUnit: 150000,
         last_status_changed_at: '2023-01-01T00:00:00Z',
-        created_at: '2023-01-01T00:00:00Z'
+        created_at: '2023-01-01T00:00:00Z',
       };
 
       // Assert

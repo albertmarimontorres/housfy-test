@@ -1,9 +1,9 @@
-import { defineStore } from "pinia";
-import { AuthService } from "@/services/auth.service";
-import { tokenStorage } from "@/utils/tokenStorage";
-import type { AuthCredentials, RegisterPayload } from "@/types/Auth";
+import { defineStore } from 'pinia';
+import { AuthService } from '@/services/auth.service';
+import { tokenStorage } from '@/utils/tokenStorage';
+import type { AuthCredentials, RegisterPayload } from '@/types/Auth';
 
-export const useAuthStore = defineStore("auth", {
+export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: tokenStorage.get() as string | null,
     loading: false,
@@ -11,7 +11,7 @@ export const useAuthStore = defineStore("auth", {
   }),
 
   getters: {
-    isAuthenticated: (state) => !!state.token,
+    isAuthenticated: state => !!state.token,
   },
 
   actions: {
@@ -25,7 +25,7 @@ export const useAuthStore = defineStore("auth", {
           tokenStorage.set(response.bearer);
           this.token = response.bearer;
         } else {
-          this.error = response.message || "Error in login";
+          this.error = response.message || 'Error in login';
         }
       } catch (err: any) {
         console.error('Login error:', err);
@@ -37,7 +37,7 @@ export const useAuthStore = defineStore("auth", {
         } else if (err?.response?.message) {
           this.error = err.response.message;
         } else {
-          this.error = "Error desconocido durante el login";
+          this.error = 'Error desconocido durante el login';
         }
       } finally {
         this.loading = false;
@@ -54,7 +54,7 @@ export const useAuthStore = defineStore("auth", {
           tokenStorage.set(response.bearer);
           this.token = response.bearer;
         } else {
-          this.error = response.message || "Error in register";
+          this.error = response.message || 'Error in register';
         }
       } catch (err: any) {
         console.error('Register error:', err);
@@ -66,7 +66,7 @@ export const useAuthStore = defineStore("auth", {
         } else if (err?.response?.message) {
           this.error = err.response.message;
         } else {
-          this.error = "Error desconocido durante el registro";
+          this.error = 'Error desconocido durante el registro';
         }
       } finally {
         this.loading = false;
@@ -76,6 +76,6 @@ export const useAuthStore = defineStore("auth", {
     logout() {
       tokenStorage.clear();
       this.token = null;
-    }
-  }
+    },
+  },
 });

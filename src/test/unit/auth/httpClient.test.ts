@@ -8,7 +8,7 @@ describe('httpClient Tests', () => {
   beforeEach(() => {
     vi.resetModules();
     vi.clearAllMocks();
-    
+
     // Reset interceptors
     requestInterceptor = null;
     responseInterceptor = null;
@@ -19,43 +19,43 @@ describe('httpClient Tests', () => {
         request: {
           use: vi.fn((success, error) => {
             requestInterceptor = { success, error };
-          })
+          }),
         },
         response: {
           use: vi.fn((success, error) => {
             responseInterceptor = { success, error };
-          })
-        }
-      }
+          }),
+        },
+      },
     };
 
     // Mock axios
     vi.doMock('axios', () => ({
       default: {
-        create: vi.fn(() => mockAxiosInstance)
-      }
+        create: vi.fn(() => mockAxiosInstance),
+      },
     }));
 
     // Mock tokenStorage
     vi.doMock('@/utils/tokenStorage', () => ({
       tokenStorage: {
         get: vi.fn(),
-        clear: vi.fn()
-      }
+        clear: vi.fn(),
+      },
     }));
 
     // Mock environment variables
     vi.stubGlobal('import.meta', {
       env: {
         VITE_HOUSFY_BASE_URL: 'https://n8n.housfy.com/webhook',
-        VITE_HOUSFY_ID: 'fee91763-ee96-4f64-8be2-a13f082d37e4'
-      }
+        VITE_HOUSFY_ID: 'fee91763-ee96-4f64-8be2-a13f082d37e4',
+      },
     });
 
     // Mock window.location
     const mockLocation = {
       pathname: '/',
-      href: ''
+      href: '',
     };
     vi.stubGlobal('window', { location: mockLocation });
   });
@@ -64,17 +64,17 @@ describe('httpClient Tests', () => {
     it('debería configurar axios correctamente', async () => {
       const axios = await import('axios');
       await import('@/api/httpClient');
-      
+
       expect(axios.default.create).toHaveBeenCalledWith({
         baseURL: 'https://n8n.housfy.com/webhook',
         timeout: 8000,
-        withCredentials: false
+        withCredentials: false,
       });
     });
 
     it('debería registrar interceptors', async () => {
       await import('@/api/httpClient');
-      
+
       expect(mockAxiosInstance.interceptors.request.use).toHaveBeenCalled();
       expect(mockAxiosInstance.interceptors.response.use).toHaveBeenCalled();
       expect(requestInterceptor).not.toBeNull();
@@ -130,7 +130,7 @@ describe('httpClient Tests', () => {
 
     it('debería rechazar promesa en caso de error', async () => {
       const error = new Error('Request error');
-      
+
       await expect(requestInterceptor.error(error)).rejects.toBe(error);
     });
   });
@@ -142,19 +142,19 @@ describe('httpClient Tests', () => {
 
     it('debería devolver response sin modificación en caso exitoso', async () => {
       const response = { data: { success: true }, status: 200 };
-      
+
       const result = responseInterceptor.success(response);
-      
+
       expect(result).toBe(response);
     });
 
     it('debería manejar error 401 y limpiar token', async () => {
       const { tokenStorage } = await import('@/utils/tokenStorage');
-      
+
       const error = {
-        response: { status: 401 }
+        response: { status: 401 },
       };
-      
+
       window.location.pathname = '/dashboard';
       window.location.href = '';
 
@@ -165,11 +165,11 @@ describe('httpClient Tests', () => {
 
     it('debería no redirigir si ya está en login', async () => {
       const { tokenStorage } = await import('@/utils/tokenStorage');
-      
+
       const error = {
-        response: { status: 401 }
+        response: { status: 401 },
       };
-      
+
       window.location.pathname = '/login';
       window.location.href = '';
 
@@ -180,11 +180,11 @@ describe('httpClient Tests', () => {
 
     it('debería no redirigir si ya está en register', async () => {
       const { tokenStorage } = await import('@/utils/tokenStorage');
-      
+
       const error = {
-        response: { status: 401 }
+        response: { status: 401 },
       };
-      
+
       window.location.pathname = '/register';
       window.location.href = '';
 
@@ -195,9 +195,9 @@ describe('httpClient Tests', () => {
 
     it('debería no procesar errores que no sean 401', async () => {
       const { tokenStorage } = await import('@/utils/tokenStorage');
-      
+
       const error = {
-        response: { status: 500 }
+        response: { status: 500 },
       };
 
       await expect(responseInterceptor.error(error)).rejects.toBe(error);
@@ -206,7 +206,7 @@ describe('httpClient Tests', () => {
 
     it('debería manejar errores sin response', async () => {
       const { tokenStorage } = await import('@/utils/tokenStorage');
-      
+
       const error = { message: 'Network Error' };
 
       await expect(responseInterceptor.error(error)).rejects.toBe(error);
@@ -215,7 +215,7 @@ describe('httpClient Tests', () => {
 
     it('debería manejar errores con response pero sin status', async () => {
       const { tokenStorage } = await import('@/utils/tokenStorage');
-      
+
       const error = { response: {} };
 
       await expect(responseInterceptor.error(error)).rejects.toBe(error);

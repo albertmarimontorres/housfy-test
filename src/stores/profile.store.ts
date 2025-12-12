@@ -30,6 +30,6 @@ export const useProfileStore = defineStore('profile', {
     clearProfile() {
       this.user = null;
       this.error = null;
-    }
-  }
+    },
+  },
 });

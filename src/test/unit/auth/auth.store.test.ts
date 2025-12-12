@@ -17,12 +17,12 @@ describe('Auth Store', () => {
   beforeEach(() => {
     // Clear all mocks first
     vi.clearAllMocks();
-    
+
     // Setup default mocks
     mockTokenStorage.get.mockReturnValue(null);
     mockTokenStorage.set.mockImplementation(() => {});
     mockTokenStorage.clear.mockImplementation(() => {});
-    
+
     // Create fresh Pinia instance for each test
     setActivePinia(createPinia());
     authStore = useAuthStore();
@@ -38,11 +38,11 @@ describe('Auth Store', () => {
       vi.clearAllMocks();
       const savedToken = 'saved-token-123';
       mockTokenStorage.get.mockReturnValue(savedToken);
-      
+
       // Act
       setActivePinia(createPinia());
       const freshStore = useAuthStore();
-      
+
       // Assert
       expect(freshStore.token).toBe(savedToken);
       expect(freshStore.loading).toBe(false);
@@ -53,11 +53,11 @@ describe('Auth Store', () => {
       // Arrange
       vi.clearAllMocks();
       mockTokenStorage.get.mockReturnValue(null);
-      
+
       // Act
       setActivePinia(createPinia());
       const freshStore = useAuthStore();
-      
+
       // Assert
       expect(freshStore.token).toBe(null);
       expect(freshStore.loading).toBe(false);
@@ -70,7 +70,7 @@ describe('Auth Store', () => {
       it('debería retornar true cuando hay token', () => {
         // Arrange
         authStore.token = 'valid-token';
-        
+
         // Act & Assert
         expect(authStore.isAuthenticated).toBe(true);
       });
@@ -78,7 +78,7 @@ describe('Auth Store', () => {
       it('debería retornar false cuando no hay token', () => {
         // Arrange
         authStore.token = null;
-        
+
         // Act & Assert
         expect(authStore.isAuthenticated).toBe(false);
       });
@@ -86,7 +86,7 @@ describe('Auth Store', () => {
       it('debería retornar false cuando token está vacío', () => {
         // Arrange
         authStore.token = '';
-        
+
         // Act & Assert
         expect(authStore.isAuthenticated).toBe(false);
       });
@@ -97,14 +97,14 @@ describe('Auth Store', () => {
     describe('login', () => {
       const validCredentials: AuthCredentials = {
         email: 'test@example.com',
-        password: 'password123'
+        password: 'password123',
       };
 
       const successResponse: AuthResponse = {
         success: true,
         message: 'Login exitoso',
         userId: 123,
-        bearer: 'auth-token-123'
+        bearer: 'auth-token-123',
       };
 
       describe('casos de éxito', () => {
@@ -159,7 +159,7 @@ describe('Auth Store', () => {
             success: false,
             message: 'Credenciales inválidas',
             userId: 0,
-            bearer: ''
+            bearer: '',
           };
           mockAuthService.login.mockResolvedValue(failureResponse);
 
@@ -178,7 +178,7 @@ describe('Auth Store', () => {
             success: true,
             message: 'Login exitoso',
             userId: 123,
-            bearer: ''
+            bearer: '',
           };
           mockAuthService.login.mockResolvedValue(responseWithoutBearer);
 
@@ -197,7 +197,7 @@ describe('Auth Store', () => {
             success: false,
             message: '',
             userId: 0,
-            bearer: ''
+            bearer: '',
           };
           mockAuthService.login.mockResolvedValue(responseWithoutMessage);
 
@@ -229,9 +229,9 @@ describe('Auth Store', () => {
           const error = {
             response: {
               data: {
-                message: 'Error del servidor'
-              }
-            }
+                message: 'Error del servidor',
+              },
+            },
           };
           mockAuthService.login.mockRejectedValue(error);
 
@@ -246,8 +246,8 @@ describe('Auth Store', () => {
           // Arrange
           const error = {
             response: {
-              message: 'Error de red'
-            }
+              message: 'Error de red',
+            },
           };
           mockAuthService.login.mockRejectedValue(error);
 
@@ -284,17 +284,15 @@ describe('Auth Store', () => {
       describe('edge cases', () => {
         it('debería manejar múltiples llamadas concurrentes', async () => {
           // Arrange
-          mockAuthService.login
-            .mockResolvedValueOnce(successResponse)
-            .mockResolvedValueOnce({
-              ...successResponse,
-              bearer: 'second-token'
-            });
+          mockAuthService.login.mockResolvedValueOnce(successResponse).mockResolvedValueOnce({
+            ...successResponse,
+            bearer: 'second-token',
+          });
 
           // Act
           const promise1 = authStore.login(validCredentials);
           const promise2 = authStore.login(validCredentials);
-          
+
           await Promise.all([promise1, promise2]);
 
           // Assert
@@ -308,14 +306,14 @@ describe('Auth Store', () => {
       const validRegisterPayload: RegisterPayload = {
         email: 'newuser@example.com',
         password: 'password123',
-        fullName: 'Juan Pérez'
+        fullName: 'Juan Pérez',
       };
 
       const successResponse: AuthResponse = {
         success: true,
         message: 'Registro exitoso',
         userId: 456,
-        bearer: 'auth-token-456'
+        bearer: 'auth-token-456',
       };
 
       describe('casos de éxito', () => {
@@ -358,7 +356,7 @@ describe('Auth Store', () => {
             success: false,
             message: 'Email ya existe',
             userId: 0,
-            bearer: ''
+            bearer: '',
           };
           mockAuthService.register.mockResolvedValue(failureResponse);
 
@@ -376,7 +374,7 @@ describe('Auth Store', () => {
             success: false,
             message: '',
             userId: 0,
-            bearer: ''
+            bearer: '',
           };
           mockAuthService.register.mockResolvedValue(responseWithoutMessage);
 
@@ -465,20 +463,20 @@ describe('Auth Store', () => {
         success: true,
         message: 'Success',
         userId: 123,
-        bearer: 'token-123'
+        bearer: 'token-123',
       };
       mockAuthService.login.mockResolvedValue(response);
 
       // Act - Login
       await authStore.login(credentials);
-      
+
       // Assert - After login
       expect(authStore.isAuthenticated).toBe(true);
       expect(authStore.token).toBe('token-123');
-      
+
       // Act - Logout
       authStore.logout();
-      
+
       // Assert - After logout
       expect(authStore.isAuthenticated).toBe(false);
       expect(authStore.token).toBe(null);
@@ -506,11 +504,11 @@ describe('Auth Store', () => {
       vi.clearAllMocks();
       const savedToken = 'persisted-token';
       mockTokenStorage.get.mockReturnValue(savedToken);
-      
+
       // Act - Crear nueva instancia completa
       setActivePinia(createPinia());
       const newStore = useAuthStore();
-      
+
       // Assert
       expect(mockTokenStorage.get).toHaveBeenCalled();
       expect(newStore.token).toBe(savedToken);

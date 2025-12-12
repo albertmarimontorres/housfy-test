@@ -20,9 +20,9 @@ describe('Chat Service - Flujo Principal', () => {
       const expectedResponse: ChatResponse = {
         success: true,
         message: 'Success',
-        output: 'Nuestro servicio funciona de manera muy sencilla...'
+        output: 'Nuestro servicio funciona de manera muy sencilla...',
       };
-      
+
       mockChatApi.sendMessage.mockResolvedValue(expectedResponse);
 
       // Act
