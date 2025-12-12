@@ -76,6 +76,8 @@ export const useRentalStore = defineStore('rental', {
           this.error = response?.message || 'No se pudieron obtener los alquileres';
         }
       } catch (e: any) {
+        // eslint-disable-next-line no-console
+        console.error('Error fetching rentals:', e);
         this.allRentals = [];
         this.filteredRentals = [];
         this.error = e?.response?.data?.message || 'Error al obtener los alquileres';

@@ -275,8 +275,8 @@ describe('Auth Integration Tests', () => {
       // Arrange
       const extremePayload = {
         email: 'test@example.com',
-        password: `password123${  'x'.repeat(1000)}`, // password muy largo
-        fullName: `Juan ${  'Pérez '.repeat(100)}`, // nombre muy largo
+        password: `password123${'x'.repeat(1000)}`, // password muy largo
+        fullName: `Juan ${'Pérez '.repeat(100)}`, // nombre muy largo
       };
 
       const response: AuthResponse = {

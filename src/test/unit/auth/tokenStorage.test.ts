@@ -53,7 +53,7 @@ describe('tokenStorage Tests', () => {
       // Arrange
       const testToken = 'test-jwt-token';
       const expectedExpiresAt = 1000000 + 3600 * 1000; // 1 hora después
-      const expectedEncoded = btoa(`hf_${  testToken}`);
+      const expectedEncoded = btoa(`hf_${testToken}`);
 
       // Act
       tokenStorage.set(testToken);
@@ -72,7 +72,7 @@ describe('tokenStorage Tests', () => {
       const testToken = 'test-jwt-token';
       const customExpiry = 7200; // 2 horas
       const expectedExpiresAt = 1000000 + customExpiry * 1000;
-      const expectedEncoded = btoa(`hf_${  testToken}`);
+      const expectedEncoded = btoa(`hf_${testToken}`);
 
       // Act
       tokenStorage.set(testToken, customExpiry);
@@ -88,7 +88,7 @@ describe('tokenStorage Tests', () => {
     it('debería codificar el token con prefijo de obfuscación', () => {
       // Arrange
       const testToken = 'my-secret-token';
-      const expectedPrefixedToken = `hf_${  testToken}`;
+      const expectedPrefixedToken = `hf_${testToken}`;
       const expectedEncoded = btoa(expectedPrefixedToken);
 
       // Act
@@ -103,7 +103,7 @@ describe('tokenStorage Tests', () => {
     it('debería retornar token válido no expirado', () => {
       // Arrange
       const originalToken = 'valid-token';
-      const encodedToken = btoa(`hf_${  originalToken}`);
+      const encodedToken = btoa(`hf_${originalToken}`);
       const futureExpiry = (1000000 + 3600 * 1000).toString(); // 1 hora en el futuro
 
       (localStorage.getItem as any)
@@ -233,7 +233,7 @@ describe('tokenStorage Tests', () => {
     it('debería manejar ciclo completo: set -> get -> clear', () => {
       // Arrange
       const testToken = 'integration-test-token';
-      const encodedToken = btoa(`hf_${  testToken}`);
+      const encodedToken = btoa(`hf_${testToken}`);
       const futureExpiry = (1000000 + 3600 * 1000).toString();
 
       // Act 1: Set token
@@ -258,7 +258,7 @@ describe('tokenStorage Tests', () => {
     it('debería manejar tokens muy largos', () => {
       // Arrange
       const longToken = 'a'.repeat(1000); // Token de 1000 caracteres
-      const expectedEncoded = btoa(`hf_${  longToken}`);
+      const expectedEncoded = btoa(`hf_${longToken}`);
 
       // Act
       tokenStorage.set(longToken);
@@ -270,7 +270,7 @@ describe('tokenStorage Tests', () => {
     it('debería manejar caracteres especiales en tokens', () => {
       // Arrange
       const specialToken = 'token-with-special-chars!@#$%^&*()_+{}|:"<>?[]\\;\'.,/`~';
-      const expectedEncoded = btoa(`hf_${  specialToken}`);
+      const expectedEncoded = btoa(`hf_${specialToken}`);
 
       // Act
       tokenStorage.set(specialToken);
@@ -282,7 +282,7 @@ describe('tokenStorage Tests', () => {
     it('debería manejar expiración en el límite exacto', () => {
       // Arrange
       const testToken = 'boundary-test-token';
-      const encodedToken = btoa(`hf_${  testToken}`);
+      const encodedToken = btoa(`hf_${testToken}`);
       const exactExpiry = 1000000; // Mismo timestamp que Date.now()
 
       (localStorage.getItem as any)
@@ -299,7 +299,7 @@ describe('tokenStorage Tests', () => {
     it('debería considerar expirado cuando Date.now() > expiresAt', () => {
       // Arrange
       const testToken = 'expired-test-token';
-      const encodedToken = btoa(`hf_${  testToken}`);
+      const encodedToken = btoa(`hf_${testToken}`);
       const pastExpiry = 999999; // 1ms antes que Date.now() (1000000)
 
       (localStorage.getItem as any)

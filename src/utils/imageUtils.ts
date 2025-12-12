@@ -197,10 +197,10 @@ export function getRealEstateImage(
   try {
     // Prioridad: IDs curados por tipo -> Todos los IDs curados -> SVG fallback
     return getPropertyImageByType(propertyType, propertyId, config);
-  } catch (error) {
+  } catch (_error) {
     try {
       return getAllCuratedImages(propertyId, config);
-    } catch (fallbackError) {
+    } catch (_fallbackError) {
       return getTypedFallbackImage(propertyType, config);
     }
   }

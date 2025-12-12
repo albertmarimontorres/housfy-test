@@ -236,7 +236,7 @@ describe('Profile Validation', () => {
       // Arrange
       const edgeCaseUser: User = {
         id: Number.MAX_SAFE_INTEGER,
-        email: `${'a'.repeat(50)  }@${  'b'.repeat(50)  }.com`, // email muy largo
+        email: `${'a'.repeat(50)}@${'b'.repeat(50)}.com`, // email muy largo
         fullName: 'A'.repeat(100), // nombre muy largo
         createdAt: '9999-12-31T23:59:59Z', // fecha futura
       };

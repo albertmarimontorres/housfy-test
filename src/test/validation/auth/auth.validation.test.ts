@@ -411,9 +411,9 @@ describe('Validation Functions (tested through AuthService)', () => {
   describe('valores límite', () => {
     it('debería manejar string extremadamente largos', async () => {
       // Arrange
-      const veryLongEmail = `${'a'.repeat(50)  }@example.com`; // Email más realista
-      const veryLongPassword = `password${  'a'.repeat(100)}`;
-      const veryLongName = `Juan ${  'A'.repeat(100)}`; // Solo caracteres válidos
+      const veryLongEmail = `${'a'.repeat(50)}@example.com`; // Email más realista
+      const veryLongPassword = `password${'a'.repeat(100)}`;
+      const veryLongName = `Juan ${'A'.repeat(100)}`; // Solo caracteres válidos
 
       // Act & Assert
       // Email largo pero válido debería pasar validación de formato

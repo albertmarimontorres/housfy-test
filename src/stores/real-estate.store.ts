@@ -71,6 +71,8 @@ export const useRealEstateStore = defineStore('realEstate', {
           this.error = response?.message || 'No se pudieron obtener las propiedades';
         }
       } catch (e: any) {
+        // eslint-disable-next-line no-console
+        console.error('Error fetching real estate properties:', e);
         this.allProperties = [];
         this.filteredProperties = [];
         this.error = e?.response?.data?.message || 'Error al obtener las propiedades';

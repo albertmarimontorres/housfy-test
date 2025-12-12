@@ -67,7 +67,7 @@ describe('AuthService - Tests Básicos', () => {
   it('debería pasar validación con string largo válido y resolver exitosamente', async () => {
     const longValidCredentials = {
       email: 'test@example.com',
-      password: `password123${  'a'.repeat(50)}`,
+      password: `password123${'a'.repeat(50)}`,
     };
 
     // Debe pasar validación y llegar a la API mockeada

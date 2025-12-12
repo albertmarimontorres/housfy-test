@@ -178,7 +178,7 @@ test.describe('Login E2E Tests - Avanzados', () => {
     const passwordField = page.locator('input[type="password"]');
 
     // Email muy largo
-    const longEmail = `${'a'.repeat(300)  }@example.com`;
+    const longEmail = `${'a'.repeat(300)}@example.com`;
     await emailField.fill(longEmail);
 
     // Password muy largo
