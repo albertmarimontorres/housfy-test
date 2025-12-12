@@ -11,7 +11,6 @@ Una plataforma administrativa moderna para gestión inmobiliaria construida con 
 - **👤 Gestión de Perfiles** - Sistema de perfiles de usuario
 - **🤖 Chatbot IA** - Asistente virtual integrado
 - **📱 Responsive Design** - Optimizado para móvil y desktop
-- **🌙 Dark/Light Mode** - Soporte para temas
 - **♿ Accesibilidad** - Navegación por teclado y estándares WCAG
 
 ## 🛠️ Stack Tecnológico
@@ -281,7 +280,4 @@ Ver [CHANGELOG.md](CHANGELOG.md) para un historial detallado de cambios.
 <div align="center">
 
 **[⬆ Volver al inicio](#-housfy-admin-platform)**
-
-Hecho con ❤️ por el equipo de Housfy
-
 </div>
