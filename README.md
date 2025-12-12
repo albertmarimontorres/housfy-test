@@ -267,9 +267,8 @@ Este proyecto está licenciado bajo la Licencia MIT - ver el archivo [LICENSE](L
 ## 📞 Soporte
 
 Para soporte técnico o preguntas:
-- 📧 Email: [support@housfy.com](mailto:support@housfy.com)
+- 📧 Email: [dev.albertmarimon@gmail.com](mailto:dev.albertmarimon@gmail.com)
 - 🐛 Issues: [GitHub Issues](https://github.com/albertmarimontorres/housfy-test/issues)
-- 📖 Docs: [Documentación](https://docs.housfy.com)
 
 ## 🔄 Changelog
 
